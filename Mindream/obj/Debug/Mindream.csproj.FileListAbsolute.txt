@@ -1,0 +1,6 @@
+L:\Mindream\Mindream\Mindream\bin\Debug\Mindream.dll.config
+L:\Mindream\Mindream\Mindream\bin\Debug\Mindream.dll
+L:\Mindream\Mindream\Mindream\bin\Debug\Mindream.pdb
+L:\Mindream\Mindream\Mindream\obj\Debug\Mindream.csprojResolveAssemblyReference.cache
+L:\Mindream\Mindream\Mindream\obj\Debug\Mindream.dll
+L:\Mindream\Mindream\Mindream\obj\Debug\Mindream.pdb
