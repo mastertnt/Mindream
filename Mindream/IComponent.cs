@@ -28,6 +28,6 @@ namespace Mindream
         /// <summary>
         /// This method is called to start the component.
         /// </summary>
-        void Tick(DateTime pimulationDate, TimeSpan pRelativeTime, TimeSpan pDeltaTime);
+        void Tick(DateTime pSimulationDate, TimeSpan pRelativeTime, TimeSpan pDeltaTime);
     }
 }

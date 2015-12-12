@@ -67,10 +67,10 @@ namespace Mindream
         /// <summary>
         /// This method ticks the simulation.
         /// </summary>
-        /// <param name="pimulationDate">The absolute simulation date.</param>
+        /// <param name="pSimulationDate">The absolute simulation date.</param>
         /// <param name="pRelativeTime">The relative simulation time.</param>
         /// <param name="pDeltaTime">The delta time since the last tick.</param>
-        public void Tick(DateTime pimulationDate, TimeSpan pRelativeTime, TimeSpan pDeltaTime)
+        public void Tick(DateTime pSimulationDate, TimeSpan pRelativeTime, TimeSpan pDeltaTime)
         {
             
         }

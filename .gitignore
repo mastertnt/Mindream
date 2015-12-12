@@ -45,3 +45,17 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.dll
+DemoApplication/bin/Debug/DemoApplication.exe
+*.pdb
+*.cache
+DemoApplication/bin/Debug/DemoApplication.exe.config
+/DemoApplication/bin
+/DemoApplication/obj
+*.suo
+Mindream/bin/Debug/Mindream.dll.config
+*.pdb
+Mindream/bin/Debug/Mindream.pdb
+TestApp/obj/Debug/TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs
+TestApp/obj/Debug/TestApp.exe
+*.pdb
