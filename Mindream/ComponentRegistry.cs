@@ -10,7 +10,7 @@ namespace Mindream
     /// <summary>
     /// This class represents a simulation.
     /// </summary>
-    public class Simulation
+    public class ComponentRegistry
     {
         #region Properties
 
@@ -31,9 +31,9 @@ namespace Mindream
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Simulation"/> class.
+        /// Initializes a new instance of the <see cref="ComponentRegistry"/> class.
         /// </summary>
-        public Simulation()
+        public ComponentRegistry()
         {
             this.ComponentTypes = new HashSet<ComponentType>();
         }

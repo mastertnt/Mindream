@@ -8,7 +8,7 @@ namespace TestApp
 {
     class Program
     {
-        public static MethodInfo GetMethodInfo<T>(Expression<Action<T>> expression)
+        public static MethodInfo GetMethodInfo(Expression<Action> expression)
         {
             var member = expression.Body as MethodCallExpression;
 
@@ -29,7 +29,14 @@ namespace TestApp
         /// <param name="pArgs">The arguments.</param>
         static void Main(string[] pArgs)
         {
-            ComponentMethod lComponentMethod = new ComponentMethod(GetMethodInfo<Program>(x => x.Test()));
+            MethodInfo lMethod = GetMethodInfo(() => Math.Sin(0));
+
+            StaticMethodComponentDescriptor lDescriptor = new StaticMethodComponentDescriptor(lMethod);
+            Console.WriteLine(lDescriptor.ToString());
+
+            Mindream.IComponent lComponent = lDescriptor.Create();
+            lComponent["a"] = 0.5;
+            lComponent.Start();
         }
     }
 }
