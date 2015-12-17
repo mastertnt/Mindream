@@ -47,8 +47,6 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
-*.dll
-*.pdb
 *.cache
 *.suo
 *.pdb
