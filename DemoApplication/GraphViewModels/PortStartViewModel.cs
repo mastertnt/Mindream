@@ -19,7 +19,7 @@ namespace DemoApplication.GraphViewModels
         public PortStartViewModel()
         {
             this.Direction = PortDirection.Input;
-            this.DisplayString = "Stop";
+            this.DisplayString = "Start";
         }
     }
 }

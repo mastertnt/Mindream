@@ -45,7 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CallGraph.cs" />
+    <Compile Include="CallNode.cs" />
+    <Compile Include="MethodCallGraph.cs" />
     <Compile Include="StaticMethodComponentAttribute.cs" />
     <Compile Include="StaticMethodComponent.cs" />
     <Compile Include="ComponentType.cs" />

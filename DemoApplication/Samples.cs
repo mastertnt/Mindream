@@ -10,28 +10,28 @@ namespace DemoApplication
     class Samples
     {
         [StaticMethodComponent]
-        public static int Add(int pFirst, int pSecond)
+        public static int Add(int first, int second)
         {
-            return pFirst + pSecond;
+            return first + second;
         }
 
         [StaticMethodComponent]
-        public static void Add1(int pFirst, int pSecond, out int pResult)
+        public static void Add1(int first, int second, out int result)
         {
-            pResult = pFirst + pSecond;
+            result = first + second;
         }
 
         [StaticMethodComponent]
-        public static int Add2(int pFirst, out int pResult, ref int pSecond)
+        public static int Add2(int first, out int result2, ref int pSecond)
         {
-            pResult = pFirst + pSecond;
-            return pResult;
+            result2 = first + pSecond;
+            return result2;
         }
 
         [StaticMethodComponent]
-        public static void Add3(int pFirst, ref int pSecond, int pResult)
+        public static void Add3(int first, ref int second, int result)
         {
-            pSecond = pFirst + pResult + pSecond;
+            second = first + result + second;
         }
 
         [StaticMethodComponent]

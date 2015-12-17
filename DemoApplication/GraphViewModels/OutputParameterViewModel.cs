@@ -16,7 +16,7 @@ namespace DemoApplication.GraphViewModels
         /// <param name="pParameter">The p parameter.</param>
         public OutputParameterViewModel(ParameterInfo pParameter)
         {
-            this.DisplayString = pParameter.Name;
+            this.DisplayString = string.IsNullOrWhiteSpace(pParameter.Name) ? "result" : pParameter.Name;
             this.Direction = PortDirection.Output;
         }
     }

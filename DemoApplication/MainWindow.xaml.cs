@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using DemoApplication.GraphViewModels;
@@ -22,7 +24,7 @@ namespace DemoApplication
 
         private Point mDropPoint;
 
-        private CallGraph mCallGraph;
+        private MethodCallGraph mCallGraph;
 
         private CallGraphViewModel mGraphViewModel = null;
 
@@ -39,30 +41,59 @@ namespace DemoApplication
             this.mComponentDescriptorRegistry.FindAllDescriptors(typeof(Samples));
             this.mComponentDescriptorLibrary.ViewModel =  new ComponentDescriptorRegistryViewModel(this.mComponentDescriptorRegistry);
 
-            this.mCallGraph = new CallGraph();
+            this.mCallGraph = new MethodCallGraph();
             this.mGraphViewModel = new CallGraphViewModel(this.mCallGraph);
+            this.mGraphViewModel.ConnectionAdded += OnConnectionAdded;
+            this.mGraph.SelectionChanged += OnSelectionChanged;
             this.mGraph.DataContext = this.mGraphViewModel;
         }
 
         /// <summary>
         /// Called when [drop].
         /// </summary>
-        /// <param name="pSender">The p pSender.</param>
+        /// <param name="pSender">The event sender.</param>
+        /// <param name="pEventArgs">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
+        private void OnSelectionChanged(object pSender, SelectionChangedEventArgs pEventArgs)
+        {
+            if (pEventArgs.AddedItems.Count != 0)
+            {
+                if (pEventArgs.AddedItems[0] is CallNodeViewModel)
+                {
+                    CallNodeViewModel lViewModel = pEventArgs.AddedItems[0] as CallNodeViewModel;
+                    this.mPropertyEditor.SelectedObject = lViewModel.Node.Component;
+                }
+                
+            }
+            else
+            {
+                this.mPropertyEditor.SelectedObject = null;
+            }
+        }
+
+        /// <summary>
+        /// Called when [drop].
+        /// </summary>
+        /// <param name="pSender">The event sender.</param>
         /// <param name="pEventArgs">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void OnDrop(object pSender, DragEventArgs pEventArgs)
         {
             if (pEventArgs.Data.GetDataPresent("ComponentDescriptor"))
             {
                 IComponentDescriptor lDescriptor = pEventArgs.Data.GetData("ComponentDescriptor") as IComponentDescriptor;
-                if (lDescriptor != null)
+                if (lDescriptor != null && pSender is IInputElement)
                 {
-                    mDropPoint = pEventArgs.GetPosition(pSender as IInputElement);
+                    mDropPoint = pEventArgs.GetPosition((IInputElement)pSender);
                     this.mGraphViewModel.NodeAdded += this.OnNodeAdded;
-                    this.mCallGraph.CallNodes.Add(lDescriptor.Create());
+                    this.mCallGraph.CallNodes.Add(new CallNode {Component = lDescriptor.Create()});
                 }
             }
         }
 
+        /// <summary>
+        /// Called when [node added].
+        /// </summary>
+        /// <param name="pSender">The event sender.</param>
+        /// <param name="pEventArgs">The event arguments.</param>
         private void OnNodeAdded(GraphViewModel pSender, NodeViewModel pEventArgs)
         {
             pEventArgs.X = this.mDropPoint.X;
@@ -71,9 +102,24 @@ namespace DemoApplication
         }
 
         /// <summary>
+        /// Called when [connection added].
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The p event arguments.</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private void OnConnectionAdded(GraphViewModel pSender, ConnectionViewModel pEventArgs)
+        {
+            // Look for the input node.
+
+            // Look for the ouput node.
+
+            // Create the connection in call graph.
+        }
+
+        /// <summary>
         /// Called when [library preview mouse left button down].
         /// </summary>
-        /// <param name="pSender">The sender.</param>
+        /// <param name="pSender">The event sender.</param>
         /// <param name="pEventArgs">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
         private void OnLibraryPreviewMouseLeftButtonDown(object pSender, MouseButtonEventArgs pEventArgs)
         {
@@ -84,7 +130,7 @@ namespace DemoApplication
         /// <summary>
         /// Called when [library mouse move].
         /// </summary>
-        /// <param name="pSender">The pSender.</param>
+        /// <param name="pSender">The event sender.</param>
         /// <param name="pEventArgs">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
         private void OnLibraryMouseMove(object pSender, MouseEventArgs pEventArgs)
         {
@@ -128,6 +174,19 @@ namespace DemoApplication
             }
             while (pCurrent != null);
             return null;
+        }
+
+        /// <summary>
+        /// Handles the Click event of the Button control.
+        /// </summary>
+        /// <param name="pSender">The event sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void Button_Click(object pSender, RoutedEventArgs pEventArgs)
+        {
+            if (this.mCallGraph.FirstNode != null)
+            {
+                this.mCallGraph.FirstNode.Component.Start();
+            }
         }
  
     }

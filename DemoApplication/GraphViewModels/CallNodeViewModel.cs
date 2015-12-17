@@ -13,30 +13,36 @@ namespace DemoApplication.GraphViewModels
     /// </summary>
     public class CallNodeViewModel : NodeViewModel
     {
-        #region Fields
+        #region Properties
 
         /// <summary>
-        /// The component
+        /// Gets the node.
         /// </summary>
-        private readonly IComponent mComponent;
+        /// <value>
+        /// The node.
+        /// </value>
+        public CallNode Node
+        {
+            get; private set;
+        }
 
-        #endregion // Fields.
+        #endregion // Properties
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CallNodeViewModel"/> class.
         /// </summary>
-        public CallNodeViewModel(IComponent pComponent)
+        public CallNodeViewModel(CallNode pNode)
         {
-            this.mComponent = pComponent;
+            this.Node = pNode;
             this.Ports.Add(new PortStartViewModel());
             this.Ports.Add(new PortSucceedViewModel());
 
-            foreach (var lInput in pComponent.Descriptor.Inputs)
+            foreach (var lInput in this.Node.Component.Descriptor.Inputs)
             {
                 this.Ports.Add(new InputParameterViewModel(lInput));
             }
 
-            foreach (var lOutput in pComponent.Descriptor.Outputs)
+            foreach (var lOutput in this.Node.Component.Descriptor.Outputs)
             {
                 this.Ports.Add(new OutputParameterViewModel(lOutput));
             }
@@ -52,7 +58,7 @@ namespace DemoApplication.GraphViewModels
         {
             get
             {
-                return this.mComponent.Descriptor.Name;
+                return this.Node.Component.Descriptor.Name;
             }
             set
             {
@@ -70,7 +76,7 @@ namespace DemoApplication.GraphViewModels
         {
             get
             {
-                return this.mComponent.Descriptor.Name;
+                return this.Node.Component.Descriptor.Name;
             }
             set
             {
