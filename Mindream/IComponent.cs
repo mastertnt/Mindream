@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Mindream
 {
@@ -81,7 +79,6 @@ namespace Mindream
             get; 
             set;
         }
-        
 
         /// <summary>
         /// This method is called to start the component.

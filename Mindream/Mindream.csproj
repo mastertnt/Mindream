@@ -43,14 +43,22 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="XSerialization">
+      <HintPath>..\ThirdParty\XSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="XSystem">
+      <HintPath>..\ThirdParty\XSystem.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CallGraph.cs" />
+    <Compile Include="StaticMethodComponentAttribute.cs" />
     <Compile Include="StaticMethodComponent.cs" />
     <Compile Include="ComponentType.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IComponentDescriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ComponentRegistry.cs" />
+    <Compile Include="ComponentDescriptorRegistry.cs" />
     <Compile Include="StaticMethodComponentDescriptor.cs" />
   </ItemGroup>
   <ItemGroup>

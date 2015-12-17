@@ -71,12 +71,27 @@
       <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="XGraph">
+      <HintPath>..\ThirdParty\XGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="XTreeListView">
+      <HintPath>..\ThirdParty\XTreeListView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="GraphViewModels\CallGraphViewModel.cs" />
+    <Compile Include="GraphViewModels\CallNodeViewModel.cs" />
+    <Compile Include="GraphViewModels\OutputParameterViewModel.cs" />
+    <Compile Include="GraphViewModels\InputParameterViewModel.cs" />
+    <Compile Include="GraphViewModels\PortStartViewModel.cs" />
+    <Compile Include="GraphViewModels\PortSucceedViewModel.cs" />
+    <Compile Include="LibraryViewModels\ComponentDescriptorViewModel.cs" />
+    <Compile Include="Samples.cs" />
+    <Compile Include="LibraryViewModels\ComponentDescriptorRegistryViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -117,6 +132,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Mindream\Mindream.csproj">
+      <Project>{e7a6ac89-c829-43cf-a20c-b9715c9aaf0c}</Project>
+      <Name>Mindream</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

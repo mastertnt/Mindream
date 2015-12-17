@@ -9,3 +9,13 @@ L:\GitHub\Mindream\Mindream\bin\Debug\Mindream.dll
 L:\GitHub\Mindream\Mindream\bin\Debug\Mindream.pdb
 L:\GitHub\Mindream\Mindream\obj\Debug\Mindream.dll
 L:\GitHub\Mindream\Mindream\obj\Debug\Mindream.pdb
+K:\nby\GitHub\Mindream\Mindream\bin\Debug\Mindream.dll.config
+K:\nby\GitHub\Mindream\Mindream\bin\Debug\Mindream.dll
+K:\nby\GitHub\Mindream\Mindream\bin\Debug\Mindream.pdb
+K:\nby\GitHub\Mindream\Mindream\obj\Debug\Mindream.dll
+K:\nby\GitHub\Mindream\Mindream\obj\Debug\Mindream.pdb
+K:\nby\GitHub\Mindream\Mindream\bin\Debug\XSerialization.dll
+K:\nby\GitHub\Mindream\Mindream\bin\Debug\XSystem.dll
+K:\nby\GitHub\Mindream\Mindream\bin\Debug\XSerialization.pdb
+K:\nby\GitHub\Mindream\Mindream\bin\Debug\XSystem.pdb
+K:\nby\GitHub\Mindream\Mindream\obj\Debug\Mindream.csprojResolveAssemblyReference.cache

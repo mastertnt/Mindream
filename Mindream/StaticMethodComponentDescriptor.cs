@@ -38,7 +38,7 @@ namespace Mindream
         {
             get
             {
-                return this.Method.GetParameters().ToList();
+                return this.Method.GetParameters().Where(pParemeter => pParemeter.IsOut == false).ToList();
             }
         }
 
@@ -52,8 +52,13 @@ namespace Mindream
         {
             get
             {
-                List<ParameterInfo> lOutputs = this.Method.GetParameters().Where(pParemeter => pParemeter.IsOut).ToList();
-                lOutputs.Add(this.Method.ReturnParameter);
+                List<ParameterInfo> lOutputs = this.Method.GetParameters().Where(pParameter => pParameter.IsOut || (pParameter.IsOut == false && pParameter.ParameterType.IsByRef)).ToList();
+                if (this.Method.ReturnParameter.ParameterType != typeof (void))
+                {
+                    lOutputs.Add(this.Method.ReturnParameter);
+                    
+                }
+                
                 return lOutputs;
             }
         }

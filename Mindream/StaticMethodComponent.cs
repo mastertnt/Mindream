@@ -9,6 +9,15 @@ namespace Mindream
     /// </summary>
     public class StaticMethodComponent : IComponent
     {
+        #region Fields
+
+        /// <summary>
+        /// This fields stores the parameters.
+        /// </summary>
+        private object[] mParameters;
+
+        #endregion // Fields.
+
         #region Properties
 
         /// <summary>
@@ -40,7 +49,6 @@ namespace Mindream
         /// <value>
         /// The parameters.
         /// </value>
-        /// <exception cref="System.NotImplementedException"></exception>
         public Dictionary<string, object> Inputs 
         { 
             get;
@@ -53,7 +61,6 @@ namespace Mindream
         /// <value>
         /// The results.
         /// </value>
-        /// <exception cref="System.NotImplementedException"></exception>
         public Dictionary<string, object> Outputs
         {
             get;
@@ -72,6 +79,30 @@ namespace Mindream
             this.TypedDescriptor = pDescriptor;
             this.Inputs = new Dictionary<string, object>();
             this.Outputs = new Dictionary<string, object>();
+            int lHasResult = this.Descriptor.Outputs.Count(pParameter => pParameter.Position == -1);
+            int lRefCount = this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef == true);
+
+            // Create a parameter array for method invocation.
+            this.mParameters = new object[this.Descriptor.Inputs.Count + this.Descriptor.Outputs.Count - lHasResult - lRefCount];
+
+            // Initialize the input parameters.
+            foreach (var lInput in this.Descriptor.Inputs)
+            {
+                this.Inputs.Add(lInput.Name, null);
+            }
+
+            // Initialize the output parameters.
+            foreach (var lOutput in this.Descriptor.Outputs)
+            {
+                if (lOutput.Position != -1)
+                {
+                    this.Outputs.Add(lOutput.Name, null);
+                }
+                else
+                {
+                    this.Outputs.Add("result", null);
+                }
+            }
         }
 
         #endregion // Constructors.
@@ -111,12 +142,46 @@ namespace Mindream
             {
                 if (this.TypedDescriptor != null)
                 {
-                    this.TypedDescriptor.Method.Invoke(null, new object[] {0.5});
+                    // Copy the input parameters.
+                    foreach (var lInputParameter in this.Descriptor.Inputs)
+                    {
+                        this.mParameters[lInputParameter.Position] = this.Inputs[lInputParameter.Name];
+                    }
+
+                    // Copy the ouput parameters.
+                    foreach (var lOuputParameter in this.Descriptor.Outputs)
+                    {
+                        if (lOuputParameter.Position != -1)
+                        {
+                            this.mParameters[lOuputParameter.Position] = this.Outputs[lOuputParameter.Name];
+                        }
+                    }
+
+                    object lResult = this.TypedDescriptor.Method.Invoke(null, this.mParameters);
+
+                    // Copy the output.
+                    foreach (var lParameter in this.Descriptor.Outputs)
+                    {
+                        if (lParameter.Position != -1)
+                        {
+                            this.Outputs[lParameter.Name] = this.mParameters[lParameter.Position];
+                        }
+                        else
+                        {
+                            this.Outputs["result"] = lResult;
+                        }
+                    }
+
+                    foreach (var lOuput in this.Outputs)
+                    {
+                        Console.WriteLine(lOuput.Key + " = " + lOuput.Value);
+                    }
                     this.Stop();
                 }
             }
-            catch
+            catch (Exception lEx)
             {
+                Console.WriteLine(lEx);
                 if (this.Failed != null)
                 {
                     this.Failed(this);
@@ -188,8 +253,5 @@ namespace Mindream
 
 
         #endregion // Methods.
-
-
-        
     }
 }

@@ -1,26 +1,41 @@
 ﻿using System;
-using System.ComponentModel;
-using System.Linq.Expressions;
+using System.Linq;
 using System.Reflection;
 using Mindream;
 
 namespace TestApp
 {
-    class Program
+    public class Program
     {
-        public static MethodInfo GetMethodInfo(Expression<Action> expression)
+        [StaticMethodComponent]
+        public static int Add(int pFirst, int pSecond)
         {
-            var member = expression.Body as MethodCallExpression;
-
-            if (member != null)
-                return member.Method;
-
-            throw new ArgumentException("Expression is not a method", "expression");
+            return pFirst + pSecond;
         }
 
-        public void Test()
+        [StaticMethodComponent]
+        public static void Add1(int pFirst, int pSecond, out int pResult)
         {
-            
+            pResult = pFirst + pSecond;
+        }
+
+        [StaticMethodComponent]
+        public static int Add2(int pFirst, out int pResult, ref int pSecond)
+        {
+            pResult = pFirst + pSecond;
+            return pResult;
+        }
+
+        [StaticMethodComponent]
+        public static void Add3(int pFirst, ref int pSecond, int pResult)
+        {
+            pSecond = pFirst + pResult + pSecond;
+        }
+
+        [StaticMethodComponent]
+        public static bool Branch(bool condition)
+        {
+            return condition;
         }
 
         /// <summary>
@@ -29,13 +44,19 @@ namespace TestApp
         /// <param name="pArgs">The arguments.</param>
         static void Main(string[] pArgs)
         {
-            MethodInfo lMethod = GetMethodInfo(() => Math.Sin(0));
+            ComponentDescriptorRegistry lComponentDescriptorRegistry = new ComponentDescriptorRegistry();
+            lComponentDescriptorRegistry.FindAllDescriptors(Assembly.GetExecutingAssembly());
 
-            StaticMethodComponentDescriptor lDescriptor = new StaticMethodComponentDescriptor(lMethod);
-            Console.WriteLine(lDescriptor.ToString());
+            foreach (var lDescriptor in lComponentDescriptorRegistry.Descriptors)
+            {
+                Console.WriteLine(lDescriptor.ToString());
+            }
 
-            Mindream.IComponent lComponent = lDescriptor.Create();
-            lComponent["a"] = 0.5;
+            IComponentDescriptor lRetrievedDescriptor = lComponentDescriptorRegistry.Descriptors.FirstOrDefault(pDescriptor => pDescriptor.Name == "Add2");
+            IComponent lComponent = lRetrievedDescriptor.Create();
+            lComponent["pFirst"] = 42;
+            lComponent["pSecond"] = 42;
+            lComponent["pResult"] = 10;
             lComponent.Start();
         }
     }
