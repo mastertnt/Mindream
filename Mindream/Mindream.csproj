@@ -43,12 +43,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="XSerialization">
-      <HintPath>..\ThirdParty\XSerialization.dll</HintPath>
-    </Reference>
-    <Reference Include="XSystem">
-      <HintPath>..\ThirdParty\XSystem.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CallGraph.cs" />
@@ -63,6 +57,16 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ThirdParty\XRay\XSerialization\XSerialization.csproj">
+      <Project>{b03f0119-4564-4787-be7c-9e6f4368c13c}</Project>
+      <Name>XSerialization</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThirdParty\XRay\XSystem\XSystem.csproj">
+      <Project>{70ab21af-5cf4-4751-8d1f-c55b55b33ec6}</Project>
+      <Name>XSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

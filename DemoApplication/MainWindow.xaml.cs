@@ -1,18 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using DemoApplication.GraphViewModels;
 using Mindream;
 using XGraph.ViewModels;
@@ -31,7 +20,11 @@ namespace DemoApplication
 
         private Point mStartPoint;
 
+        private Point mDropPoint;
+
         private CallGraph mCallGraph;
+
+        private CallGraphViewModel mGraphViewModel = null;
 
         #endregion // Fields.
 
@@ -47,66 +40,93 @@ namespace DemoApplication
             this.mComponentDescriptorLibrary.ViewModel =  new ComponentDescriptorRegistryViewModel(this.mComponentDescriptorRegistry);
 
             this.mCallGraph = new CallGraph();
-            this.mGraph.DataContext = new CallGraphViewModel(this.mCallGraph);
+            this.mGraphViewModel = new CallGraphViewModel(this.mCallGraph);
+            this.mGraph.DataContext = this.mGraphViewModel;
         }
 
         /// <summary>
         /// Called when [drop].
         /// </summary>
-        /// <param name="pSender">The p sender.</param>
+        /// <param name="pSender">The p pSender.</param>
         /// <param name="pEventArgs">The <see cref="DragEventArgs"/> instance containing the event data.</param>
         private void OnDrop(object pSender, DragEventArgs pEventArgs)
         {
             if (pEventArgs.Data.GetDataPresent("ComponentDescriptor"))
             {
                 IComponentDescriptor lDescriptor = pEventArgs.Data.GetData("ComponentDescriptor") as IComponentDescriptor;
-                this.mCallGraph.CallNodes.Add(lDescriptor.Create());
+                if (lDescriptor != null)
+                {
+                    mDropPoint = pEventArgs.GetPosition(pSender as IInputElement);
+                    this.mGraphViewModel.NodeAdded += this.OnNodeAdded;
+                    this.mCallGraph.CallNodes.Add(lDescriptor.Create());
+                }
             }
         }
 
-        private void List_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void OnNodeAdded(GraphViewModel pSender, NodeViewModel pEventArgs)
+        {
+            pEventArgs.X = this.mDropPoint.X;
+            pEventArgs.Y = this.mDropPoint.Y;
+            this.mGraphViewModel.NodeAdded -= this.OnNodeAdded;
+        }
+
+        /// <summary>
+        /// Called when [library preview mouse left button down].
+        /// </summary>
+        /// <param name="pSender">The sender.</param>
+        /// <param name="pEventArgs">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
+        private void OnLibraryPreviewMouseLeftButtonDown(object pSender, MouseButtonEventArgs pEventArgs)
         {
             // Store the mouse position
-            this.mStartPoint = e.GetPosition(null);
+            this.mStartPoint = pEventArgs.GetPosition(null);
         }
-        
-        private void List_MouseMove(object sender, MouseEventArgs e)
-        {
-            // Get the current mouse position
-            Point mousePos = e.GetPosition(null);
-            Vector diff = this.mStartPoint - mousePos;
 
-            if (e.LeftButton == MouseButtonState.Pressed &&
-                (Math.Abs(diff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                Math.Abs(diff.Y) > SystemParameters.MinimumVerticalDragDistance))
+        /// <summary>
+        /// Called when [library mouse move].
+        /// </summary>
+        /// <param name="pSender">The pSender.</param>
+        /// <param name="pEventArgs">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
+        private void OnLibraryMouseMove(object pSender, MouseEventArgs pEventArgs)
+        {
+            // Get the pCurrent mouse position
+            Point lMousePos = pEventArgs.GetPosition(null);
+            Vector lDiff = this.mStartPoint - lMousePos;
+
+            if (pEventArgs.LeftButton == MouseButtonState.Pressed &&
+                (Math.Abs(lDiff.X) > SystemParameters.MinimumHorizontalDragDistance ||
+                Math.Abs(lDiff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 // Get the dragged ListViewItem
-                TreeListView listView = sender as TreeListView;
-                TreeListViewItem listViewItem = FindAnchestor<TreeListViewItem>((DependencyObject)e.OriginalSource);
-                if (listViewItem == null)
+                TreeListView lListView = pSender as TreeListView;
+                TreeListViewItem lListViewItem = FindAnchestor<TreeListViewItem>((DependencyObject)pEventArgs.OriginalSource);
+                if (lListViewItem == null)
+                {
                     return;
+                }
 
                 // Initialize the drag & drop operation
-                DataObject dragData = new DataObject("ComponentDescriptor", listViewItem.ViewModel.UntypedOwnedObject);
-                DragDrop.DoDragDrop(listViewItem, dragData, DragDropEffects.Move);
+                DataObject lDragData = new DataObject("ComponentDescriptor", lListViewItem.ViewModel.UntypedOwnedObject);
+                DragDrop.DoDragDrop(lListViewItem, lDragData, DragDropEffects.Move);
             }
         }
 
-
-
-        // Helper to search up the VisualTree
-        private static T FindAnchestor<T>(DependencyObject current)
-            where T : DependencyObject
+        /// <summary>
+        /// Finds the anchestor.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="pCurrent">The p current.</param>
+        /// <returns></returns>
+        private static T FindAnchestor<T>(DependencyObject pCurrent) where T : DependencyObject
         {
             do
             {
-                if (current is T)
+                if (pCurrent is T)
                 {
-                    return (T)current;
+                    return (T)pCurrent;
                 }
-                current = VisualTreeHelper.GetParent(current);
+                pCurrent = VisualTreeHelper.GetParent(pCurrent);
             }
-            while (current != null);
+            while (pCurrent != null);
             return null;
         }
  

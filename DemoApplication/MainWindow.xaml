@@ -12,8 +12,8 @@
             <ColumnDefinition Width="250"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <xtlv:TreeListView PreviewMouseLeftButtonDown="List_PreviewMouseLeftButtonDown" 
-          PreviewMouseMove="List_MouseMove" x:Name="mComponentDescriptorLibrary"></xtlv:TreeListView>
+        <xtlv:TreeListView PreviewMouseLeftButtonDown="OnLibraryPreviewMouseLeftButtonDown" 
+          PreviewMouseMove="OnLibraryMouseMove" x:Name="mComponentDescriptorLibrary"></xtlv:TreeListView>
         <controls:GraphView x:Name="mGraph" Drop="OnDrop" AllowDrop="True" ItemsSource="{Binding Items}"  Grid.Column="1"></controls:GraphView>
         <xckt:PropertyGrid Grid.Column="2"></xckt:PropertyGrid>
     </Grid>

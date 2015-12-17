@@ -1,0 +1,3 @@
+[submodule "ThirdParty/XRay"]
+	path = ThirdParty/XRay
+	url = https://github.com/mastertnt/XRay
