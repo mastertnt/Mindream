@@ -1,0 +1,15 @@
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\bin\Release\XTreeListView.dll
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\bin\Release\XTreeListView.pdb
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\bin\Release\XSystem.dll
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\bin\Release\XSystem.pdb
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\XTreeListView.csprojResolveAssemblyReference.cache
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\Gui\Resources.baml
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\Gui\Resources.g.cs
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\GeneratedInternalTypeHelper.g.cs
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\XTreeListView_MarkupCompile.cache
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\XTreeListView_MarkupCompile.lref
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\Converters\Resources.baml
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\Themes\Generic.baml
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\XTreeListView.g.resources
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\XTreeListView.dll
+L:\GitHub\Mindream\ThirdParty\XRay\XTreeListView\obj\Release\XTreeListView.pdb
