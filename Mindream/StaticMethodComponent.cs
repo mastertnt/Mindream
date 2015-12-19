@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Mindream
@@ -14,7 +15,7 @@ namespace Mindream
         /// <summary>
         /// This fields stores the parameters.
         /// </summary>
-        private object[] mParameters;
+        private readonly object[] mParameters;
 
         #endregion // Fields.
 
@@ -26,6 +27,7 @@ namespace Mindream
         /// <value>
         /// The descriptor.
         /// </value>
+        [Browsable(false)]
         public IComponentDescriptor Descriptor
         {
             get { return this.TypedDescriptor; }
@@ -37,7 +39,7 @@ namespace Mindream
         /// <value>
         /// The typed descriptor.
         /// </value>
-        StaticMethodComponentDescriptor TypedDescriptor
+        protected StaticMethodComponentDescriptor TypedDescriptor
         {
             get;
             set;
@@ -49,6 +51,7 @@ namespace Mindream
         /// <value>
         /// The parameters.
         /// </value>
+        //[Editor(typeof(LastNameUserControlEditor), typeof(LastNameUserControlEditor))]
         public Dictionary<string, object> Inputs 
         { 
             get;
@@ -61,6 +64,8 @@ namespace Mindream
         /// <value>
         /// The results.
         /// </value>
+        //[Editor(typeof(LastNameUserControlEditor), typeof(LastNameUserControlEditor))]
+        [Browsable(false)]
         public Dictionary<string, object> Outputs
         {
             get;
@@ -80,7 +85,7 @@ namespace Mindream
             this.Inputs = new Dictionary<string, object>();
             this.Outputs = new Dictionary<string, object>();
             int lHasResult = this.Descriptor.Outputs.Count(pParameter => pParameter.Position == -1);
-            int lRefCount = this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef == true);
+            int lRefCount = this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef);
 
             // Create a parameter array for method invocation.
             this.mParameters = new object[this.Descriptor.Inputs.Count + this.Descriptor.Outputs.Count - lHasResult - lRefCount];

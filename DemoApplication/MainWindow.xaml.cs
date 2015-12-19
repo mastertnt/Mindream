@@ -110,10 +110,15 @@ namespace DemoApplication
         private void OnConnectionAdded(GraphViewModel pSender, ConnectionViewModel pEventArgs)
         {
             // Look for the input node.
+            CallNodeViewModel lSourceNode = pSender.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Input)) as CallNodeViewModel;
 
-            // Look for the ouput node.
+            // CallNodeViewModel for the ouput node.
+            CallNodeViewModel lDestinationNode = pSender.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Output)) as CallNodeViewModel;
 
-            // Create the connection in call graph.
+            if (lSourceNode != null && lDestinationNode != null)
+            {
+                
+            }
         }
 
         /// <summary>
