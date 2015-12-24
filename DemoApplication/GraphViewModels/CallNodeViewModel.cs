@@ -35,7 +35,12 @@ namespace DemoApplication.GraphViewModels
         {
             this.Node = pNode;
             this.Ports.Add(new PortStartViewModel());
-            this.Ports.Add(new PortSucceedViewModel());
+
+            foreach (var lResult in this.Node.Component.Descriptor.Results)
+            {
+                this.Ports.Add(new PortEndedViewModel(lResult));
+            }
+
 
             foreach (var lInput in this.Node.Component.Descriptor.Inputs)
             {

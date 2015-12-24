@@ -82,7 +82,7 @@
     <Compile Include="GraphViewModels\OutputParameterViewModel.cs" />
     <Compile Include="GraphViewModels\InputParameterViewModel.cs" />
     <Compile Include="GraphViewModels\PortStartViewModel.cs" />
-    <Compile Include="GraphViewModels\PortSucceedViewModel.cs" />
+    <Compile Include="GraphViewModels\PortEndedViewModel.cs" />
     <Compile Include="LibraryViewModels\ComponentDescriptorViewModel.cs" />
     <Compile Include="Samples.cs" />
     <Compile Include="LibraryViewModels\ComponentDescriptorRegistryViewModel.cs" />

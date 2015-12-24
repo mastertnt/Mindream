@@ -13,6 +13,8 @@ namespace DemoApplication.GraphViewModels
     /// </summary>
     public class PortStartViewModel : PortViewModel
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="PortStartViewModel"/> class.
         /// </summary>
@@ -21,5 +23,7 @@ namespace DemoApplication.GraphViewModels
             this.Direction = PortDirection.Input;
             this.DisplayString = "Start";
         }
+
+        #endregion // Constructors.
     }
 }

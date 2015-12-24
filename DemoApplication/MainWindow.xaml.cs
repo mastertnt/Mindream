@@ -14,19 +14,34 @@ namespace DemoApplication
     /// <summary>
     /// Logique d'interaction pour MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         #region Fields
 
-        private ComponentDescriptorRegistry mComponentDescriptorRegistry;
-
+        /// <summary>
+        /// This field stores the position where a drag is started.
+        /// </summary>
         private Point mStartPoint;
 
+        /// <summary>
+        /// This field stores the position where a drop is done.
+        /// </summary>
         private Point mDropPoint;
 
-        private MethodCallGraph mCallGraph;
+        /// <summary>
+        /// This field stores the call graph.
+        /// </summary>
+        private readonly MethodCallGraph mCallGraph;
 
-        private CallGraphViewModel mGraphViewModel = null;
+        /// <summary>
+        /// This field stores the graph view model.
+        /// </summary>
+        private readonly CallGraphViewModel mGraphViewModel;
+
+        /// <summary>
+        /// This field stores the selected view model
+        /// </summary>
+        private CallNodeViewModel mSelectedViewModel;
 
         #endregion // Fields.
 
@@ -35,11 +50,12 @@ namespace DemoApplication
         /// </summary>
         public MainWindow()
         {
+            
             InitializeComponent();
 
-            this.mComponentDescriptorRegistry = new ComponentDescriptorRegistry();
-            this.mComponentDescriptorRegistry.FindAllDescriptors(typeof(Samples));
-            this.mComponentDescriptorLibrary.ViewModel =  new ComponentDescriptorRegistryViewModel(this.mComponentDescriptorRegistry);
+            ComponentDescriptorRegistry lComponentDescriptorRegistry = new ComponentDescriptorRegistry();
+            lComponentDescriptorRegistry.FindAllDescriptors(typeof(Samples));
+            this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
 
             this.mCallGraph = new MethodCallGraph();
             this.mGraphViewModel = new CallGraphViewModel(this.mCallGraph);
@@ -59,14 +75,14 @@ namespace DemoApplication
             {
                 if (pEventArgs.AddedItems[0] is CallNodeViewModel)
                 {
-                    CallNodeViewModel lViewModel = pEventArgs.AddedItems[0] as CallNodeViewModel;
-                    this.mPropertyEditor.SelectedObject = lViewModel.Node.Component;
+                    this.mSelectedViewModel = pEventArgs.AddedItems[0] as CallNodeViewModel;
+                    this.mPropertyEditor.SelectedObject = this.mSelectedViewModel.Node.Component;
                 }
-                
             }
             else
             {
                 this.mPropertyEditor.SelectedObject = null;
+                this.mSelectedViewModel = null;
             }
         }
 
@@ -110,10 +126,16 @@ namespace DemoApplication
         private void OnConnectionAdded(GraphViewModel pSender, ConnectionViewModel pEventArgs)
         {
             // Look for the input node.
+            CallNodeViewModel lInputViewModel = this.mGraphViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Input)) as CallNodeViewModel;
 
             // Look for the ouput node.
+            CallNodeViewModel lOutputViewModel = this.mGraphViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Output)) as CallNodeViewModel;
 
             // Create the connection in call graph.
+            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is PortEndedViewModel && pEventArgs.Output is PortStartViewModel)
+            {
+                this.mCallGraph.ConnectCall(lInputViewModel.Node, lOutputViewModel.Node);
+            }
         }
 
         /// <summary>
@@ -183,10 +205,27 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void Button_Click(object pSender, RoutedEventArgs pEventArgs)
         {
-            if (this.mCallGraph.FirstNode != null)
+            this.mOutput.Text = string.Empty;
+            foreach (var lNode in this.mCallGraph.CallNodes)
             {
-                this.mCallGraph.FirstNode.Component.Start();
+                lNode.Component.Ended += this.OnComponentEnded;
             }
+
+            if (this.mSelectedViewModel != null)
+            {
+                this.mSelectedViewModel.Node.Start();
+            }
+
+
+        }
+
+        /// <summary>
+        /// Called when [component succeed].
+        /// </summary>
+        /// <param name="pComponent">The p component.</param>
+        private void OnComponentEnded(IComponent pComponent, string pResult)
+        {
+            this.mOutput.Text += pComponent.ToString();
         }
  
     }

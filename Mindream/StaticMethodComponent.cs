@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Mindream
 {
@@ -15,6 +16,11 @@ namespace Mindream
         /// This fields stores the parameters.
         /// </summary>
         private object[] mParameters;
+
+        /// <summary>
+        /// This fields stores the last result.
+        /// </summary>
+        private object mLastResult;
 
         #endregion // Fields.
 
@@ -115,9 +121,9 @@ namespace Mindream
         public event Action<IComponent> Started;
 
         /// <summary>
-        /// This event is raised when the component succeed.
+        /// This event is raised when the component ended.
         /// </summary>
-        public event Action<IComponent> Succeed;
+        public event Action<IComponent, string> Ended;
 
         /// <summary>
         /// This event is raised when the component failed.
@@ -157,7 +163,7 @@ namespace Mindream
                         }
                     }
 
-                    object lResult = this.TypedDescriptor.Method.Invoke(null, this.mParameters);
+                    this.mLastResult = this.TypedDescriptor.Method.Invoke(null, this.mParameters);
 
                     // Copy the output.
                     foreach (var lParameter in this.Descriptor.Outputs)
@@ -168,13 +174,8 @@ namespace Mindream
                         }
                         else
                         {
-                            this.Outputs["result"] = lResult;
+                            this.Outputs["result"] = this.mLastResult;
                         }
-                    }
-
-                    foreach (var lOuput in this.Outputs)
-                    {
-                        Console.WriteLine(lOuput.Key + " = " + lOuput.Value);
                     }
                     this.Stop();
                 }
@@ -194,9 +195,18 @@ namespace Mindream
         /// </summary>
         public void Stop()
         {
-            if (this.Succeed != null)
+            if (this.Ended != null)
             {
-                this.Succeed(this);
+                if (this.mLastResult is MethodResult)
+                {
+                    MethodResult lResult = this.mLastResult as MethodResult;
+                    this.Ended(this, lResult.ResultName);
+                }
+                else
+                {
+                    this.Ended(this, "Ended");
+                }
+                
             }
         }
 
@@ -251,6 +261,23 @@ namespace Mindream
             }
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
+        public override string ToString()
+        {
+            StringBuilder lBuilder = new StringBuilder();
+
+            foreach (var lOuput in this.Outputs)
+            {
+                lBuilder.AppendLine(lOuput.Key + " = " + lOuput.Value);
+            }
+
+            return lBuilder.ToString();
+        }
 
         #endregion // Methods.
     }

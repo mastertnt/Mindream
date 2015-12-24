@@ -53,5 +53,25 @@ namespace Mindream
         {
             this.NextNodes = new ObservableCollection<CallNode>();
         }
+
+        public void Start()
+        {
+            this.Component.Ended += this.OnComponentEnded;
+            this.Component.Start();
+        }
+
+        /// <summary>
+        /// Called when [component succeed].
+        /// </summary>
+        /// <param name="pComponent">The component succeed.</param>
+        /// <param name="pResultName">Name of the result.</param>
+        private void OnComponentEnded(IComponent pComponent, string pResultName)
+        {
+            this.Component.Ended -= this.OnComponentEnded;
+            foreach (var lNode in this.NextNodes)
+            {
+                lNode.Start();
+            }
+        }
     }
 }

@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="CallNode.cs" />
     <Compile Include="MethodCallGraph.cs" />
+    <Compile Include="MethodResult.cs" />
+    <Compile Include="MethodResultAttribute.cs" />
     <Compile Include="StaticMethodComponentAttribute.cs" />
     <Compile Include="StaticMethodComponent.cs" />
     <Compile Include="ComponentType.cs" />

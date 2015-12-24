@@ -37,6 +37,14 @@ namespace Mindream
         List<ParameterInfo> Outputs { get; }
 
         /// <summary>
+        /// Gets the results.
+        /// </summary>
+        /// <value>
+        /// The results (By default, the result is ended).
+        /// </value>
+        List<MethodResult> Results { get; }
+
+        /// <summary>
         /// Creates an instance.
         /// </summary>
         /// <returns>The created instance of the component.</returns>

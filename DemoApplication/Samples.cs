@@ -35,9 +35,15 @@ namespace DemoApplication
         }
 
         [StaticMethodComponent]
-        public static bool Branch(bool condition)
+        [MethodResult("True")]
+        [MethodResult("False")]
+        public static MethodResult Branch(bool condition)
         {
-            return condition;
+            if (condition)
+            {
+                return new MethodResult("True");
+            }
+            return new MethodResult("False");
         }
     }
 }

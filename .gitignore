@@ -58,3 +58,6 @@ Temporary Items
 Mindream/obj/Debug/Mindream.csproj.FileListAbsolute.txt
 Mindream/obj/Debug/Mindream.csproj.FileListAbsolute.txt
 Mindream/obj/Debug/Mindream.csprojResolveAssemblyReference.cache
+*.cache
+*.cache
+Mindream/obj/Debug/Mindream.csprojResolveAssemblyReference.cache
