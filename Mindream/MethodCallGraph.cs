@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Mindream
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class MethodCallGraph
     {
         #region Properties
@@ -41,21 +44,26 @@ namespace Mindream
         /// <summary>
         /// Connects the call.
         /// </summary>
-        /// <param name="pSource">The p source.</param>
-        /// <param name="pTarget">The p target.</param>
-        public void ConnectCall(CallNode pSource, CallNode pTarget)
+        /// <param name="pSource">The source.</param>
+        /// <param name="pTarget">The target.</param>
+        /// <param name="pResultName">Name of the result.</param>
+        public void ConnectCall(CallNode pSource, CallNode pTarget, string pResultName)
         {
-            pSource.NextNodes.Add(pTarget);
+            if (pSource.NextNodes.ContainsKey(pResultName) == false)
+            {
+                pSource.NextNodes[pResultName] = new List<CallNode>();
+            }
+            pSource.NextNodes[pResultName].Add(pTarget);
         }
 
         /// <summary>
         /// Disconnects the call.
         /// </summary>
-        /// <param name="pSource">The p source.</param>
-        /// <param name="pTarget">The p target.</param>
+        /// <param name="pSource">The source.</param>
+        /// <param name="pTarget">The target.</param>
         public void DisconnectCall(CallNode pSource, CallNode pTarget)
         {
-            pSource.NextNodes.Remove(pTarget);
+            //pSource.NextNodes.Remove(pTarget);
         }
         public void ConnectParameter(CallNode pSource, CallNode pTarget, string pSourceName, string pTargetName)
         {

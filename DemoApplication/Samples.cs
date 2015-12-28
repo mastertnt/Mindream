@@ -33,17 +33,5 @@ namespace DemoApplication
         {
             second = first + result + second;
         }
-
-        [StaticMethodComponent]
-        [MethodResult("True")]
-        [MethodResult("False")]
-        public static MethodResult Branch(bool condition)
-        {
-            if (condition)
-            {
-                return new MethodResult("True");
-            }
-            return new MethodResult("False");
-        }
     }
 }

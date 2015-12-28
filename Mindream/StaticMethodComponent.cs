@@ -202,16 +202,7 @@ namespace Mindream
         {
             if (this.Ended != null)
             {
-                if (this.mLastResult is MethodResult)
-                {
-                    MethodResult lResult = this.mLastResult as MethodResult;
-                    this.Ended(this, lResult.ResultName);
-                }
-                else
-                {
-                    this.Ended(this, "Ended");
-                }
-                
+                this.Ended(this, "Ended");
             }
         }
 

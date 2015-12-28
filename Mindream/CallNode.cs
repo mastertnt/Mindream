@@ -40,7 +40,7 @@ namespace Mindream
         /// <value>
         /// The call nodes.
         /// </value>
-        public ObservableCollection<CallNode> NextNodes
+        public Dictionary<string, List<CallNode>> NextNodes
         {
             get;
             set;
@@ -51,9 +51,12 @@ namespace Mindream
         /// </summary>
         public CallNode()
         {
-            this.NextNodes = new ObservableCollection<CallNode>();
+            this.NextNodes = new Dictionary<string, List<CallNode>>();
         }
 
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
         public void Start()
         {
             this.Component.Ended += this.OnComponentEnded;
@@ -68,9 +71,12 @@ namespace Mindream
         private void OnComponentEnded(IComponent pComponent, string pResultName)
         {
             this.Component.Ended -= this.OnComponentEnded;
-            foreach (var lNode in this.NextNodes)
+            if (this.NextNodes.ContainsKey(pResultName))
             {
-                lNode.Start();
+                foreach (var lNode in this.NextNodes[pResultName])
+                {
+                    lNode.Start();
+                }
             }
         }
     }

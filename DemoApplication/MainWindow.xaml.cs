@@ -134,7 +134,7 @@ namespace DemoApplication
             // Create the connection in call graph.
             if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is PortEndedViewModel && pEventArgs.Output is PortStartViewModel)
             {
-                this.mCallGraph.ConnectCall(lInputViewModel.Node, lOutputViewModel.Node);
+                this.mCallGraph.ConnectCall(lInputViewModel.Node, lOutputViewModel.Node, pEventArgs.Input.DisplayString);
             }
         }
 
@@ -215,18 +215,21 @@ namespace DemoApplication
             {
                 this.mSelectedViewModel.Node.Start();
             }
-
-
         }
 
         /// <summary>
         /// Called when [component succeed].
         /// </summary>
-        /// <param name="pComponent">The p component.</param>
+        /// <param name="pComponent">The component.</param>
+        /// <param name="pResult">The result.</param>
         private void OnComponentEnded(IComponent pComponent, string pResult)
         {
+            this.mOutput.Text += pComponent.Descriptor.Name;
+            this.mOutput.Text += Environment.NewLine;
+            this.mOutput.Text += pResult;
+            this.mOutput.Text += Environment.NewLine;
             this.mOutput.Text += pComponent.ToString();
+            this.mOutput.Text += Environment.NewLine;
         }
- 
     }
 }

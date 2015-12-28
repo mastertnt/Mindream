@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
-using System.Text;
 
 namespace Mindream
 {
@@ -42,7 +39,7 @@ namespace Mindream
         /// <value>
         /// The results (By default, the result is ended).
         /// </value>
-        List<MethodResult> Results { get; }
+        List<MethodEnd> Results { get; }
 
         /// <summary>
         /// Creates an instance.

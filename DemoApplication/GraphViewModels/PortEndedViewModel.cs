@@ -19,10 +19,10 @@ namespace DemoApplication.GraphViewModels
         /// Initializes a new instance of the <see cref="PortEndedViewModel" /> class.
         /// </summary>
         /// <param name="pResult">The result.</param>
-        public PortEndedViewModel(MethodResult pResult)
+        public PortEndedViewModel(MethodEnd pResult)
         {
             this.Direction = PortDirection.Output;
-            this.DisplayString = pResult.ResultName;
+            //this.DisplayString = pResult.ResultName;
         }
 
         #endregion // Constructors.

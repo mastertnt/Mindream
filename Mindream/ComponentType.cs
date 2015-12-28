@@ -15,7 +15,7 @@ namespace Mindream
         /// <summary>
         /// The inner type
         /// </summary>
-        private Type mInnerType = null;
+        private readonly Type mInnerType;
 
         #endregion // Fields.
 

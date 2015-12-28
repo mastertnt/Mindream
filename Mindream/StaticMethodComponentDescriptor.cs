@@ -53,7 +53,7 @@ namespace Mindream
             get
             {
                 List<ParameterInfo> lOutputs = this.Method.GetParameters().Where(pParameter => pParameter.IsOut || (pParameter.IsOut == false && pParameter.ParameterType.IsByRef)).ToList();
-                if (this.Method.ReturnParameter.ParameterType != typeof (void) && this.Method.ReturnParameter.ParameterType != typeof(MethodResult))
+                if (this.Method.ReturnParameter.ParameterType != typeof(void) && this.Method.ReturnParameter.ParameterType != typeof(MethodEnd))
                 {
                     lOutputs.Add(this.Method.ReturnParameter);
                 }
@@ -68,24 +68,11 @@ namespace Mindream
         /// <value>
         /// The outputs.
         /// </value>
-        public virtual List<MethodResult> Results
+        public virtual List<MethodEnd> Results
         {
             get
             {
-                List<MethodResult> lResult = new List<MethodResult>();
-                IEnumerable<MethodResultAttribute> lResultAttributes = this.Method.GetCustomAttributes(typeof (MethodResultAttribute), true).Cast<MethodResultAttribute>();
-                if (lResultAttributes.Any() == false)
-                {
-                    lResult.Add(new MethodResult("Ended"));
-                }
-                else
-                {
-                    foreach (var lAttribute in lResultAttributes)
-                    {
-                        lResult.Add(new MethodResult(lAttribute.Result.ResultName));
-                    }
-                }
-
+                List<MethodEnd> lResult = new List<MethodEnd>();
                 return lResult;
             }
         }

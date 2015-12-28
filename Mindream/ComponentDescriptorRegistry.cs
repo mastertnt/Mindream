@@ -63,14 +63,18 @@ namespace Mindream
             Type[] lExportedTypes = pAssembly.GetExportedTypes();
             foreach (var lExportedType in lExportedTypes)
             {
-                foreach (var lMethod in lExportedType.GetMethods())
-                {
-                    object[] lAttributes = lMethod.GetCustomAttributes(typeof(StaticMethodComponentAttribute), false);
-                    if (lAttributes.Any())
-                    {
-                        this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod));
-                    }
-                }
+                //// Try to locate [StaticMethodComponentAttribute] on methods. 
+                //foreach (var lMethod in lExportedType.GetMethods())
+                //{
+                //    object[] lAttributes = lMethod.GetCustomAttributes(typeof(StaticMethodComponentAttribute), false);
+                //    if (lAttributes.Any())
+                //    {
+                //        this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod));
+                //    }
+                //}
+
+                // Try to locate [StaticMethodComponentAttribute] on methods. 
+                this.FindAllDescriptors(lExportedType);
             }
         }
 
