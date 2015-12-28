@@ -45,28 +45,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AComponent.cs" />
+    <Compile Include="IComponentMemberInfo.cs" />
+    <Compile Include="Reflection\ParameterMemberInfo.cs" />
+    <Compile Include="Reflection\PropertyMemberInfo.cs" />
+    <Compile Include="Components\AComponent.cs" />
+    <Compile Include="Descriptors\ABaseComponentDescriptor.cs" />
     <Compile Include="CallNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="FlowControlNodes\Branch.cs" />
-    <Compile Include="ComponentType.cs" />
-    <Compile Include="GenerateComponentDescriptor.cs" />
+    <Compile Include="Components\FlowControlNodes\Branch.cs" />
+    <Compile Include="Attributes\FunctionComponentAttribute.cs" />
+    <Compile Include="Descriptors\FunctionComponentDescriptor.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IComponentDescriptor.cs" />
     <Compile Include="MethodCallGraph.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="MethodEnd.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ComponentDescriptorRegistry.cs" />
-    <Compile Include="StaticMethodComponent.cs">
+    <Compile Include="Components\StaticMethodComponent.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StaticMethodComponentAttribute.cs">
+    <Compile Include="Attributes\StaticMethodComponentAttribute.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="StaticMethodComponentDescriptor.cs">
+    <Compile Include="Descriptors\StaticMethodComponentDescriptor.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

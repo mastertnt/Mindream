@@ -1,11 +1,13 @@
-﻿namespace Mindream.FlowControlNodes
+﻿using Mindream.Attributes;
+
+namespace Mindream.Components.FlowControlNodes
 {
     /// <summary>
     ///     The Branch node serves as a simple way to create decision-based flow from a single true/false condition.
     ///     Once executed, the Branch node looks at the incoming value of the attached Boolean, and outputs an execution pulse
     ///     down the appropriate output.
     /// </summary>
-    [GenerateComponentDescriptor]
+    [FunctionComponent]
     public class Branch : AComponent
     {
         #region Inputs
@@ -30,12 +32,12 @@
         /// <summary>
         ///     This event is raised when a false is computed.
         /// </summary>
-        public MethodEnd False;
+        public event MethodEnd False;
 
         /// <summary>
         ///     This event is raised when a true is computed.
         /// </summary>
-        public MethodEnd True;
+        public event MethodEnd True;
 
         #endregion // Events.
 
@@ -44,7 +46,7 @@
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        public override void StartProtected()
+        protected override void ComponentStarted()
         {
             this.Stop();
         }
@@ -52,9 +54,9 @@
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        public override void StopProtected()
+        protected override void ComponentStopped()
         {
-            if (Condition)
+            if (this.Condition)
             {
                 if (this.True != null)
                 {

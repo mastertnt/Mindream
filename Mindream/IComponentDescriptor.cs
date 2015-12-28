@@ -4,6 +4,11 @@ using System.Reflection;
 namespace Mindream
 {
     /// <summary>
+    /// This delegate represents the end of a method (by default, just a simple return).
+    /// </summary>
+    public delegate void MethodEnd();
+
+    /// <summary>
     /// This interface describes a component descriptor.
     /// A component descriptor can instanciate a component.
     /// </summary>
@@ -23,7 +28,7 @@ namespace Mindream
         /// <value>
         /// The inputs.
         /// </value>
-        List<ParameterInfo> Inputs { get; }
+        List<IComponentMemberInfo> Inputs { get; }
 
         /// <summary>
         /// Gets the outputs.
@@ -31,7 +36,7 @@ namespace Mindream
         /// <value>
         /// The outputs.
         /// </value>
-        List<ParameterInfo> Outputs { get; }
+        List<IComponentMemberInfo> Outputs { get; }
 
         /// <summary>
         /// Gets the results.

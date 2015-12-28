@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Mindream
+namespace Mindream.Attributes
 {
     /// <summary>
     /// This attribute can be used to expose a static method as a static method in the registry.

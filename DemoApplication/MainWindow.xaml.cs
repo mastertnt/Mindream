@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using DemoApplication.GraphViewModels;
+using DemoApplication.LibraryViewModels;
 using Mindream;
 using XGraph.ViewModels;
 using XTreeListView.Gui;

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Mindream;
 using XGraph.ViewModels;
 
 namespace DemoApplication.GraphViewModels
@@ -17,7 +18,7 @@ namespace DemoApplication.GraphViewModels
         /// Initializes a new instance of the <see cref="InputParameterViewModel"/> class.
         /// </summary>
         /// <param name="pParameter">The p parameter.</param>
-        public InputParameterViewModel(ParameterInfo pParameter)
+        public InputParameterViewModel(IComponentMemberInfo pParameter)
         {
             this.DisplayString = pParameter.Name;
             this.Direction = PortDirection.Input;

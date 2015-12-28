@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Mindream;
-using XTreeListView.ViewModel;
+﻿using Mindream;
 using XTreeListView.ViewModel.Generic;
 
-namespace DemoApplication
+namespace DemoApplication.LibraryViewModels
 {
     class ComponentDescriptorViewModel : AHierarchicalItemViewModel<IComponentDescriptor>
     {

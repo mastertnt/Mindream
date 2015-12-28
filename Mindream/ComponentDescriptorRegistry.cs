@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
+using Mindream.Attributes;
+using Mindream.Descriptors;
 using XSystem;
 
 namespace Mindream
@@ -48,8 +50,7 @@ namespace Mindream
         public void FindAllDescriptors()
         {
             Assembly[] lAssembliesLoaded = AppDomain.CurrentDomain.GetAssemblies();
-            foreach
-                (Assembly lLoadedAssembly in lAssembliesLoaded)
+            foreach (Assembly lLoadedAssembly in lAssembliesLoaded)
             {
                 this.FindAllDescriptors(lLoadedAssembly);
             }
@@ -63,17 +64,7 @@ namespace Mindream
             Type[] lExportedTypes = pAssembly.GetExportedTypes();
             foreach (var lExportedType in lExportedTypes)
             {
-                //// Try to locate [StaticMethodComponentAttribute] on methods. 
-                //foreach (var lMethod in lExportedType.GetMethods())
-                //{
-                //    object[] lAttributes = lMethod.GetCustomAttributes(typeof(StaticMethodComponentAttribute), false);
-                //    if (lAttributes.Any())
-                //    {
-                //        this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod));
-                //    }
-                //}
-
-                // Try to locate [StaticMethodComponentAttribute] on methods. 
+               // Try to locate [StaticMethodComponentAttribute] on methods. 
                 this.FindAllDescriptors(lExportedType);
             }
         }
@@ -83,9 +74,15 @@ namespace Mindream
         /// </summary>
         public void FindAllDescriptors(Type pType)
         {
+            object[] lAttributes = pType.GetCustomAttributes(typeof(FunctionComponentAttribute), false);
+            if (lAttributes.Any())
+            {
+                this.Descriptors.Add(new FunctionComponentDescriptor(pType));
+            }
+
             foreach (var lMethod in pType.GetMethods())
             {
-                object[] lAttributes = lMethod.GetCustomAttributes(typeof(StaticMethodComponentAttribute), false);
+                lAttributes = lMethod.GetCustomAttributes(typeof(StaticMethodComponentAttribute), false);
                 if (lAttributes.Any())
                 {
                     this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod));
