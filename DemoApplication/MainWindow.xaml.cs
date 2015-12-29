@@ -7,6 +7,7 @@ using System.Windows.Media;
 using DemoApplication.GraphViewModels;
 using DemoApplication.LibraryViewModels;
 using Mindream;
+using Mindream.CallGraph;
 using XGraph.ViewModels;
 using XTreeListView.Gui;
 
@@ -137,6 +138,11 @@ namespace DemoApplication
             {
                 this.mCallGraph.ConnectCall(lInputViewModel.Node, lOutputViewModel.Node, pEventArgs.Input.DisplayString);
             }
+
+            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is OutputParameterViewModel && pEventArgs.Output is InputParameterViewModel)
+            {
+                this.mCallGraph.ConnectParameter(lInputViewModel.Node, pEventArgs.Input.DisplayString, lOutputViewModel.Node, pEventArgs.Output.DisplayString);
+            }
         }
 
         /// <summary>
@@ -204,7 +210,7 @@ namespace DemoApplication
         /// </summary>
         /// <param name="pSender">The event sender.</param>
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void Button_Click(object pSender, RoutedEventArgs pEventArgs)
+        private void StartClicked(object pSender, RoutedEventArgs pEventArgs)
         {
             this.mOutput.Text = string.Empty;
             foreach (var lNode in this.mCallGraph.CallNodes)
@@ -216,6 +222,33 @@ namespace DemoApplication
             {
                 this.mSelectedViewModel.Node.Start();
             }
+        }
+
+        /// <summary>
+        /// Removes the clicked.
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void RemoveClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
+        }
+
+        /// <summary>
+        /// Loads the clicked.
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void LoadClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
+        }
+
+        /// <summary>
+        /// Saves the clicked.
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        private void SaveClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
         }
 
         /// <summary>

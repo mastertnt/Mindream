@@ -21,28 +21,6 @@ namespace Mindream
             get;
         }
 
-        /// <summary>
-        /// Gets the parameters.
-        /// </summary>
-        /// <value>
-        /// The parameters.
-        /// </value>
-        Dictionary<string, object> Inputs
-        {
-            get;
-        }
-
-        /// <summary>
-        /// Gets the results.
-        /// </summary>
-        /// <value>
-        /// The results.
-        /// </value>
-        Dictionary<string, object> Outputs
-        {
-            get;
-        }
-
         #endregion // Properties
 
         #region Events

@@ -7,7 +7,7 @@ namespace Mindream.Components.Debug
     ///     The PrintString node serves as a simple way to display a string in the console.
     /// </summary>
     [FunctionComponent]
-    public class PrintString : AComponent
+    public class PrintString : AFunctionComponent
     {
         #region Inputs
 

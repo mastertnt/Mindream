@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
+using System.Linq.Expressions;
 
-namespace Mindream
+namespace Mindream.CallGraph
 {
     /// <summary>
     /// 
@@ -49,11 +47,11 @@ namespace Mindream
         /// <param name="pResultName">Name of the result.</param>
         public void ConnectCall(CallNode pSource, CallNode pTarget, string pResultName)
         {
-            if (pSource.NextNodes.ContainsKey(pResultName) == false)
+            if (pSource.NodeToCall.ContainsKey(pResultName) == false)
             {
-                pSource.NextNodes[pResultName] = new List<CallNode>();
+                pSource.NodeToCall[pResultName] = new List<CallNode>();
             }
-            pSource.NextNodes[pResultName].Add(pTarget);
+            pSource.NodeToCall[pResultName].Add(pTarget);
         }
 
         /// <summary>
@@ -63,11 +61,27 @@ namespace Mindream
         /// <param name="pTarget">The target.</param>
         public void DisconnectCall(CallNode pSource, CallNode pTarget)
         {
-            //pSource.NextNodes.Remove(pTarget);
+            //pSource.NodeToCall.Remove(pTarget);
         }
-        public void ConnectParameter(CallNode pSource, CallNode pTarget, string pSourceName, string pTargetName)
+
+        /// <summary>
+        /// Connects an output of the source to the input of the target.
+        /// </summary>
+        /// <param name="pSource">The source.</param>
+        /// <param name="pSourceName">The name of the output.</param>
+        /// <param name="pTarget">The target.</param>
+        /// <param name="pTargetName">The name of the input.</param>
+        public void ConnectParameter(CallNode pSource, string pSourceName, CallNode pTarget, string pTargetName)
         {
-            
+            if (pSource.NodeParameters.ContainsKey(pTarget) == false)
+            {
+                pSource.NodeParameters[pTarget] = new Dictionary<string, List<string>>();            
+            }
+            if (pSource.NodeParameters[pTarget].ContainsKey(pSourceName) == false)
+            {
+                pSource.NodeParameters[pTarget][pSourceName] = new List<string>();
+            }
+            pSource.NodeParameters[pTarget][pSourceName].Add(pTargetName);
         }
 
         #endregion // Methods.

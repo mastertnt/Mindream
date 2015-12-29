@@ -8,7 +8,7 @@ namespace Mindream.Components.FlowControlNodes
     ///     down the appropriate output.
     /// </summary>
     [FunctionComponent]
-    public class Branch : AComponent
+    public class Branch : AFunctionComponent
     {
         #region Inputs
 

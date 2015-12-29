@@ -21,10 +21,16 @@
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
+                <RowDefinition Height="25"></RowDefinition>
             </Grid.RowDefinitions>
 
             <xtlv:TreeListView PreviewMouseLeftButtonDown="OnLibraryPreviewMouseLeftButtonDown" PreviewMouseMove="OnLibraryMouseMove" x:Name="mComponentDescriptorLibrary"></xtlv:TreeListView>
-            <Button Grid.Row="1" Click="Button_Click">Start</Button>
+            <Button Grid.Row="1" Click="StartClicked">Start</Button>
+            <Button Grid.Row="2" Click="RemoveClicked">Remove</Button>
+            <Button Grid.Row="3" Click="LoadClicked">Load</Button>
+            <Button Grid.Row="4" Click="SaveClicked">Save</Button>
         </Grid>
 
         <controls:GraphView x:Name="mGraph" Drop="OnDrop" AllowDrop="True" ItemsSource="{Binding Items}" Grid.Row="0"  Grid.Column="1"></controls:GraphView>

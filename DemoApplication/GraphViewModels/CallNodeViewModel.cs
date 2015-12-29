@@ -1,4 +1,5 @@
 ﻿using Mindream;
+using Mindream.CallGraph;
 using XGraph.ViewModels;
 
 namespace DemoApplication.GraphViewModels

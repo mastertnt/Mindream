@@ -44,7 +44,6 @@ namespace Mindream.Components
         /// <value>
         /// The parameters.
         /// </value>
-        //[Editor(typeof(LastNameUserControlEditor), typeof(LastNameUserControlEditor))]
         public Dictionary<string, object> Inputs
         {
             get;
@@ -57,7 +56,6 @@ namespace Mindream.Components
         /// <value>
         /// The results.
         /// </value>
-        //[Editor(typeof(LastNameUserControlEditor), typeof(LastNameUserControlEditor))]
         [Browsable(false)]
         public Dictionary<string, object> Outputs
         {
@@ -77,7 +75,7 @@ namespace Mindream.Components
         /// </value>
         /// <param name="pParameterName">The parameter name.</param>
         /// <returns></returns>
-        public object this[string pParameterName]
+        public virtual object this[string pParameterName]
         {
             get
             {
@@ -256,11 +254,18 @@ namespace Mindream.Components
         {
             StringBuilder lBuilder = new StringBuilder();
 
-            foreach (var lOuput in this.Outputs)
+            lBuilder.AppendLine("********************************");
+            lBuilder.AppendLine("--->" + this.Descriptor.Name);
+            lBuilder.AppendLine("Inputs");
+            foreach (var lInput in this.Descriptor.Inputs)
             {
-                lBuilder.AppendLine(lOuput.Key + " = " + lOuput.Value);
+                lBuilder.AppendLine(lInput.Name + " = " + this[lInput.Name]);
             }
-
+            lBuilder.AppendLine("Outputs");
+            foreach (var lOuput in this.Descriptor.Outputs)
+            {
+                lBuilder.AppendLine(lOuput.Name + " = " + this[lOuput.Name]);
+            }
             return lBuilder.ToString();
         }
 

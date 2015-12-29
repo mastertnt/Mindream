@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Mindream;
+using Mindream.CallGraph;
 using XGraph.ViewModels;
 
 namespace DemoApplication.GraphViewModels

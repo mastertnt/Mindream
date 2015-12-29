@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\AFunctionComponent.cs" />
     <Compile Include="Components\Debug\PrintString.cs" />
     <Compile Include="IComponentMemberInfo.cs" />
     <Compile Include="IComponentReturnInfo.cs" />
@@ -55,7 +56,7 @@
     <Compile Include="Reflection\PropertyMemberInfo.cs" />
     <Compile Include="Components\AComponent.cs" />
     <Compile Include="Descriptors\ABaseComponentDescriptor.cs" />
-    <Compile Include="CallNode.cs">
+    <Compile Include="CallGraph\CallNode.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Components\FlowControlNodes\Branch.cs" />
@@ -63,7 +64,7 @@
     <Compile Include="Descriptors\FunctionComponentDescriptor.cs" />
     <Compile Include="IComponent.cs" />
     <Compile Include="IComponentDescriptor.cs" />
-    <Compile Include="MethodCallGraph.cs">
+    <Compile Include="CallGraph\MethodCallGraph.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

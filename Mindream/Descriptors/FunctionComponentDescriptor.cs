@@ -101,6 +101,11 @@ namespace Mindream.Descriptors
                 {
                     this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
                 }
+
+                if (lPropertyInfo.CanRead && lPropertyInfo.DeclaringType == pType)
+                {
+                    this.Outputs.Add(new PropertyMemberInfo(lPropertyInfo));
+                }
             }
 
             // Look for inputs.
