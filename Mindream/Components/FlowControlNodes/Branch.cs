@@ -23,21 +23,17 @@ namespace Mindream.Components.FlowControlNodes
 
         #endregion // Inputs
 
-        #region Fields
-
-        #endregion // Fields.
-
         #region Events
 
         /// <summary>
         ///     This event is raised when a false is computed.
         /// </summary>
-        public event MethodEnd False;
+        public event ComponentReturnDelegate False;
 
         /// <summary>
         ///     This event is raised when a true is computed.
         /// </summary>
-        public event MethodEnd True;
+        public event ComponentReturnDelegate True;
 
         #endregion // Events.
 

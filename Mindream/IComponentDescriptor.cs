@@ -4,9 +4,9 @@ using System.Reflection;
 namespace Mindream
 {
     /// <summary>
-    /// This delegate represents the end of a method (by default, just a simple return).
+    /// This delegate represents the end of a component (by default, just a simple return).
     /// </summary>
-    public delegate void MethodEnd();
+    public delegate void ComponentReturnDelegate();
 
     /// <summary>
     /// This interface describes a component descriptor.
@@ -44,7 +44,7 @@ namespace Mindream
         /// <value>
         /// The results (By default, the result is ended).
         /// </value>
-        List<MethodEnd> Results { get; }
+        List<IComponentReturnInfo> Results { get; }
 
         /// <summary>
         /// Creates an instance.

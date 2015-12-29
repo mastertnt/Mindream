@@ -57,7 +57,7 @@ namespace Mindream.Reflection
         {
             get
             {
-                return 0;
+                return -1;
             }
         }
 

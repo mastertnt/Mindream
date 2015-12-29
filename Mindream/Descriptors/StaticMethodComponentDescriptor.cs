@@ -104,8 +104,15 @@ namespace Mindream.Descriptors
             IEnumerable<ParameterInfo> lOutputParameters = this.Method.GetParameters().Where(pParameter => pParameter.IsOut || (pParameter.IsOut == false && pParameter.ParameterType.IsByRef));
             foreach (var lOutputParameter in lOutputParameters)
             {
-                this.mInputs.Add(new ParameterMemberInfo(lOutputParameter));
+                this.mOutputs.Add(new ParameterMemberInfo(lOutputParameter));
             }
+
+            if (this.Method.ReturnType != typeof(void))
+            {
+                this.mOutputs.Add(new BaseComponentMemberInfo("return", this.Method.ReturnType));
+            }
+
+            this.Results.Add(new GenericReturnInfo("End"));
         }
 
         #endregion // Constructors.

@@ -55,7 +55,7 @@ namespace DemoApplication
             InitializeComponent();
 
             ComponentDescriptorRegistry lComponentDescriptorRegistry = new ComponentDescriptorRegistry();
-            lComponentDescriptorRegistry.FindAllDescriptors(typeof(Samples));
+            lComponentDescriptorRegistry.FindAllDescriptors();
             this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
 
             this.mCallGraph = new MethodCallGraph();
@@ -209,7 +209,7 @@ namespace DemoApplication
             this.mOutput.Text = string.Empty;
             foreach (var lNode in this.mCallGraph.CallNodes)
             {
-                lNode.Component.Ended += this.OnComponentEnded;
+                lNode.Component.Returned += this.OnComponentReturned;
             }
 
             if (this.mSelectedViewModel != null)
@@ -223,7 +223,7 @@ namespace DemoApplication
         /// </summary>
         /// <param name="pComponent">The component.</param>
         /// <param name="pResult">The result.</param>
-        private void OnComponentEnded(IComponent pComponent, string pResult)
+        private void OnComponentReturned(IComponent pComponent, string pResult)
         {
             this.mOutput.Text += pComponent.Descriptor.Name;
             this.mOutput.Text += Environment.NewLine;

@@ -1,25 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace Mindream.Reflection
 {
-    /// <summary>
-    /// A component member info based on a parameter info.
-    /// </summary>
-    public class ParameterMemberInfo : IComponentMemberInfo
+    public class BaseComponentMemberInfo : IComponentMemberInfo
     {
-        #region Fields
-
-        /// <summary>
-        /// The fields stores the underlying information.
-        /// </summary>
-        private readonly ParameterInfo mUnderlyingInfo;
-
-        #endregion // Fields.
-
         #region Properties
 
         /// <summary>
@@ -30,10 +17,8 @@ namespace Mindream.Reflection
         /// </value>
         public string Name
         {
-            get
-            {
-                return this.mUnderlyingInfo.Name;
-            }
+            get;
+            private set;
         }
 
         /// <summary>
@@ -46,7 +31,7 @@ namespace Mindream.Reflection
         {
             get
             {
-                return this.mUnderlyingInfo.Position;
+                return -1;
             }
         }
 
@@ -58,10 +43,8 @@ namespace Mindream.Reflection
         /// </value>
         public Type Type
         {
-            get
-            {
-                return this.mUnderlyingInfo.ParameterType;
-            }
+            get;
+            private set;
         }
 
         #endregion // Properties.
@@ -69,12 +52,14 @@ namespace Mindream.Reflection
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ParameterMemberInfo" /> class.
+        /// Initializes a new instance of the <see cref="BaseComponentMemberInfo" /> class.
         /// </summary>
-        /// <param name="pUnderlyingInfo">The parameter information.</param>
-        public ParameterMemberInfo(ParameterInfo pUnderlyingInfo)
+        /// <param name="pName">Name of the component info.</param>
+        /// <param name="pType">Type of the component info.</param>
+        public BaseComponentMemberInfo(string pName, Type pType)
         {
-            this.mUnderlyingInfo = pUnderlyingInfo;
+            this.Name = pName;
+            this.Type = pType;
         }
 
         #endregion // Constructors.

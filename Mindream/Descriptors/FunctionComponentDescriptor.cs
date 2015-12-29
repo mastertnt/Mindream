@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using Mindream.Components;
+using Mindream.Reflection;
 
 namespace Mindream.Descriptors
 {
@@ -96,14 +94,23 @@ namespace Mindream.Descriptors
         {
             this.Type = pType;
 
-            //// Look for inputs.
-            //foreach (var lPropertyInfo in this.Type.GetProperties())
-            //{
-            //    if (lPropertyInfo.CanWrite)
-            //    {
-            //        this.Inputs.Add();
-            //    }
-            //}
+            // Look for inputs.
+            foreach (var lPropertyInfo in this.Type.GetProperties())
+            {
+                if (lPropertyInfo.CanWrite && lPropertyInfo.DeclaringType == pType)
+                {
+                    this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
+                }
+            }
+
+            // Look for inputs.
+            foreach (var lEventInfo in this.Type.GetEvents())
+            {
+                if (lEventInfo.EventHandlerType == typeof(ComponentReturnDelegate))
+                {
+                    this.Results.Add(new EventReturnInfo(lEventInfo));
+                }
+            }
         }
 
         #endregion // Constructors.
@@ -118,7 +125,7 @@ namespace Mindream.Descriptors
         /// </returns>
         public override IComponent Create()
         {
-            StaticMethodComponent lComponent = new StaticMethodComponent();
+            AComponent lComponent = Activator.CreateInstance(this.Type) as AComponent;
             lComponent.Initialize(this);
             return lComponent;
         }

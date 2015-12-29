@@ -59,7 +59,7 @@ namespace Mindream
         /// </summary>
         public void Start()
         {
-            this.Component.Ended += this.OnComponentEnded;
+            this.Component.Returned += this.OnComponentReturned;
             this.Component.Start();
         }
 
@@ -68,13 +68,15 @@ namespace Mindream
         /// </summary>
         /// <param name="pComponent">The component succeed.</param>
         /// <param name="pResultName">Name of the result.</param>
-        private void OnComponentEnded(IComponent pComponent, string pResultName)
+        private void OnComponentReturned(IComponent pComponent, string pResultName)
         {
-            this.Component.Ended -= this.OnComponentEnded;
+            this.Component.Returned -= this.OnComponentReturned;
             if (this.NextNodes.ContainsKey(pResultName))
             {
                 foreach (var lNode in this.NextNodes[pResultName])
                 {
+                    // Now, pass the current output to the inputs.
+
                     lNode.Start();
                 }
             }

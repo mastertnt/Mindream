@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using Mindream.Reflection;
 
 namespace Mindream.Descriptors
 {
@@ -53,7 +54,7 @@ namespace Mindream.Descriptors
         /// <value>
         /// The outputs.
         /// </value>
-        public virtual List<MethodEnd> Results
+        public virtual List<IComponentReturnInfo> Results
         {
             get;
             set;
@@ -69,7 +70,7 @@ namespace Mindream.Descriptors
         /// </summary>
         protected ABaseComponentDescriptor()
         {
-            this.Results = new List<MethodEnd>();
+            this.Results = new List<IComponentReturnInfo>();
         }
 
         #endregion // Constructors.

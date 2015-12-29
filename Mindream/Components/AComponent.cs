@@ -14,6 +14,18 @@ namespace Mindream.Components
         #region Properties
 
         /// <summary>
+        /// Gets or sets the name of the result.
+        /// </summary>
+        /// <value>
+        /// The name of the result.
+        /// </value>
+        protected string ResultName
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Gets the descriptor.
         /// </summary>
         /// <value>
@@ -131,7 +143,7 @@ namespace Mindream.Components
         /// <summary>
         /// This event is raised when the component ended.
         /// </summary>
-        public event Action<IComponent, string> Ended;
+        public event Action<IComponent, string> Returned;
 
         /// <summary>
         /// This event is raised when the component failed.
@@ -151,6 +163,18 @@ namespace Mindream.Components
             this.Descriptor = pDescriptor;
             this.Inputs = new Dictionary<string, object>();
             this.Outputs = new Dictionary<string, object>();
+
+            foreach (var lReturnInfo in this.Descriptor.Results)
+            {
+                var lEventInfo = this.GetType().GetEvent(lReturnInfo.Name);
+                if (lEventInfo != null)
+                {
+                    ComponentReturnDelegate lDelegateForMethod = delegate { this.ResultName = lEventInfo.Name; };
+                    lEventInfo.AddEventHandler(this, lDelegateForMethod);
+                }
+            }
+
+            //obj.SomeEvent += (sender, args) => TestMethod("SomeEvent", sender, args);
 
             this.ComponentInitilialized();
         }
@@ -183,6 +207,18 @@ namespace Mindream.Components
         /// </summary>
         public void Stop()
         {
+            if (this.Returned != null)
+            {
+                if (string.IsNullOrEmpty(this.ResultName))
+                {
+                    this.Returned(this, this.Descriptor.Results.First().Name);
+                }
+                else
+                {
+                    this.Returned(this, string.Empty);
+                }
+                
+            }
             this.ComponentStopped();
         }
 

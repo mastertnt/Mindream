@@ -45,7 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Components\Debug\PrintString.cs" />
     <Compile Include="IComponentMemberInfo.cs" />
+    <Compile Include="IComponentReturnInfo.cs" />
+    <Compile Include="Reflection\BaseComponentMemberInfo.cs" />
+    <Compile Include="Reflection\EventReturnInfo.cs" />
+    <Compile Include="Reflection\GenericReturnInfo.cs" />
     <Compile Include="Reflection\ParameterMemberInfo.cs" />
     <Compile Include="Reflection\PropertyMemberInfo.cs" />
     <Compile Include="Components\AComponent.cs" />

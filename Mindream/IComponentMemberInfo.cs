@@ -11,7 +11,7 @@ namespace Mindream
         /// Gets or sets the name of the component member info.
         /// </summary>
         /// <value>
-        /// The type.
+        /// The return.
         /// </value>
         string Name
         {
@@ -22,7 +22,7 @@ namespace Mindream
         /// Gets or sets the position of the component member info.
         /// </summary>
         /// <value>
-        /// The type.
+        /// The position.
         /// </value>
         int Position
         {

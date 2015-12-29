@@ -55,7 +55,7 @@ namespace Mindream
         /// <summary>
         /// This event is raised when the component succeed.
         /// </summary>
-        event Action<IComponent, string> Ended;
+        event Action<IComponent, string> Returned;
 
         /// <summary>
         /// This event is raised when the component failed.
