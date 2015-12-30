@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using Mindream;
@@ -22,6 +23,44 @@ namespace DemoApplication.GraphViewModels
         public CallGraphViewModel(MethodCallGraph pGraph)
         {
             pGraph.CallNodes.CollectionChanged += this.OnCallNodesChanged;
+
+            // Create call nodes.
+            foreach (var lCallNode in pGraph.CallNodes)
+            {
+                CallNodeViewModel lNodeViewModel = new CallNodeViewModel(lCallNode);
+                this.AddNode(lNodeViewModel);
+            }
+
+            // Create connections for next nodes.
+            foreach (var lSourceNode in pGraph.CallNodes)
+            {
+                CallNodeViewModel lSourceViewModel = this.Nodes.Cast<CallNodeViewModel>().FirstOrDefault(pNode => pNode.Node == lSourceNode);
+                if (lSourceViewModel != null)
+                {
+                    foreach (var lConnectedNode in lSourceNode.NodeToCall)
+                    {
+                        PortViewModel lSourcePortViewModel = lSourceViewModel.Ports.FirstOrDefault(pPort => pPort.DisplayString == lConnectedNode.Key && pPort.Direction == PortDirection.Output);
+                        if (lSourcePortViewModel != null)
+                        {
+                            foreach (var lTargetNode in lConnectedNode.Value)
+                            {
+                                CallNodeViewModel lTargetViewModel = this.Nodes.Cast<CallNodeViewModel>().FirstOrDefault(pNode => pNode.Node == lTargetNode);
+                                if (lTargetViewModel != null)
+                                {
+                                    PortViewModel lTargetPortViewModel = lSourceViewModel.Ports.FirstOrDefault(pPort => pPort is PortStartViewModel);
+                                    if (lTargetPortViewModel != null)
+                                    {
+                                        ConnectionViewModel lConnection = new ConnectionViewModel();
+                                        lConnection.Output = lSourcePortViewModel;
+                                        lConnection.Input = lTargetPortViewModel;
+                                        this.AddConnection(lConnection);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>

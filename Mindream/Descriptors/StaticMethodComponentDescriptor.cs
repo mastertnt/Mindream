@@ -35,7 +35,7 @@ namespace Mindream.Descriptors
         /// <value>
         /// The name.
         /// </value>
-        public override string Name
+        public override string Id
         {
             get
             {

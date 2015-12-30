@@ -78,6 +78,7 @@
     <Compile Include="Descriptors\StaticMethodComponentDescriptor.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Serialization\ComponentSerializationContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

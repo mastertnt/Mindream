@@ -54,7 +54,7 @@ namespace Mindream.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="BaseComponentMemberInfo" /> class.
         /// </summary>
-        /// <param name="pName">Name of the component info.</param>
+        /// <param name="pName">Id of the component info.</param>
         /// <param name="pType">Type of the component info.</param>
         public BaseComponentMemberInfo(string pName, Type pType)
         {

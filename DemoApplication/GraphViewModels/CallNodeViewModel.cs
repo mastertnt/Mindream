@@ -37,7 +37,6 @@ namespace DemoApplication.GraphViewModels
                 this.Ports.Add(new PortEndedViewModel(lResult));
             }
 
-
             foreach (var lInput in this.Node.Component.Descriptor.Inputs)
             {
                 this.Ports.Add(new InputParameterViewModel(lInput));
@@ -59,7 +58,7 @@ namespace DemoApplication.GraphViewModels
         {
             get
             {
-                return this.Node.Component.Descriptor.Name;
+                return this.Node.Component.Descriptor.Id;
             }
             set
             {
@@ -77,7 +76,7 @@ namespace DemoApplication.GraphViewModels
         {
             get
             {
-                return this.Node.Component.Descriptor.Name;
+                return this.Node.Component.Descriptor.Id;
             }
             set
             {

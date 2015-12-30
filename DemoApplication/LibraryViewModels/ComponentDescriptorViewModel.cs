@@ -25,7 +25,7 @@ namespace DemoApplication.LibraryViewModels
         {
             get
             {
-                return this.OwnedObject.Name;
+                return this.OwnedObject.Id;
             }
             set
             {

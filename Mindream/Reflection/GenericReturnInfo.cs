@@ -32,7 +32,7 @@ namespace Mindream.Reflection
         /// <summary>
         /// Initializes a new instance of the <see cref="GenericReturnInfo"/> class.
         /// </summary>
-        /// <param name="pName">Name of the return.</param>
+        /// <param name="pName">Id of the return.</param>
         public GenericReturnInfo(string pName)
         {
             this.Name = pName;

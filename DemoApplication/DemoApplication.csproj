@@ -136,6 +136,10 @@
       <Project>{152277e0-4e7a-4586-bf49-05ac85ceafc1}</Project>
       <Name>XGraph</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ThirdParty\XRay\XSerialization\XSerialization.csproj">
+      <Project>{b03f0119-4564-4787-be7c-9e6f4368c13c}</Project>
+      <Name>XSerialization</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ThirdParty\XRay\XTreeListView\XTreeListView.csproj">
       <Project>{c91eb045-4c68-4f7c-a03c-42362aee5349}</Project>
       <Name>XTreeListView</Name>

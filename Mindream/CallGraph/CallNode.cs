@@ -78,7 +78,7 @@ namespace Mindream.CallGraph
         /// Called when [component succeed].
         /// </summary>
         /// <param name="pComponent">The component succeed.</param>
-        /// <param name="pResultName">Name of the result.</param>
+        /// <param name="pResultName">Id of the result.</param>
         private void OnComponentReturned(IComponent pComponent, string pResultName)
         {
             this.Component.Returned -= this.OnComponentReturned;

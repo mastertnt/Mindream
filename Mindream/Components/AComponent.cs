@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using XSerialization.Attributes;
 
 namespace Mindream.Components
 {
@@ -75,6 +76,7 @@ namespace Mindream.Components
         /// </value>
         /// <param name="pParameterName">The parameter name.</param>
         /// <returns></returns>
+        [SkipXSerialization]
         public virtual object this[string pParameterName]
         {
             get
@@ -255,7 +257,7 @@ namespace Mindream.Components
             StringBuilder lBuilder = new StringBuilder();
 
             lBuilder.AppendLine("********************************");
-            lBuilder.AppendLine("--->" + this.Descriptor.Name);
+            lBuilder.AppendLine("--->" + this.Descriptor.Id);
             lBuilder.AppendLine("Inputs");
             foreach (var lInput in this.Descriptor.Inputs)
             {

@@ -16,7 +16,7 @@ namespace Mindream.Descriptors
         /// <value>
         /// The name.
         /// </value>
-        public virtual string Name
+        public virtual string Id
         {
             get;
             set;
@@ -92,7 +92,7 @@ namespace Mindream.Descriptors
         public override string ToString()
         {
             StringBuilder lBuilder = new StringBuilder();
-            lBuilder.AppendLine(this.Name);
+            lBuilder.AppendLine(this.Id);
             lBuilder.AppendLine("in:");
             foreach (var lInput in this.Inputs)
             {

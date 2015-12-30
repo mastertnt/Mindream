@@ -4,11 +4,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Xml.Serialization;
 using DemoApplication.GraphViewModels;
 using DemoApplication.LibraryViewModels;
+using Microsoft.Win32;
 using Mindream;
 using Mindream.CallGraph;
 using XGraph.ViewModels;
+using XSerialization;
 using XTreeListView.Gui;
 
 namespace DemoApplication
@@ -33,12 +36,12 @@ namespace DemoApplication
         /// <summary>
         /// This field stores the call graph.
         /// </summary>
-        private readonly MethodCallGraph mCallGraph;
+        private MethodCallGraph mCallGraph;
 
         /// <summary>
         /// This field stores the graph view model.
         /// </summary>
-        private readonly CallGraphViewModel mGraphViewModel;
+        private CallGraphViewModel mGraphViewModel;
 
         /// <summary>
         /// This field stores the selected view model
@@ -59,11 +62,7 @@ namespace DemoApplication
             lComponentDescriptorRegistry.FindAllDescriptors();
             this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
 
-            this.mCallGraph = new MethodCallGraph();
-            this.mGraphViewModel = new CallGraphViewModel(this.mCallGraph);
-            this.mGraphViewModel.ConnectionAdded += OnConnectionAdded;
-            this.mGraph.SelectionChanged += OnSelectionChanged;
-            this.mGraph.DataContext = this.mGraphViewModel;
+            this.NewProject(null);
         }
 
         /// <summary>
@@ -77,7 +76,7 @@ namespace DemoApplication
             {
                 if (pEventArgs.AddedItems[0] is CallNodeViewModel)
                 {
-                    this.mSelectedViewModel = pEventArgs.AddedItems[0] as CallNodeViewModel;
+                    this.mSelectedViewModel = (CallNodeViewModel) pEventArgs.AddedItems[0];
                     this.mPropertyEditor.SelectedObject = this.mSelectedViewModel.Node.Component;
                 }
             }
@@ -167,9 +166,7 @@ namespace DemoApplication
             Point lMousePos = pEventArgs.GetPosition(null);
             Vector lDiff = this.mStartPoint - lMousePos;
 
-            if (pEventArgs.LeftButton == MouseButtonState.Pressed &&
-                (Math.Abs(lDiff.X) > SystemParameters.MinimumHorizontalDragDistance ||
-                Math.Abs(lDiff.Y) > SystemParameters.MinimumVerticalDragDistance))
+            if (pEventArgs.LeftButton == MouseButtonState.Pressed && (Math.Abs(lDiff.X) > SystemParameters.MinimumHorizontalDragDistance || Math.Abs(lDiff.Y) > SystemParameters.MinimumVerticalDragDistance))
             {
                 // Get the dragged ListViewItem
                 TreeListView lListView = pSender as TreeListView;
@@ -206,10 +203,10 @@ namespace DemoApplication
         }
 
         /// <summary>
-        /// Handles the Click event of the Button control.
+        /// Handles the Click event of the start button.
         /// </summary>
         /// <param name="pSender">The event sender.</param>
-        /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void StartClicked(object pSender, RoutedEventArgs pEventArgs)
         {
             this.mOutput.Text = string.Empty;
@@ -222,6 +219,16 @@ namespace DemoApplication
             {
                 this.mSelectedViewModel.Node.Start();
             }
+        }
+
+        /// <summary>
+        /// Handles the Click event of the start button.
+        /// </summary>
+        /// <param name="pSender">The event sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void NewClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
+            this.NewProject(null);
         }
 
         /// <summary>
@@ -240,6 +247,17 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void LoadClicked(object pSender, RoutedEventArgs pEventArgs)
         {
+            OpenFileDialog lDialog = new OpenFileDialog()
+            {
+                Filter = "Task Files(*.task.xml)|*.task.xml|All(*.*)|*"
+            };
+
+            if (lDialog.ShowDialog() == true)
+            {
+                XSerializer lSerializer = new XSerializer();
+                MethodCallGraph lCallGraph = lSerializer.Deserialize(lDialog.FileName) as MethodCallGraph;
+                this.NewProject(lCallGraph);
+            }
         }
 
         /// <summary>
@@ -249,6 +267,16 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void SaveClicked(object pSender, RoutedEventArgs pEventArgs)
         {
+            SaveFileDialog lDialog = new SaveFileDialog()
+            {
+                Filter = "Task Files(*.task.xml)|*.task.xml|All(*.*)|*"
+            };
+
+            if (lDialog.ShowDialog() == true)
+            {
+                XSerializer lSerializer = new XSerializer();
+                lSerializer.Serialize(this.mCallGraph, lDialog.FileName);
+            }
         }
 
         /// <summary>
@@ -258,12 +286,33 @@ namespace DemoApplication
         /// <param name="pResult">The result.</param>
         private void OnComponentReturned(IComponent pComponent, string pResult)
         {
-            this.mOutput.Text += pComponent.Descriptor.Name;
+            this.mOutput.Text += pComponent.Descriptor.Id;
             this.mOutput.Text += Environment.NewLine;
             this.mOutput.Text += pResult;
             this.mOutput.Text += Environment.NewLine;
             this.mOutput.Text += pComponent.ToString();
             this.mOutput.Text += Environment.NewLine;
+        }
+
+        /// <summary>
+        /// News the project.
+        /// </summary>
+        private void NewProject(MethodCallGraph pCallGraph)
+        {
+            if (pCallGraph == null)
+            {
+                this.mCallGraph = new MethodCallGraph();
+            }
+            else
+            {
+                this.mCallGraph = pCallGraph;
+            }
+            
+            this.mGraphViewModel = new CallGraphViewModel(this.mCallGraph);
+            this.mGraphViewModel.ConnectionAdded += OnConnectionAdded;
+            this.mGraph.SelectionChanged += OnSelectionChanged;
+            this.mGraph.DataContext = this.mGraphViewModel;
+            this.mSelectedViewModel = null;
         }
     }
 }

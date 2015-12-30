@@ -15,12 +15,12 @@ namespace Mindream
     public interface IComponentDescriptor
     {
         /// <summary>
-        /// Gets the name.
+        /// Gets the name (must be unique along all descriptors).
         /// </summary>
         /// <value>
         /// The name.
         /// </value>
-        string Name { get; }
+        string Id { get; }
 
         /// <summary>
         /// Gets the inputs.

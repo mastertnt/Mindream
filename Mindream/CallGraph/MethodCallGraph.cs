@@ -44,7 +44,7 @@ namespace Mindream.CallGraph
         /// </summary>
         /// <param name="pSource">The source.</param>
         /// <param name="pTarget">The target.</param>
-        /// <param name="pResultName">Name of the result.</param>
+        /// <param name="pResultName">Id of the result.</param>
         public void ConnectCall(CallNode pSource, CallNode pTarget, string pResultName)
         {
             if (pSource.NodeToCall.ContainsKey(pResultName) == false)
