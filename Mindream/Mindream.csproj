@@ -46,7 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Components\AFunctionComponent.cs" />
-    <Compile Include="Components\Debug\PrintString.cs" />
+    <Compile Include="Components\FlowControlNodes\FlipFlop.cs" />
     <Compile Include="IComponentMemberInfo.cs" />
     <Compile Include="IComponentReturnInfo.cs" />
     <Compile Include="Reflection\BaseComponentMemberInfo.cs" />

@@ -174,8 +174,6 @@ namespace Mindream.Components
                 }
             }
 
-            //obj.SomeEvent += (sender, args) => TestMethod("SomeEvent", sender, args);
-
             this.ComponentInitilialized();
         }
 
@@ -184,6 +182,8 @@ namespace Mindream.Components
         /// </summary>
         public void Start()
         {
+            
+
             if (this.Started != null)
             {
                 this.Started(this);
@@ -207,6 +207,7 @@ namespace Mindream.Components
         /// </summary>
         public void Stop()
         {
+            this.ComponentStopped();
             if (this.Returned != null)
             {
                 if (string.IsNullOrEmpty(this.ResultName))
@@ -215,11 +216,10 @@ namespace Mindream.Components
                 }
                 else
                 {
-                    this.Returned(this, string.Empty);
+                    this.Returned(this, this.ResultName);
                 }
                 
             }
-            this.ComponentStopped();
         }
 
         /// <summary>

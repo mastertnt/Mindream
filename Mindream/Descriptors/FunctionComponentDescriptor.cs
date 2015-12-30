@@ -99,7 +99,10 @@ namespace Mindream.Descriptors
             {
                 if (lPropertyInfo.CanWrite && lPropertyInfo.DeclaringType == pType)
                 {
-                    this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
+                    if (lPropertyInfo.GetSetMethod() != null)
+                    {
+                        this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
+                    }
                 }
 
                 if (lPropertyInfo.CanRead && lPropertyInfo.DeclaringType == pType)

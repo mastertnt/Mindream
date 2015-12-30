@@ -1,4 +1,5 @@
 ﻿using System;
+using DemoApplication;
 using Mindream.Attributes;
 
 namespace Mindream.Components.Debug
@@ -38,6 +39,8 @@ namespace Mindream.Components.Debug
         /// </summary>
         protected override void ComponentStarted()
         {
+            MainWindow.Instance.mOutput.Text += this.String;
+            MainWindow.Instance.mOutput.Text += Environment.NewLine;
             this.Stop();
         }
 

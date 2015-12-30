@@ -48,6 +48,16 @@ namespace DemoApplication
         /// </summary>
         private CallNodeViewModel mSelectedViewModel;
 
+
+        /// <summary>
+        /// Gets the instance.
+        /// </summary>
+        public static MainWindow Instance
+        {
+            get;
+            private set;
+        }
+
         #endregion // Fields.
 
         /// <summary>
@@ -63,6 +73,7 @@ namespace DemoApplication
             this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
 
             this.NewProject(null);
+            MainWindow.Instance = this;
         }
 
         /// <summary>
@@ -209,12 +220,6 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void StartClicked(object pSender, RoutedEventArgs pEventArgs)
         {
-            this.mOutput.Text = string.Empty;
-            foreach (var lNode in this.mCallGraph.CallNodes)
-            {
-                lNode.Component.Returned += this.OnComponentReturned;
-            }
-
             if (this.mSelectedViewModel != null)
             {
                 this.mSelectedViewModel.Node.Start();
@@ -277,21 +282,6 @@ namespace DemoApplication
                 XSerializer lSerializer = new XSerializer();
                 lSerializer.Serialize(this.mCallGraph, lDialog.FileName);
             }
-        }
-
-        /// <summary>
-        /// Called when [component succeed].
-        /// </summary>
-        /// <param name="pComponent">The component.</param>
-        /// <param name="pResult">The result.</param>
-        private void OnComponentReturned(IComponent pComponent, string pResult)
-        {
-            this.mOutput.Text += pComponent.Descriptor.Id;
-            this.mOutput.Text += Environment.NewLine;
-            this.mOutput.Text += pResult;
-            this.mOutput.Text += Environment.NewLine;
-            this.mOutput.Text += pComponent.ToString();
-            this.mOutput.Text += Environment.NewLine;
         }
 
         /// <summary>

@@ -30,7 +30,7 @@ namespace Mindream.Components
             }
             get
             {
-                IComponentMemberInfo lComponentMemberInfo = this.Descriptor.Inputs.FirstOrDefault(pParameter => pParameter.Name == pParameterName);
+                IComponentMemberInfo lComponentMemberInfo = this.Descriptor.Outputs.FirstOrDefault(pParameter => pParameter.Name == pParameterName);
                 if (lComponentMemberInfo != null)
                 {
                     return lComponentMemberInfo.GetValue(this);
