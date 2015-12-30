@@ -1,38 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
+﻿using System.Collections.Specialized;
 using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using Mindream;
 using Mindream.CallGraph;
+using Mindream.XGraph.Model;
 using XGraph.ViewModels;
 
-namespace DemoApplication.GraphViewModels
+namespace Mindream.XGraph.GraphViewModels
 {
     /// <summary>
     /// This view model represents a call graph.
     /// </summary>
     public class CallGraphViewModel : GraphViewModel
     {
+        private MethodCallGraph mGraph;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="CallGraphViewModel"/> class.
         /// </summary>
         /// <param name="pGraph">The p graph.</param>
         public CallGraphViewModel(MethodCallGraph pGraph)
         {
+            this.mGraph = pGraph;
             pGraph.CallNodes.CollectionChanged += this.OnCallNodesChanged;
-
             // Create call nodes.
-            foreach (var lCallNode in pGraph.CallNodes)
+            foreach (var lCallNode in this.mGraph.CallNodes)
             {
                 CallNodeViewModel lNodeViewModel = new CallNodeViewModel(lCallNode);
                 this.AddNode(lNodeViewModel);
+                var lLocatableCallNode = lCallNode as LocatableCallNode;
+                if (lLocatableCallNode != null)
+                {
+                    lNodeViewModel.X = lLocatableCallNode.X;
+                    lNodeViewModel.Y = lLocatableCallNode.Y;
+                }
             }
 
             // Create connections for next nodes.
-            foreach (var lSourceNode in pGraph.CallNodes)
+            foreach (var lSourceNode in this.mGraph.CallNodes)
             {
                 CallNodeViewModel lSourceViewModel = this.Nodes.Cast<CallNodeViewModel>().FirstOrDefault(pNode => pNode.Node == lSourceNode);
                 if (lSourceViewModel != null)
@@ -47,12 +50,10 @@ namespace DemoApplication.GraphViewModels
                                 CallNodeViewModel lTargetViewModel = this.Nodes.Cast<CallNodeViewModel>().FirstOrDefault(pNode => pNode.Node == lTargetNode);
                                 if (lTargetViewModel != null)
                                 {
-                                    PortViewModel lTargetPortViewModel = lSourceViewModel.Ports.FirstOrDefault(pPort => pPort is PortStartViewModel);
+                                    PortViewModel lTargetPortViewModel = lTargetViewModel.Ports.FirstOrDefault(pPort => pPort is PortStartViewModel);
                                     if (lTargetPortViewModel != null)
                                     {
-                                        ConnectionViewModel lConnection = new ConnectionViewModel();
-                                        lConnection.Output = lSourcePortViewModel;
-                                        lConnection.Input = lTargetPortViewModel;
+                                        ConnectionViewModel lConnection = new ConnectionViewModel { Output = lTargetPortViewModel, Input = lSourcePortViewModel };
                                         this.AddConnection(lConnection);
                                     }
                                 }
@@ -61,6 +62,14 @@ namespace DemoApplication.GraphViewModels
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Initializes this instance.
+        /// </summary>
+        public void Initialize()
+        {
+            
         }
 
         /// <summary>

@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO.Ports;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using XGraph.ViewModels;
+﻿using XGraph.ViewModels;
 
-namespace DemoApplication.GraphViewModels
+namespace Mindream.XGraph.GraphViewModels
 {
     /// <summary>
     /// This port view model represents the start as input.

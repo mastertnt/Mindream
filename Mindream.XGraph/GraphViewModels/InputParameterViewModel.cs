@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
-using Mindream;
-using XGraph.ViewModels;
+﻿using XGraph.ViewModels;
 
-namespace DemoApplication.GraphViewModels
+namespace Mindream.XGraph.GraphViewModels
 {
     /// <summary>
-    /// This class is used to describe a parameter.
+    /// This class is used to describe a view model for an input parameter.
     /// </summary>
     public class InputParameterViewModel : PortViewModel
     {

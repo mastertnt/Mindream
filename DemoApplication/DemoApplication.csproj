@@ -77,15 +77,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="GraphViewModels\CallGraphViewModel.cs" />
-    <Compile Include="GraphViewModels\CallNodeViewModel.cs" />
-    <Compile Include="GraphViewModels\OutputParameterViewModel.cs" />
-    <Compile Include="GraphViewModels\InputParameterViewModel.cs" />
-    <Compile Include="GraphViewModels\PortStartViewModel.cs" />
-    <Compile Include="GraphViewModels\PortEndedViewModel.cs" />
-    <Compile Include="LibraryViewModels\ComponentDescriptorViewModel.cs" />
     <Compile Include="Samples.cs" />
-    <Compile Include="LibraryViewModels\ComponentDescriptorRegistryViewModel.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -128,6 +120,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mindream.XGraph\Mindream.XGraph.csproj">
+      <Project>{3695fba3-5023-491b-be8d-e0116e5f586c}</Project>
+      <Name>Mindream.XGraph</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mindream\Mindream.csproj">
       <Project>{e7a6ac89-c829-43cf-a20c-b9715c9aaf0c}</Project>
       <Name>Mindream</Name>

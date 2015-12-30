@@ -1,8 +1,8 @@
-﻿using Mindream;
-using Mindream.CallGraph;
+﻿using Mindream.CallGraph;
+using Mindream.XGraph.Model;
 using XGraph.ViewModels;
 
-namespace DemoApplication.GraphViewModels
+namespace Mindream.XGraph.GraphViewModels
 {
     /// <summary>
     /// This class represents a call node view model.
@@ -20,6 +20,46 @@ namespace DemoApplication.GraphViewModels
         public CallNode Node
         {
             get; private set;
+        }
+
+        /// <summary>
+        /// Gets or sets the X position.
+        /// </summary>
+        public override double X
+        {
+            get
+            {
+                return base.X;
+            }
+            set
+            {
+                base.X = value;
+                var lNode = this.Node as LocatableCallNode;
+                if (lNode != null)
+                {
+                    lNode.X = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the Y position.
+        /// </summary>
+        public override double Y
+        {
+            get
+            {
+                return base.Y;
+            }
+            set
+            {
+                base.Y = value;
+                var lNode = this.Node as LocatableCallNode;
+                if (lNode != null)
+                {
+                    lNode.Y = value;
+                }
+            }
         }
 
         #endregion // Properties

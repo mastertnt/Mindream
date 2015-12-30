@@ -4,12 +4,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Xml.Serialization;
-using DemoApplication.GraphViewModels;
-using DemoApplication.LibraryViewModels;
 using Microsoft.Win32;
 using Mindream;
 using Mindream.CallGraph;
+using Mindream.XGraph.GraphViewModels;
+using Mindream.XGraph.LibraryViewModels;
+using Mindream.XGraph.Model;
 using XGraph.ViewModels;
 using XSerialization;
 using XTreeListView.Gui;
@@ -101,7 +101,7 @@ namespace DemoApplication
                 {
                     mDropPoint = pEventArgs.GetPosition((IInputElement)pSender);
                     this.mGraphViewModel.NodeAdded += this.OnNodeAdded;
-                    this.mCallGraph.CallNodes.Add(new CallNode {Component = lDescriptor.Create()});
+                    this.mCallGraph.CallNodes.Add(new LocatableCallNode {Component = lDescriptor.Create()});
                 }
             }
         }
@@ -312,6 +312,7 @@ namespace DemoApplication
             this.mGraphViewModel.ConnectionAdded += OnConnectionAdded;
             this.mGraph.SelectionChanged += OnSelectionChanged;
             this.mGraph.DataContext = this.mGraphViewModel;
+            this.mGraphViewModel.Initialize();
             this.mSelectedViewModel = null;
         }
     }
