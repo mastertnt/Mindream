@@ -62,6 +62,38 @@ namespace Mindream.XGraph.GraphViewModels
                     }
                 }
             }
+
+            // Create connections for parameters.
+            foreach (var lSourceNode in this.mGraph.CallNodes)
+            {
+                CallNodeViewModel lSourceViewModel = this.Nodes.Cast<CallNodeViewModel>().FirstOrDefault(pNode => pNode.Node == lSourceNode);
+                if (lSourceViewModel != null)
+                {
+                    foreach (var lConnectedParameters in lSourceNode.NodeParameters)
+                    {
+                        CallNodeViewModel lTargetViewModel = this.Nodes.Cast<CallNodeViewModel>().FirstOrDefault(pNode => pNode.Node == lConnectedParameters.Key);
+                        if (lTargetViewModel != null)
+                        {
+                            foreach (var lConnections in lConnectedParameters.Value)
+                            {
+                                PortViewModel lSourcePortViewModel = lSourceViewModel.Ports.FirstOrDefault(pPort => pPort.DisplayString == lConnections.Key && pPort.Direction == PortDirection.Output);
+                                if (lSourcePortViewModel != null)
+                                {
+                                    foreach (var lTarget in lConnections.Value)
+                                    {
+                                        PortViewModel lTargetPortViewModel = lTargetViewModel.Ports.FirstOrDefault(pPort => pPort.DisplayString == lTarget && pPort.Direction == PortDirection.Input);
+                                        if (lTargetPortViewModel != null)
+                                        {
+                                            ConnectionViewModel lConnection = new ConnectionViewModel { Output = lTargetPortViewModel, Input = lSourcePortViewModel };
+                                            this.AddConnection(lConnection);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
