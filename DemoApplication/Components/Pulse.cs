@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
 using Mindream;
 using Mindream.Attributes;
@@ -10,20 +6,38 @@ using Mindream.Components;
 
 namespace DemoApplication.Components
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [FunctionComponent]
     public class Pulse : AFunctionComponent
     {
         #region Fields
 
+        /// <summary>
+        /// The m start time
+        /// </summary>
         private DateTime mStartTime;
 
         #endregion // Fields.
 
         #region Inputs
 
+        /// <summary>
+        /// Gets or sets the update period.
+        /// </summary>
+        /// <value>
+        /// The update period.
+        /// </value>
         [In]
         public TimeSpan UpdatePeriod { get; set; }
 
+        /// <summary>
+        /// Gets or sets the duration.
+        /// </summary>
+        /// <value>
+        /// The duration.
+        /// </value>
         [In]
         public TimeSpan Duration { get; set; }
 
@@ -31,8 +45,14 @@ namespace DemoApplication.Components
 
         #region Events
 
+        /// <summary>
+        /// Occurs when [ticked].
+        /// </summary>
         public event ComponentReturnDelegate Ticked;
 
+        /// <summary>
+        /// Occurs when [ended].
+        /// </summary>
         public event ComponentReturnDelegate Ended;
 
         #endregion // Events.
@@ -77,7 +97,7 @@ namespace DemoApplication.Components
         }
 
         /// <summary>
-        ///     This method is called to start the component.
+        /// This method is called to start the component.
         /// </summary>
         protected override void ComponentStopped()
         {

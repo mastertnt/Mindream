@@ -77,7 +77,7 @@ namespace Mindream
             object[] lAttributes = pType.GetCustomAttributes(typeof(FunctionComponentAttribute), false);
             if (lAttributes.Any())
             {
-                this.Descriptors.Add(new FunctionComponentDescriptor(pType));
+                this.Descriptors.Add(new FunctionComponentDescriptor(pType, this));
             }
 
             foreach (var lMethod in pType.GetMethods())
@@ -85,9 +85,21 @@ namespace Mindream
                 lAttributes = lMethod.GetCustomAttributes(typeof(StaticMethodComponentAttribute), false);
                 if (lAttributes.Any())
                 {
-                    this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod));
+                    this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod, this));
                 }
             }
+        }
+
+        /// <summary>
+        /// This method can be used to exponent a dynamic type used by a component.
+        /// </summary>
+        public void ExposeDynamicType(Type pType)
+        {
+            if (this.Descriptors.FirstOrDefault(pDesc => pDesc.Id == pType.Name) == null)
+            {
+                this.Descriptors.Add(new DynamicComponentDescriptor(pType, this));    
+            }
+            
         }
 
         #endregion // Methods.

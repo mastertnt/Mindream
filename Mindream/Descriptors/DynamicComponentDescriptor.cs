@@ -1,18 +1,17 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using Mindream.Attributes;
+using System.Text;
 using Mindream.Components;
+using Mindream.Components.Variables;
 using Mindream.Reflection;
+using Mindream.Attributes;
 using XSystem;
+using System.Collections;
 
 namespace Mindream.Descriptors
 {
-    /// <summary>
-    /// This class represents a function component descriptor.
-    /// </summary>
-    public class FunctionComponentDescriptor : ABaseComponentDescriptor
+    public class DynamicComponentDescriptor : ABaseComponentDescriptor
     {
         #region Fields
 
@@ -88,48 +87,62 @@ namespace Mindream.Descriptors
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="FunctionComponentDescriptor"/> class.
+        /// Initializes a new instance of the <see cref="DynamicComponentDescriptor"/> class.
         /// </summary>
         /// <param name="pType">The method to introspect.</param>
         /// <param name="pRegistry">The descriptor registry for dynamic type.</param>
-        public FunctionComponentDescriptor(Type pType, ComponentDescriptorRegistry pRegistry)
+        public DynamicComponentDescriptor(Type pType, ComponentDescriptorRegistry pRegistry)
         {
             this.Type = pType;
-
-            // Look for inputs.
-            foreach (var lPropertyInfo in this.Type.GetProperties())
+            Type lType = typeof (Dynamic);
+            // Look for inputs in dynamic.
+            foreach (var lPropertyInfo in lType.GetProperties())
             {
-                ParameterAttribute lAttribute = lPropertyInfo.GetCustomAttributes(typeof (ParameterAttribute), true).FirstOrDefault() as ParameterAttribute;
+                ParameterAttribute lAttribute = lPropertyInfo.GetCustomAttributes(typeof(ParameterAttribute), true).FirstOrDefault() as ParameterAttribute;
                 if (lAttribute != null)
                 {
                     if (lPropertyInfo.CanRead && lAttribute.IsOutput)
                     {
                         this.Outputs.Add(new PropertyMemberInfo(lPropertyInfo));
-
-                        if (lPropertyInfo.PropertyType.IsSimple() == false && typeof(ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
-                        {
-                            pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);                            
-                        }
                     }
 
                     if (lPropertyInfo.GetSetMethod() != null && lAttribute.IsInput)
                     {
                         this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
-
-                        if (lPropertyInfo.PropertyType.IsSimple() == false && typeof(ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
-                        {
-                            pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);
-                        }
                     }
                 }
             }
 
-            // Look for events.
-            foreach (var lEventInfo in this.Type.GetEvents())
+            // Look for events in dynamic.
+            foreach (var lEventInfo in lType.GetEvents())
             {
                 if (lEventInfo.EventHandlerType == typeof(ComponentReturnDelegate))
                 {
                     this.Results.Add(new EventReturnInfo(lEventInfo));
+                }
+            }
+
+            // Look for inputs.
+            foreach (var lPropertyInfo in this.Type.GetProperties())
+            {
+                if (lPropertyInfo.CanRead)
+                {
+                    this.Outputs.Add(new PropertyMemberInfo(lPropertyInfo));
+
+                    if (lPropertyInfo.PropertyType.IsSimple() == false && typeof(ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
+                    {
+                        pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);
+                    }
+                }
+
+                if (lPropertyInfo.GetSetMethod() != null)
+                {
+                    this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
+
+                    if (lPropertyInfo.PropertyType.IsSimple() == false && typeof(ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
+                    {
+                        pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);
+                    }
                 }
             }
         }
@@ -146,11 +159,14 @@ namespace Mindream.Descriptors
         /// </returns>
         public override IComponent Create()
         {
-            AComponent lComponent = Activator.CreateInstance(this.Type) as AComponent;
+            AComponent lComponent = new Dynamic();
             lComponent.Initialize(this);
             return lComponent;
         }
 
         #endregion // Methods.
+
+
+        
     }
 }

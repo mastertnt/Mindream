@@ -16,21 +16,13 @@ namespace DemoApplication.Components
     {
         #region Fields
 
-        private DateTime mStartTime;
-
         private Random mRandom;
 
-        private List<Track> mTracks = new List<Track>(); 
+        private List<Track> mTracks = new List<Track>();
 
         #endregion // Fields.
 
         #region Inputs
-
-        [In]
-        public TimeSpan UpdatePeriod { get; set; }
-
-        [In]
-        public TimeSpan Duration { get; set; }
 
         /// <summary>
         /// Gets or sets the tracks.
@@ -49,6 +41,13 @@ namespace DemoApplication.Components
             {
                 this.mTracks = value;
             }
+        }
+
+        [Out]
+        public Track LasTrack
+        {
+            get;
+            private set;
         }
 
         #endregion // Inputs
@@ -72,47 +71,24 @@ namespace DemoApplication.Components
         /// </summary>
         protected override void ComponentStarted()
         {
-            this.mStartTime = DateTime.Now;
-            Timer lTimer = new Timer {Interval = this.UpdatePeriod.TotalMilliseconds};
-            lTimer.Elapsed += this.OnTimerElapsed;
-            lTimer.Enabled = true;
-            lTimer.AutoReset = false;
             this.mRandom = new Random(DateTime.Now.Millisecond);
-        }
-
-        /// <summary>
-        /// Called when [timer elapsed].
-        /// </summary>
-        /// <param name="pSender">The p sender.</param>
-        /// <param name="pEventArgs">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
-        private void OnTimerElapsed(object pSender, ElapsedEventArgs pEventArgs)
-        {
-            TimeSpan lDiff = DateTime.Now - this.mStartTime;
-            if (lDiff.TotalMilliseconds > this.Duration.TotalMilliseconds)
+            int lAction = this.mRandom.Next(0, 2);
+            switch (lAction)
             {
-                Timer lTimer = (Timer) pSender;
-                lTimer.Enabled = false;
-                lTimer.Elapsed -= this.OnTimerElapsed;
-                this.Stop();
-            }
-            else
-            {
-                int lAction = this.mRandom.Next(0, 2);
-                switch (lAction)
-                {
-                    // Add a new track.
-                    case 0:
+                // Add a new track.
+                case 0:
                     {
                         this.AddTrack();
                     }
                     break;
 
-                    // Remove an existing track.
-                    case 1:
+                // Remove an existing track.
+                case 1:
                     {
                         if (this.Tracks.Any())
                         {
                             int lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
+                            this.LasTrack = this.Tracks[lIndex];
                             this.Tracks.RemoveAt(lIndex);
 
                             if (this.TrackRemoved != null)
@@ -127,15 +103,15 @@ namespace DemoApplication.Components
                     }
                     break;
 
-                    // Update an existing track.
-                    case 2:
+                // Update an existing track.
+                case 2:
                     {
                         if (this.Tracks.Any())
                         {
                             int lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
                             Track lTrack = this.Tracks[lIndex];
                             SetTrackValue(lTrack);
-
+                            this.LasTrack = lTrack;
                             if (this.TrackUpdated != null)
                             {
                                 this.TrackUpdated();
@@ -147,11 +123,10 @@ namespace DemoApplication.Components
                         }
                     }
                     break;
-                }
-                Timer lTimer = (Timer)pSender;
-                lTimer.Enabled = true;
             }
+            this.Stop();
         }
+
 
         /// <summary>
         /// Adds a new track.
@@ -161,6 +136,7 @@ namespace DemoApplication.Components
             Track lTrack = new Track();
             SetTrackValue(lTrack);
             this.Tracks.Add(lTrack);
+            this.LasTrack = lTrack;
             if (this.TrackAdded != null)
             {
                 this.TrackAdded();

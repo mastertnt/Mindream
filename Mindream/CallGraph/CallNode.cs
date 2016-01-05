@@ -115,7 +115,7 @@ namespace Mindream.CallGraph
                             foreach (var lParameter in lLinkedParameters.Value)
                             {
                                 IComponentMemberInfo lTargetInfo = lNodeToCall.Component.Descriptor.Inputs.First(pMember => pMember.Name == lParameter);
-                                if (lSourceInfo.Type != lTargetInfo.Type)
+                                if (lSourceInfo.Type != lTargetInfo.Type && lTargetInfo.Type.IsAssignableFrom(lSourceInfo.Type) == false)
                                 {
                                     object lConvertedValue = TypeDescriptor.GetConverter(lSourceInfo.Type).ConvertTo(this.Component[lLinkedParameters.Key], lTargetInfo.Type);
                                     lNodeToCall.Component[lParameter] = lConvertedValue;

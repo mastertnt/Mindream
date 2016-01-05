@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Mindream.Attributes;
+﻿using Mindream.Attributes;
 
-namespace Mindream.Components.Variables
+namespace Mindream.Components.FlowControlNodes
 {
     [FunctionComponent]
     public class DoN : AMethodComponent

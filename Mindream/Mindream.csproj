@@ -53,12 +53,15 @@
     <Compile Include="Components\AMethodComponent.cs" />
     <Compile Include="Components\FlowControlNodes\FlipFlop.cs" />
     <Compile Include="Components\FlowControlNodes\WhileLoop.cs" />
+    <Compile Include="Components\Timers\Pulse.cs" />
     <Compile Include="Components\Variables\AVariableComponent.cs" />
     <Compile Include="Components\Variables\Boolean.cs" />
     <Compile Include="Components\FlowControlNodes\DoN.cs" />
     <Compile Include="Components\Variables\Double.cs" />
     <Compile Include="Components\Variables\Int.cs" />
+    <Compile Include="Components\Variables\Dynamic.cs" />
     <Compile Include="Components\Variables\String.cs" />
+    <Compile Include="Descriptors\DynamicComponentDescriptor.cs" />
     <Compile Include="IComponentMemberInfo.cs" />
     <Compile Include="IComponentReturnInfo.cs" />
     <Compile Include="Reflection\BaseComponentMemberInfo.cs" />

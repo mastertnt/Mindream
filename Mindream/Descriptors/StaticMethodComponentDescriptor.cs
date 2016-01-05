@@ -87,9 +87,11 @@ namespace Mindream.Descriptors
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StaticMethodComponent"/> class.
+        /// Initializes a new instance of the <see cref="StaticMethodComponent" /> class.
         /// </summary>
-        public StaticMethodComponentDescriptor(MethodInfo pMethod)
+        /// <param name="pMethod">The method to introspect.</param>
+        /// <param name="pRegistry">The descriptor registry for dynamic type.</param>
+        public StaticMethodComponentDescriptor(MethodInfo pMethod, ComponentDescriptorRegistry pRegistry)
             :base()
         {
             this.Method = pMethod;

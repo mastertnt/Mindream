@@ -19,7 +19,7 @@ namespace Mindream.XGraph.LibraryViewModels
         {
             get
             {
-                return this.OwnedObject.Id;
+                return this.OwnedObject.Id + "(" + this.OwnedObject.GetType().Name + ")";
             }
             set
             {
