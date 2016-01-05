@@ -13,12 +13,12 @@ namespace Mindream.Components.FlowControlNodes
         #region Inputs
 
         /// <summary>
-        ///     Gets or sets a value indicating whether this <see cref="Branch" /> is condition.
+        /// Gets or sets a value indicating whether this <see cref="Branch"/> is condition.
         /// </summary>
         /// <value>
-        ///     <c>true</c> if condition; otherwise, <c>false</c>.
+        ///   <c>true</c> if condition; otherwise, <c>false</c>.
         /// </value>
-        //[Input]
+        [InOut]
         public bool Condition { get; set; }
 
         #endregion // Inputs

@@ -16,6 +16,7 @@ namespace Mindream.Components.FlowControlNodes
         /// Outputs a boolean value indicating whether Output A is being triggered or not. 
         /// This, in effect, will toggle between true and false each time the FlipFlop node is triggered.
         /// </summary>
+        [Out]
         public bool IsA { get; private set; }
 
         #endregion // Inputs

@@ -37,6 +37,6 @@
 
         <controls:GraphView x:Name="mGraph" Drop="OnDrop" AllowDrop="True" ItemsSource="{Binding Items}" Grid.Row="0"  Grid.Column="1"></controls:GraphView>
         <xckt:PropertyGrid x:Name="mPropertyEditor" Grid.Row="0"  Grid.Column="2"></xckt:PropertyGrid>
-        <TextBox x:Name="mOutput"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"></TextBox>
+        <TextBox VerticalScrollBarVisibility="Auto" x:Name="mOutput"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"></TextBox>
     </Grid>
 </Window>

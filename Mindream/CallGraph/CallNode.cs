@@ -70,8 +70,30 @@ namespace Mindream.CallGraph
         /// </summary>
         public void Start()
         {
-            this.Component.Returned += this.OnComponentReturned;
+            this.Component.Started += this.OnComponentStarted;
             this.Component.Start();
+            
+        }
+
+        /// <summary>
+        /// Called when [component started].
+        /// </summary>
+        /// <param name="pComponent">The p component.</param>
+        private void OnComponentStarted(IComponent pComponent)
+        {
+            this.Component.Started -= this.OnComponentStarted;
+            this.Component.Stopped += this.OnComponentStopped;
+            this.Component.Returned += this.OnComponentReturned;
+        }
+
+        /// <summary>
+        /// Called when [component stopped].
+        /// </summary>
+        /// <param name="pComponent">The p component.</param>
+        private void OnComponentStopped(IComponent pComponent)
+        {
+            this.Component.Stopped -= this.OnComponentStopped;
+            this.Component.Returned -= this.OnComponentReturned;
         }
 
         /// <summary>
@@ -81,7 +103,6 @@ namespace Mindream.CallGraph
         /// <param name="pResultName">Id of the result.</param>
         private void OnComponentReturned(IComponent pComponent, string pResultName)
         {
-            this.Component.Returned -= this.OnComponentReturned;
             if (this.NodeToCall.ContainsKey(pResultName))
             {
                 foreach (var lNodeToCall in this.NodeToCall[pResultName])

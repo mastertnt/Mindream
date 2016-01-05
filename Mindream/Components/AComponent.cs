@@ -141,7 +141,12 @@ namespace Mindream.Components
         public event Action<IComponent> Started;
 
         /// <summary>
-        /// This event is raised when the component ended.
+        /// This event is raised when the component is stopped.
+        /// </summary>
+        public event Action<IComponent> Stopped;
+
+        /// <summary>
+        /// This event is raised when the component has returned.
         /// </summary>
         public event Action<IComponent, string> Returned;
 
@@ -169,7 +174,13 @@ namespace Mindream.Components
                 var lEventInfo = this.GetType().GetEvent(lReturnInfo.Name);
                 if (lEventInfo != null)
                 {
-                    ComponentReturnDelegate lDelegateForMethod = delegate { this.ResultName = lEventInfo.Name; };
+                    ComponentReturnDelegate lDelegateForMethod = delegate
+                    {
+                        if (this.Returned != null)
+                        {
+                            this.Returned(this, lEventInfo.Name);
+                        }
+                    };
                     lEventInfo.AddEventHandler(this, lDelegateForMethod);
                 }
             }
@@ -182,8 +193,6 @@ namespace Mindream.Components
         /// </summary>
         public void Start()
         {
-            
-
             if (this.Started != null)
             {
                 this.Started(this);
@@ -208,17 +217,9 @@ namespace Mindream.Components
         public void Stop()
         {
             this.ComponentStopped();
-            if (this.Returned != null)
+            if (this.Stopped != null)
             {
-                if (string.IsNullOrEmpty(this.ResultName))
-                {
-                    this.Returned(this, this.Descriptor.Results.First().Name);
-                }
-                else
-                {
-                    this.Returned(this, this.ResultName);
-                }
-                
+                this.Stopped(this);
             }
         }
 

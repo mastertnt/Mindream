@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Mindream.Attributes;
 using Mindream.Components;
 using Mindream.Reflection;
 
@@ -84,31 +86,32 @@ namespace Mindream.Descriptors
 
         #region Constructors
 
-
         /// <summary>
         /// Initializes a new instance of the <see cref="FunctionComponentDescriptor"/> class.
         /// </summary>
         /// <param name="pType">Type of the p.</param>
         public FunctionComponentDescriptor(Type pType)
-            :base()
         {
             this.Type = pType;
 
             // Look for inputs.
             foreach (var lPropertyInfo in this.Type.GetProperties())
             {
-                if (lPropertyInfo.CanWrite && lPropertyInfo.DeclaringType == pType)
+                ParameterAttribute lAttribute = lPropertyInfo.GetCustomAttributes(typeof (ParameterAttribute), true).FirstOrDefault() as ParameterAttribute;
+                if (lAttribute != null)
                 {
-                    if (lPropertyInfo.GetSetMethod() != null)
+                    if (lPropertyInfo.CanRead && lAttribute.IsOutput)
+                    {
+                        this.Outputs.Add(new PropertyMemberInfo(lPropertyInfo));
+                    }
+
+                    if (lPropertyInfo.GetSetMethod() != null && lAttribute.IsInput)
                     {
                         this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
                     }
                 }
 
-                if (lPropertyInfo.CanRead && lPropertyInfo.DeclaringType == pType)
-                {
-                    this.Outputs.Add(new PropertyMemberInfo(lPropertyInfo));
-                }
+                
             }
 
             // Look for inputs.

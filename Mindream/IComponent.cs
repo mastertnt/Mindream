@@ -31,7 +31,12 @@ namespace Mindream
         event Action<IComponent> Started;
 
         /// <summary>
-        /// This event is raised when the component succeed.
+        /// This event is raised when the component is stopped.
+        /// </summary>
+        event Action<IComponent> Stopped;
+
+        /// <summary>
+        /// This event is raised when the component has returned.
         /// </summary>
         event Action<IComponent, string> Returned;
 

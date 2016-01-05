@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Threading;
 using DemoApplication;
 using Mindream.Attributes;
 
@@ -18,7 +19,7 @@ namespace Mindream.Components.Debug
         /// <value>
         ///     <c>true</c> if condition; otherwise, <c>false</c>.
         /// </value>
-        //[Input]
+        [In]
         public string String { get; set; }
 
         #endregion // Inputs
@@ -39,8 +40,8 @@ namespace Mindream.Components.Debug
         /// </summary>
         protected override void ComponentStarted()
         {
-            MainWindow.Instance.mOutput.Text += this.String;
-            MainWindow.Instance.mOutput.Text += Environment.NewLine;
+            MainWindow.Instance.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => MainWindow.Instance.mOutput.Text += this.String));
+            MainWindow.Instance.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => MainWindow.Instance.mOutput.Text += Environment.NewLine));
             this.Stop();
         }
 
