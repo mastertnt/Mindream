@@ -42,7 +42,7 @@
     <Reference Include="WindowsBase" />
     <Reference Include="XTreeListView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Release\XTreeListView.dll</HintPath>
+      <HintPath>..\SubModules\XRay\XTreeListView\bin\Debug\XTreeListView.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

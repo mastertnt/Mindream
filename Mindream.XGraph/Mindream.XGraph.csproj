@@ -40,7 +40,7 @@
     <Reference Include="System.Core" />
     <Reference Include="WindowsBase" />
     <Reference Include="XGraph">
-      <HintPath>..\Release\XGraph.dll</HintPath>
+      <HintPath>..\SubModules\XRay\XGraph\bin\Debug\XGraph.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

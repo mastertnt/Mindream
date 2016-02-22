@@ -47,10 +47,10 @@
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
     <Reference Include="XSerialization">
-      <HintPath>..\Release\XSerialization.dll</HintPath>
+      <HintPath>..\SubModules\XRay\XSerialization\bin\Debug\XSerialization.dll</HintPath>
     </Reference>
     <Reference Include="XSystem">
-      <HintPath>..\Release\XSystem.dll</HintPath>
+      <HintPath>..\SubModules\XRay\XSystem\bin\Debug\XSystem.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
