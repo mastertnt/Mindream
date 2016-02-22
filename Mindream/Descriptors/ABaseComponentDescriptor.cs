@@ -1,20 +1,40 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using Mindream.Attributes;
+using Mindream.Components;
+using Mindream.Reflection;
 
 namespace Mindream.Descriptors
 {
     /// <summary>
-    /// This class represents the base class for all component descriptors.
+    ///     This class represents the base class for all component descriptors.
     /// </summary>
     public abstract class ABaseComponentDescriptor : IComponentDescriptor
     {
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="ABaseComponentDescriptor" /> class.
+        /// </summary>
+        protected ABaseComponentDescriptor()
+        {
+            this.Results = new List<IComponentReturnInfo>();
+        }
+
+        #endregion // Constructors.
+
+        public abstract AComponentAttribute ComponentAttribute
+        {
+            get;
+        }
+
         #region Properties
 
         /// <summary>
-        /// Gets the name.
+        ///     Gets the name.
         /// </summary>
         /// <value>
-        /// The name.
+        ///     The name.
         /// </value>
         public virtual string Id
         {
@@ -23,10 +43,10 @@ namespace Mindream.Descriptors
         }
 
         /// <summary>
-        /// Gets the inputs.
+        ///     Gets the inputs.
         /// </summary>
         /// <value>
-        /// The inputs.
+        ///     The inputs.
         /// </value>
         public virtual List<IComponentMemberInfo> Inputs
         {
@@ -35,10 +55,10 @@ namespace Mindream.Descriptors
         }
 
         /// <summary>
-        /// Gets the outputs.
+        ///     Gets the outputs.
         /// </summary>
         /// <value>
-        /// The outputs.
+        ///     The outputs.
         /// </value>
         public virtual List<IComponentMemberInfo> Outputs
         {
@@ -47,10 +67,10 @@ namespace Mindream.Descriptors
         }
 
         /// <summary>
-        /// Gets the outputs.
+        ///     Gets the outputs.
         /// </summary>
         /// <value>
-        /// The outputs.
+        ///     The outputs.
         /// </value>
         public virtual List<IComponentReturnInfo> Results
         {
@@ -60,38 +80,25 @@ namespace Mindream.Descriptors
 
         #endregion // Events.
 
-        #region Constructors
-
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ABaseComponentDescriptor"/> class.
-        /// </summary>
-        protected ABaseComponentDescriptor()
-        {
-            this.Results = new List<IComponentReturnInfo>();
-        }
-
-        #endregion // Constructors.
-
         #region Methods
 
         /// <summary>
-        /// Creates an instance.
+        ///     Creates an instance.
         /// </summary>
         /// <returns>
-        /// The created instance of the component.
+        ///     The created instance of the component.
         /// </returns>
         public abstract IComponent Create();
-        
+
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        ///     A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
-            StringBuilder lBuilder = new StringBuilder();
+            var lBuilder = new StringBuilder();
             lBuilder.AppendLine(this.Id);
             lBuilder.AppendLine("in:");
             foreach (var lInput in this.Inputs)

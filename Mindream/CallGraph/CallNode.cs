@@ -1,63 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using IComponent = Mindream.Components.IComponent;
 
 namespace Mindream.CallGraph
 {
     /// <summary>
-    /// This class represents a call node.
+    ///     This class represents a call node.
     /// </summary>
     /// <!-- NBY -->
     public class CallNode
     {
         /// <summary>
-        /// Gets or sets the instance (for component based on instance).
-        /// </summary>
-        /// <value>
-        /// The instance.
-        /// </value>
-        public object Instance
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets or sets the component.
-        /// </summary>
-        /// <value>
-        /// The component.
-        /// </value>
-        public IComponent Component
-        {
-            get; set;
-        }
-
-        /// <summary>
-        /// Gets or sets the call nodes.
-        /// </summary>
-        /// <value>
-        /// The call nodes.
-        /// </value>
-        public Dictionary<string, List<CallNode>> NodeToCall
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Gets or sets the call nodes.
-        /// </summary>
-        /// <value>
-        /// The call nodes.
-        /// </value>
-        public Dictionary<CallNode, Dictionary<string, List<string>>> NodeParameters
-        {
-            get;
-            set;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="CallNode"/> class.
+        ///     Initializes a new instance of the <see cref="CallNode" /> class.
         /// </summary>
         public CallNode()
         {
@@ -66,17 +21,64 @@ namespace Mindream.CallGraph
         }
 
         /// <summary>
-        /// Starts this instance.
+        ///     Gets or sets the instance (for component based on instance).
+        /// </summary>
+        /// <value>
+        ///     The instance.
+        /// </value>
+        public object Instance
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the component.
+        /// </summary>
+        /// <value>
+        ///     The component.
+        /// </value>
+        public IComponent Component
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the call nodes.
+        /// </summary>
+        /// <value>
+        ///     The call nodes.
+        /// </value>
+        public Dictionary<string, List<CallNode>> NodeToCall
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets or sets the call nodes.
+        /// </summary>
+        /// <value>
+        ///     The call nodes.
+        /// </value>
+        public Dictionary<CallNode, Dictionary<string, List<string>>> NodeParameters
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Starts this instance.
         /// </summary>
         public void Start()
         {
             this.Component.Started += this.OnComponentStarted;
             this.Component.Start();
-            
         }
 
         /// <summary>
-        /// Called when [component started].
+        ///     Called when [component started].
         /// </summary>
         /// <param name="pComponent">The p component.</param>
         private void OnComponentStarted(IComponent pComponent)
@@ -87,7 +89,7 @@ namespace Mindream.CallGraph
         }
 
         /// <summary>
-        /// Called when [component stopped].
+        ///     Called when [component stopped].
         /// </summary>
         /// <param name="pComponent">The p component.</param>
         private void OnComponentStopped(IComponent pComponent)
@@ -97,7 +99,7 @@ namespace Mindream.CallGraph
         }
 
         /// <summary>
-        /// Called when [component succeed].
+        ///     Called when [component succeed].
         /// </summary>
         /// <param name="pComponent">The component succeed.</param>
         /// <param name="pResultName">Id of the result.</param>
@@ -111,13 +113,13 @@ namespace Mindream.CallGraph
                     {
                         foreach (var lLinkedParameters in this.NodeParameters[lNodeToCall])
                         {
-                            IComponentMemberInfo lSourceInfo = this.Component.Descriptor.Outputs.First(pMember => pMember.Name == lLinkedParameters.Key);
+                            var lSourceInfo = this.Component.Descriptor.Outputs.First(pMember => pMember.Name == lLinkedParameters.Key);
                             foreach (var lParameter in lLinkedParameters.Value)
                             {
-                                IComponentMemberInfo lTargetInfo = lNodeToCall.Component.Descriptor.Inputs.First(pMember => pMember.Name == lParameter);
+                                var lTargetInfo = lNodeToCall.Component.Descriptor.Inputs.First(pMember => pMember.Name == lParameter);
                                 if (lSourceInfo.Type != lTargetInfo.Type && lTargetInfo.Type.IsAssignableFrom(lSourceInfo.Type) == false)
                                 {
-                                    object lConvertedValue = TypeDescriptor.GetConverter(lSourceInfo.Type).ConvertTo(this.Component[lLinkedParameters.Key], lTargetInfo.Type);
+                                    var lConvertedValue = TypeDescriptor.GetConverter(lSourceInfo.Type).ConvertTo(this.Component[lLinkedParameters.Key], lTargetInfo.Type);
                                     lNodeToCall.Component[lParameter] = lConvertedValue;
                                 }
                                 else

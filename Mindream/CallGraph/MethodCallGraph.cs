@@ -1,21 +1,31 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq.Expressions;
 
 namespace Mindream.CallGraph
 {
     /// <summary>
-    /// 
     /// </summary>
     public class MethodCallGraph
     {
+        #region Constructors
+
+        /// <summary>
+        ///     Initializes a new instance of the <see cref="MethodCallGraph" /> class.
+        /// </summary>
+        public MethodCallGraph()
+        {
+            this.CallNodes = new ObservableCollection<CallNode>();
+        }
+
+        #endregion // Constructors
+
         #region Properties
 
         /// <summary>
-        /// Gets or sets the call nodes.
+        ///     Gets or sets the call nodes.
         /// </summary>
         /// <value>
-        /// The call nodes.
+        ///     The call nodes.
         /// </value>
         public ObservableCollection<CallNode> CallNodes
         {
@@ -25,22 +35,10 @@ namespace Mindream.CallGraph
 
         #endregion // Properties
 
-        #region Constructors
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MethodCallGraph"/> class.
-        /// </summary>
-        public MethodCallGraph()
-        {
-            this.CallNodes = new ObservableCollection<CallNode>();
-        }
-
-        #endregion // Constructors
-
         #region Methods
 
         /// <summary>
-        /// Connects the call.
+        ///     Connects the call.
         /// </summary>
         /// <param name="pSource">The source.</param>
         /// <param name="pTarget">The target.</param>
@@ -55,7 +53,7 @@ namespace Mindream.CallGraph
         }
 
         /// <summary>
-        /// Disconnects the call.
+        ///     Disconnects the call.
         /// </summary>
         /// <param name="pSource">The source.</param>
         /// <param name="pTarget">The target.</param>
@@ -65,7 +63,7 @@ namespace Mindream.CallGraph
         }
 
         /// <summary>
-        /// Connects an output of the source to the input of the target.
+        ///     Connects an output of the source to the input of the target.
         /// </summary>
         /// <param name="pSource">The source.</param>
         /// <param name="pSourceName">The name of the output.</param>
@@ -75,7 +73,7 @@ namespace Mindream.CallGraph
         {
             if (pSource.NodeParameters.ContainsKey(pTarget) == false)
             {
-                pSource.NodeParameters[pTarget] = new Dictionary<string, List<string>>();            
+                pSource.NodeParameters[pTarget] = new Dictionary<string, List<string>>();
             }
             if (pSource.NodeParameters[pTarget].ContainsKey(pSourceName) == false)
             {

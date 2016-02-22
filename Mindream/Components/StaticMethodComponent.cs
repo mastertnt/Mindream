@@ -1,34 +1,30 @@
-﻿using System.Linq;
-using Mindream.Descriptors;
+﻿using Mindream.Descriptors;
 
 namespace Mindream.Components
 {
     /// <summary>
-    /// This class represents a component on a static method.
+    ///     This class represents a component on a static method.
     /// </summary>
     public class StaticMethodComponent : AComponent
     {
-        #region Fields
+        #region Constructors
 
         /// <summary>
-        /// This fields stores the parameters.
+        ///     Initializes a new instance of the <see cref="StaticMethodComponent" /> class.
         /// </summary>
-        private object[] mParameters;
+        public StaticMethodComponent()
+        {
+        }
 
-        /// <summary>
-        /// This fields stores the last result.
-        /// </summary>
-        private object mLastResult;
-
-        #endregion // Fields.
+        #endregion // Constructors.
 
         #region Properties
 
         /// <summary>
-        /// Gets or sets the typed descriptor.
+        ///     Gets or sets the typed descriptor.
         /// </summary>
         /// <value>
-        /// The typed descriptor.
+        ///     The typed descriptor.
         /// </value>
         protected StaticMethodComponentDescriptor TypedDescriptor
         {
@@ -40,27 +36,29 @@ namespace Mindream.Components
 
         #endregion // Properties.
 
-        #region Constructors
+        #region Fields
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="StaticMethodComponent"/> class.
+        ///     This fields stores the parameters.
         /// </summary>
-        public StaticMethodComponent()
-        {
-            
-        }
+        private object[] mParameters;
 
-        #endregion // Constructors.
+        /// <summary>
+        ///     This fields stores the last result.
+        /// </summary>
+        private object mLastResult;
+
+        #endregion // Fields.
 
         #region Methods
 
         /// <summary>
-        /// This method is called when the component is initialized.
+        ///     This method is called when the component is initialized.
         /// </summary>
         protected override void ComponentInitilialized()
         {
-            int lHasResult = 0; //this.Descriptor.Outputs.Count(pParameter => pParameter.Position == -1);
-            int lRefCount = 0; //this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef);
+            var lHasResult = 0; //this.Descriptor.Outputs.Count(pParameter => pParameter.Position == -1);
+            var lRefCount = 0; //this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef);
 
             // Create a parameter array for method invocation.
             this.mParameters = new object[this.Descriptor.Inputs.Count + this.Descriptor.Outputs.Count - lHasResult - lRefCount];
@@ -87,7 +85,7 @@ namespace Mindream.Components
 
 
         /// <summary>
-        /// This method is called when the component is started.
+        ///     This method is called when the component is started.
         /// </summary>
         protected override void ComponentStarted()
         {

@@ -28,7 +28,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Bin\Release\Demo\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -65,13 +65,32 @@
     <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>..\packages\Extended.Wpf.Toolkit.2.6\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
+    <Reference Include="XGraph, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Release\XGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="XSerialization, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Release\XSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="XSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Release\XSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="XTreeListView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Release\XTreeListView.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Components\Pulse.cs" />
+    <Compile Include="Components\DistanceHeadingSite.cs" />
+    <Compile Include="Components\TrackArray.cs" />
+    <Compile Include="Models\ArrayOfTrack.cs" />
+    <Compile Include="Models\Ellipsoid.cs" />
     <Compile Include="Models\GeoPosition.cs" />
     <Compile Include="Components\PrintString.cs" />
     <Page Include="MainWindow.xaml">
@@ -118,25 +137,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Mindream.WPF\Mindream.WPF.csproj">
+      <Project>{fc40c7c7-5c52-4abc-9742-1d3c64591e04}</Project>
+      <Name>Mindream.WPF</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mindream.XGraph\Mindream.XGraph.csproj">
       <Project>{3695fba3-5023-491b-be8d-e0116e5f586c}</Project>
       <Name>Mindream.XGraph</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Mindream.XTreeListView\Mindream.XTreeListView.csproj">
+      <Project>{ae96e207-1c95-4c0c-bc09-a454bf118ec3}</Project>
+      <Name>Mindream.XTreeListView</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Mindream\Mindream.csproj">
       <Project>{e7a6ac89-c829-43cf-a20c-b9715c9aaf0c}</Project>
       <Name>Mindream</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\XRay\XGraph\XGraph.csproj">
-      <Project>{152277e0-4e7a-4586-bf49-05ac85ceafc1}</Project>
-      <Name>XGraph</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\XRay\XSerialization\XSerialization.csproj">
-      <Project>{b03f0119-4564-4787-be7c-9e6f4368c13c}</Project>
-      <Name>XSerialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\XRay\XTreeListView\XTreeListView.csproj">
-      <Project>{c91eb045-4c68-4f7c-a03c-42362aee5349}</Project>
-      <Name>XTreeListView</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

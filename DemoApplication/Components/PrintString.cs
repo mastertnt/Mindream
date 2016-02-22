@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Windows.Threading;
-using DemoApplication;
+using Mindream;
 using Mindream.Attributes;
+using Mindream.Components;
+using Mindream.Descriptors;
 
-namespace Mindream.Components.Debug
+namespace DemoApplication.Components
 {
     /// <summary>
     ///     The PrintString node serves as a simple way to display a string in the console.
     /// </summary>
-    [FunctionComponent]
+    [FunctionComponent("Debug")]
     public class PrintString : AFunctionComponent
     {
         #region Inputs
@@ -20,7 +22,18 @@ namespace Mindream.Components.Debug
         ///     <c>true</c> if condition; otherwise, <c>false</c>.
         /// </value>
         [In]
-        public string String { get; set; }
+        public string String
+        {
+            get;
+            set;
+        }
+
+        [In]
+        public bool NewLine
+        {
+            get;
+            set;
+        }
 
         #endregion // Inputs
 
@@ -41,7 +54,10 @@ namespace Mindream.Components.Debug
         protected override void ComponentStarted()
         {
             MainWindow.Instance.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => MainWindow.Instance.mOutput.Text += this.String));
-            MainWindow.Instance.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => MainWindow.Instance.mOutput.Text += Environment.NewLine));
+            if (this.NewLine)
+            {
+                MainWindow.Instance.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => MainWindow.Instance.mOutput.Text += Environment.NewLine));    
+            }
             this.Stop();
         }
 

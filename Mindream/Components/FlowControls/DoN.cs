@@ -1,20 +1,11 @@
 ﻿using Mindream.Attributes;
+using Mindream.Descriptors;
 
-namespace Mindream.Components.FlowControlNodes
+namespace Mindream.Components.FlowControls
 {
-    [FunctionComponent]
+    [FunctionComponent("Flow control")]
     public class DoN : AMethodComponent
     {
-        #region Inputs
-
-        [In]
-        public int Count { get; set; }
-
-        [Out]
-        public int LoopIndex { get; set; }
-
-        #endregion // Inputs
-
         #region Events
 
         /// <summary>
@@ -44,5 +35,23 @@ namespace Mindream.Components.FlowControlNodes
         }
 
         #endregion // Methods
+
+        #region Inputs
+
+        [In]
+        public int Count
+        {
+            get;
+            set;
+        }
+
+        [Out]
+        public int LoopIndex
+        {
+            get;
+            set;
+        }
+
+        #endregion // Inputs
     }
 }

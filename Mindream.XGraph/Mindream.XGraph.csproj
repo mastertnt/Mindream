@@ -11,6 +11,11 @@
     <AssemblyName>Mindream.XGraph</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <NuGetPackageImportStamp>841125f3</NuGetPackageImportStamp>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -24,7 +29,7 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -33,12 +38,10 @@
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
+    <Reference Include="XGraph">
+      <HintPath>..\Release\XGraph.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GraphViewModels\CallGraphViewModel.cs" />
@@ -47,8 +50,6 @@
     <Compile Include="GraphViewModels\OutputParameterViewModel.cs" />
     <Compile Include="GraphViewModels\PortEndedViewModel.cs" />
     <Compile Include="GraphViewModels\PortStartViewModel.cs" />
-    <Compile Include="LibraryViewModels\ComponentDescriptorRegistryViewModel.cs" />
-    <Compile Include="LibraryViewModels\ComponentDescriptorViewModel.cs" />
     <Compile Include="Model\LocatableCallNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -57,20 +58,23 @@
       <Project>{e7a6ac89-c829-43cf-a20c-b9715c9aaf0c}</Project>
       <Name>Mindream</Name>
     </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\XRay\XGraph\XGraph.csproj">
-      <Project>{152277e0-4e7a-4586-bf49-05ac85ceafc1}</Project>
-      <Name>XGraph</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\XRay\XSerialization\XSerialization.csproj">
-      <Project>{b03f0119-4564-4787-be7c-9e6f4368c13c}</Project>
-      <Name>XSerialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\XRay\XTreeListView\XTreeListView.csproj">
-      <Project>{c91eb045-4c68-4f7c-a03c-42362aee5349}</Project>
-      <Name>XTreeListView</Name>
-    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="FodyWeavers.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+    <Error Condition="!Exists('..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets'))" />
+  </Target>
+  <Import Project="..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\portable-net+sl+win+wpa+wp\Fody.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

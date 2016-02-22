@@ -1,6 +1,7 @@
-﻿using XTreeListView.ViewModel.Generic;
+﻿using Mindream.Descriptors;
+using XTreeListView.ViewModel.Generic;
 
-namespace Mindream.XGraph.LibraryViewModels
+namespace Mindream.XTreeListView.LibraryViewModels
 {
     /// <summary>
     /// This class is the view model for the component descriptor.
@@ -56,7 +57,5 @@ namespace Mindream.XGraph.LibraryViewModels
         }
 
         #endregion // Constructors.
-
-        
     }
 }

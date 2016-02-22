@@ -42,9 +42,6 @@ $RECYCLE.BIN/
 # Directories potentially created on remote AFP share
 */bin
 */obj
-*/Extended.Wpf.Toolkit.2.5
-*/Fody.1.29.2
-*/PropertyChanged.Fody.1.50.3
 .AppleDB
 .AppleDesktop
 Network Trash Folder
@@ -54,10 +51,13 @@ Temporary Items
 *.suo
 *.pdb
 *.cache
-Mindream/obj/Debug/Mindream.csproj.FileListAbsolute.txt
-Mindream/obj/Debug/Mindream.csproj.FileListAbsolute.txt
-Mindream/obj/Debug/Mindream.csprojResolveAssemblyReference.cache
+*/obj/Debug/*
 *.cache
 *.cache
-Mindream/obj/Debug/Mindream.csprojResolveAssemblyReference.cache
 *.user
+suo5F1C.tmp
+*.tmp
+bin/Release/*
+packages/*
+Release/*
+Mindream/obj/Debug/Mindream.csproj.FileListAbsolute.txt

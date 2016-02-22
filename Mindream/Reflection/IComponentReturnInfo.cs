@@ -1,15 +1,15 @@
-﻿namespace Mindream
+﻿namespace Mindream.Reflection
 {
     /// <summary>
-    /// This interface describes the return of a component.
+    ///     This interface describes the return of a component.
     /// </summary>
     public interface IComponentReturnInfo
     {
         /// <summary>
-        /// Gets or sets the name of the component return info.
+        ///     Gets or sets the name of the component return info.
         /// </summary>
         /// <value>
-        /// The name.
+        ///     The name.
         /// </value>
         string Name
         {

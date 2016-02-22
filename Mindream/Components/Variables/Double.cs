@@ -2,7 +2,7 @@
 
 namespace Mindream.Components.Variables
 {
-    [FunctionComponent]
+    [FunctionComponent("Types")]
     public class Double : AVariableComponent<double>
     {
     }

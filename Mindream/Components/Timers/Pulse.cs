@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Timers;
 using Mindream.Attributes;
+using Mindream.Descriptors;
 
 namespace Mindream.Components.Timers
 {
-    [FunctionComponent]
+    [FunctionComponent("Timing")]
     public class Pulse : AFunctionComponent
     {
         #region Fields
@@ -13,48 +14,42 @@ namespace Mindream.Components.Timers
 
         #endregion // Fields.
 
-        #region Inputs
-
-        [In]
-        public TimeSpan UpdatePeriod { get; set; }
-
-        [In]
-        public TimeSpan Duration { get; set; }
-
-        #endregion // Inputs
-
-        #region Events
-
-        public event ComponentReturnDelegate Ticked;
-
-        public event ComponentReturnDelegate Ended;
-
-        #endregion // Events.
-
+        #region Constructors
 
         /// <summary>
-        /// This method is called when the component is started.
+        ///     Initializes a new instance of the <see cref="Pulse" /> class.
+        /// </summary>
+        public Pulse()
+        {
+            this.Duration = new TimeSpan(0, 0, 10);
+            this.UpdatePeriod = new TimeSpan(0, 0, 1);
+        }
+
+        #endregion // Constructors.
+
+        /// <summary>
+        ///     This method is called when the component is started.
         /// </summary>
         protected override void ComponentStarted()
         {
             this.mStartTime = DateTime.Now;
-            Timer lTimer = new Timer { Interval = this.UpdatePeriod.TotalMilliseconds };
+            var lTimer = new Timer {Interval = this.UpdatePeriod.TotalMilliseconds};
             lTimer.Elapsed += this.OnTimerElapsed;
             lTimer.Enabled = true;
             lTimer.AutoReset = false;
         }
 
         /// <summary>
-        /// Called when [timer elapsed].
+        ///     Called when [timer elapsed].
         /// </summary>
         /// <param name="pSender">The p sender.</param>
-        /// <param name="pEventArgs">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
+        /// <param name="pEventArgs">The <see cref="ElapsedEventArgs" /> instance containing the event data.</param>
         private void OnTimerElapsed(object pSender, ElapsedEventArgs pEventArgs)
         {
-            TimeSpan lDiff = DateTime.Now - this.mStartTime;
+            var lDiff = DateTime.Now - this.mStartTime;
             if (lDiff.TotalMilliseconds > this.Duration.TotalMilliseconds)
             {
-                Timer lTimer = (Timer)pSender;
+                var lTimer = (Timer) pSender;
                 lTimer.Enabled = false;
                 lTimer.Elapsed -= this.OnTimerElapsed;
                 this.Stop();
@@ -65,7 +60,7 @@ namespace Mindream.Components.Timers
                 {
                     this.Ticked();
                 }
-                Timer lTimer = (Timer)pSender;
+                var lTimer = (Timer) pSender;
                 lTimer.Enabled = true;
             }
         }
@@ -80,5 +75,31 @@ namespace Mindream.Components.Timers
                 this.Ended();
             }
         }
+
+        #region Inputs
+
+        [In]
+        public TimeSpan UpdatePeriod
+        {
+            get;
+            set;
+        }
+
+        [In]
+        public TimeSpan Duration
+        {
+            get;
+            set;
+        }
+
+        #endregion // Inputs
+
+        #region Events
+
+        public event ComponentReturnDelegate Ticked;
+
+        public event ComponentReturnDelegate Ended;
+
+        #endregion // Events.
     }
 }

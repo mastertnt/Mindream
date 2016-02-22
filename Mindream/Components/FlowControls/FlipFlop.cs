@@ -1,23 +1,29 @@
 ﻿using Mindream.Attributes;
+using Mindream.Descriptors;
 
-namespace Mindream.Components.FlowControlNodes
+namespace Mindream.Components.FlowControls
 {
     /// <summary>
-    /// The FlipFlop node takes in an execution output and toggles between two execution outputs. 
-    /// The first time it is called, output A executes. 
-    /// The second time, B. Then A, then B, and so on. The node also has a boolean output allowing you to track when Output A has been called.
+    ///     The FlipFlop node takes in an execution output and toggles between two execution outputs.
+    ///     The first time it is called, output A executes.
+    ///     The second time, B. Then A, then B, and so on. The node also has a boolean output allowing you to track when Output
+    ///     A has been called.
     /// </summary>
-    [FunctionComponent]
+    [FunctionComponent("Flow control")]
     public class FlipFlop : AFunctionComponent
     {
         #region Inputs
 
         /// <summary>
-        /// Outputs a boolean value indicating whether Output A is being triggered or not. 
-        /// This, in effect, will toggle between true and false each time the FlipFlop node is triggered.
+        ///     Outputs a boolean value indicating whether Output A is being triggered or not.
+        ///     This, in effect, will toggle between true and false each time the FlipFlop node is triggered.
         /// </summary>
         [Out]
-        public bool IsA { get; private set; }
+        public bool IsA
+        {
+            get;
+            private set;
+        }
 
         #endregion // Inputs
 

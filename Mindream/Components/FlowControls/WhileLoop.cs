@@ -1,15 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Mindream.Attributes;
+﻿using Mindream.Attributes;
+using Mindream.Descriptors;
 
-namespace Mindream.Components.FlowControlNodes
+namespace Mindream.Components.FlowControls
 {
     /// <summary>
-    /// This class provides a way to iterate on an array.
+    ///     This class provides a way to iterate on an array.
     /// </summary>
-    [FunctionComponent]
+    [FunctionComponent("Flow control")]
     public class WhileLoop : AFunctionComponent
     {
         #region Inputs
@@ -21,10 +18,18 @@ namespace Mindream.Components.FlowControlNodes
         ///     <c>true</c> if condition; otherwise, <c>false</c>.
         /// </value>
         [In]
-        public bool Condition { get; set; }
+        public bool Condition
+        {
+            get;
+            set;
+        }
 
         [Out]
-        public int LoopIndex { get; set; }
+        public int LoopIndex
+        {
+            get;
+            set;
+        }
 
         #endregion // Inputs
 
@@ -39,7 +44,7 @@ namespace Mindream.Components.FlowControlNodes
         ///     This event is raised when the loop is ended.
         /// </summary>
         public event ComponentReturnDelegate Ended;
-        
+
         #endregion // Events.
 
         #region Methods
@@ -54,11 +59,11 @@ namespace Mindream.Components.FlowControlNodes
             {
                 if (this.DoLoop != null)
                 {
-                    this.DoLoop();    
+                    this.DoLoop();
                 }
                 this.LoopIndex++;
             }
-            
+
             this.Stop();
         }
 
@@ -75,5 +80,4 @@ namespace Mindream.Components.FlowControlNodes
 
         #endregion // Methods
     }
-
 }

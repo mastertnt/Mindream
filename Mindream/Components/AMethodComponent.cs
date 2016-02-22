@@ -1,4 +1,6 @@
-﻿namespace Mindream.Components
+﻿using Mindream.Descriptors;
+
+namespace Mindream.Components
 {
     public abstract class AMethodComponent : AFunctionComponent
     {

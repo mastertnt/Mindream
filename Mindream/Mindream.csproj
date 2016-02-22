@@ -12,6 +12,8 @@
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -27,7 +29,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\Bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -43,27 +45,39 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="XSerialization">
+      <HintPath>..\Release\XSerialization.dll</HintPath>
+    </Reference>
+    <Reference Include="XSystem">
+      <HintPath>..\Release\XSystem.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\AComponentAttribute.cs" />
     <Compile Include="Attributes\InAttribute.cs" />
     <Compile Include="Attributes\InOutAttribute.cs" />
     <Compile Include="Attributes\OutAttribute.cs" />
     <Compile Include="Attributes\ParameterAttribute.cs" />
     <Compile Include="Components\AFunctionComponent.cs" />
     <Compile Include="Components\AMethodComponent.cs" />
-    <Compile Include="Components\FlowControlNodes\FlipFlop.cs" />
-    <Compile Include="Components\FlowControlNodes\WhileLoop.cs" />
+    <Compile Include="Components\Debugs\LogFile.cs" />
+    <Compile Include="Components\FlowControls\Branch.cs" />
+    <Compile Include="Components\FlowControls\DoN.cs" />
+    <Compile Include="Components\FlowControls\FlipFlop.cs" />
+    <Compile Include="Components\FlowControls\ForEach.cs" />
+    <Compile Include="Components\FlowControls\WhileLoop.cs" />
+    <Compile Include="Components\ASingletonFunctionComponent.cs" />
+    <Compile Include="Components\Timers\Simulation.cs" />
     <Compile Include="Components\Timers\Pulse.cs" />
     <Compile Include="Components\Variables\AVariableComponent.cs" />
     <Compile Include="Components\Variables\Boolean.cs" />
-    <Compile Include="Components\FlowControlNodes\DoN.cs" />
     <Compile Include="Components\Variables\Double.cs" />
     <Compile Include="Components\Variables\Int.cs" />
     <Compile Include="Components\Variables\Dynamic.cs" />
     <Compile Include="Components\Variables\String.cs" />
     <Compile Include="Descriptors\DynamicComponentDescriptor.cs" />
-    <Compile Include="IComponentMemberInfo.cs" />
-    <Compile Include="IComponentReturnInfo.cs" />
+    <Compile Include="Reflection\IComponentMemberInfo.cs" />
+    <Compile Include="Reflection\IComponentReturnInfo.cs" />
     <Compile Include="Reflection\BaseComponentMemberInfo.cs" />
     <Compile Include="Reflection\EventReturnInfo.cs" />
     <Compile Include="Reflection\GenericReturnInfo.cs" />
@@ -74,11 +88,10 @@
     <Compile Include="CallGraph\CallNode.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Components\FlowControlNodes\Branch.cs" />
     <Compile Include="Attributes\FunctionComponentAttribute.cs" />
     <Compile Include="Descriptors\FunctionComponentDescriptor.cs" />
-    <Compile Include="IComponent.cs" />
-    <Compile Include="IComponentDescriptor.cs" />
+    <Compile Include="Components\IComponent.cs" />
+    <Compile Include="Descriptors\IComponentDescriptor.cs" />
     <Compile Include="CallGraph\MethodCallGraph.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,22 +107,20 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Serialization\ComponentSerializationContract.cs" />
+    <Compile Include="Utils\ITickProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ThirdParty\XRay\XSerialization\XSerialization.csproj">
-      <Project>{b03f0119-4564-4787-be7c-9e6f4368c13c}</Project>
-      <Name>XSerialization</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ThirdParty\XRay\XSystem\XSystem.csproj">
-      <Project>{70ab21af-5cf4-4751-8d1f-c55b55b33ec6}</Project>
-      <Name>XSystem</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

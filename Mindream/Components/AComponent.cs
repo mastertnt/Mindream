@@ -3,76 +3,34 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Mindream.Descriptors;
 using XSerialization.Attributes;
 
 namespace Mindream.Components
 {
     /// <summary>
-    /// This class is the base class for all components.
+    ///     This class is the base class for all components.
     /// </summary>
     public abstract class AComponent : IComponent
     {
-        #region Properties
+        #region Constructors
 
         /// <summary>
-        /// Gets or sets the name of the result.
+        ///     Initializes a new instance of the <see cref="AComponent" /> class.
         /// </summary>
-        /// <value>
-        /// The name of the result.
-        /// </value>
-        protected string ResultName
+        protected AComponent()
         {
-            get;
-            set;
         }
 
-        /// <summary>
-        /// Gets the descriptor.
-        /// </summary>
-        /// <value>
-        /// The descriptor.
-        /// </value>
-        [Browsable(false)]
-        public IComponentDescriptor Descriptor
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the parameters.
-        /// </summary>
-        /// <value>
-        /// The parameters.
-        /// </value>
-        public Dictionary<string, object> Inputs
-        {
-            get;
-            private set;
-        }
-
-        /// <summary>
-        /// Gets the results.
-        /// </summary>
-        /// <value>
-        /// The results.
-        /// </value>
-        [Browsable(false)]
-        public Dictionary<string, object> Outputs
-        {
-            get;
-            private set;
-        }
-
-        #endregion // Properties.
+        #endregion // Constructors.
 
         #region Indexers
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified p parameter.
+        ///     Gets or sets the <see cref="System.Object" /> with the specified p parameter.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object"/>.
+        ///     The <see cref="System.Object" />.
         /// </value>
         /// <param name="pParameterName">The parameter name.</param>
         /// <returns></returns>
@@ -122,36 +80,79 @@ namespace Mindream.Components
 
         #endregion // Indexers.
 
-        #region Constructors
+        #region Properties
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="AComponent"/> class.
+        ///     Gets or sets the name of the result.
         /// </summary>
-        protected AComponent()
+        /// <value>
+        ///     The name of the result.
+        /// </value>
+        protected string ResultName
         {
+            get;
+            set;
         }
 
-        #endregion // Constructors.
+        /// <summary>
+        ///     Gets the descriptor.
+        /// </summary>
+        /// <value>
+        ///     The descriptor.
+        /// </value>
+        [Browsable(false)]
+        public IComponentDescriptor Descriptor
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        ///     Gets the parameters.
+        /// </summary>
+        /// <value>
+        ///     The parameters.
+        /// </value>
+        public Dictionary<string, object> Inputs
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        ///     Gets the results.
+        /// </summary>
+        /// <value>
+        ///     The results.
+        /// </value>
+        [Browsable(false)]
+        public Dictionary<string, object> Outputs
+        {
+            get;
+            private set;
+        }
+
+        #endregion // Properties.
 
         #region Events
 
         /// <summary>
-        /// This event is raised when the component is started.
+        ///     This event is raised when the component is started.
         /// </summary>
         public event Action<IComponent> Started;
 
         /// <summary>
-        /// This event is raised when the component is stopped.
+        ///     This event is raised when the component is stopped.
         /// </summary>
         public event Action<IComponent> Stopped;
 
         /// <summary>
-        /// This event is raised when the component has returned.
+        ///     This event is raised when the component has returned.
         /// </summary>
         public event Action<IComponent, string> Returned;
 
         /// <summary>
-        /// This event is raised when the component failed.
+        ///     This event is raised when the component failed.
         /// </summary>
         public event Action<IComponent> Failed;
 
@@ -160,7 +161,7 @@ namespace Mindream.Components
         #region Methods
 
         /// <summary>
-        /// Initializes the specified p descriptor.
+        ///     Initializes the specified p descriptor.
         /// </summary>
         /// <param name="pDescriptor">The p descriptor.</param>
         public void Initialize(IComponentDescriptor pDescriptor)
@@ -189,7 +190,7 @@ namespace Mindream.Components
         }
 
         /// <summary>
-        /// This method is called to start the component.
+        ///     This method is called to start the component.
         /// </summary>
         public void Start()
         {
@@ -212,7 +213,7 @@ namespace Mindream.Components
         }
 
         /// <summary>
-        /// This method is called to stop the component.
+        ///     This method is called to stop the component.
         /// </summary>
         public void Stop()
         {
@@ -224,7 +225,7 @@ namespace Mindream.Components
         }
 
         /// <summary>
-        /// This method is called when the component is initialized.
+        ///     This method is called when the component is initialized.
         /// </summary>
         protected virtual void ComponentInitilialized()
         {
@@ -232,7 +233,7 @@ namespace Mindream.Components
         }
 
         /// <summary>
-        /// This method is called when the component is started.
+        ///     This method is called when the component is started.
         /// </summary>
         protected virtual void ComponentStarted()
         {
@@ -240,7 +241,7 @@ namespace Mindream.Components
         }
 
         /// <summary>
-        /// This method is called when the component is stopped.
+        ///     This method is called when the component is stopped.
         /// </summary>
         protected virtual void ComponentStopped()
         {
@@ -248,14 +249,14 @@ namespace Mindream.Components
         }
 
         /// <summary>
-        /// Returns a <see cref="System.String" /> that represents this instance.
+        ///     Returns a <see cref="System.String" /> that represents this instance.
         /// </summary>
         /// <returns>
-        /// A <see cref="System.String" /> that represents this instance.
+        ///     A <see cref="System.String" /> that represents this instance.
         /// </returns>
         public override string ToString()
         {
-            StringBuilder lBuilder = new StringBuilder();
+            var lBuilder = new StringBuilder();
 
             lBuilder.AppendLine("********************************");
             lBuilder.AppendLine("--->" + this.Descriptor.Id);

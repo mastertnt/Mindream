@@ -1,7 +1,20 @@
-﻿namespace DemoApplication.Models
+﻿using System.Text;
+
+namespace DemoApplication.Models
 {
     public class Track
     {
+        public Track()
+        {
+            this.Position = new GeoPosition();
+        }
+
+        public int Id
+        {
+            get;
+            set;
+        }
+
         public GeoPosition Position
         {
             get;
@@ -14,9 +27,15 @@
             set;
         }
 
-        public Track()
+        public override string ToString()
         {
-            this.Position = new GeoPosition();
+            var lBuilder = new StringBuilder();
+
+            lBuilder.Append("Track ");
+            lBuilder.Append(this.Id);
+            lBuilder.Append(" Pos " + this.Position);
+
+            return lBuilder.ToString();
         }
     }
 }

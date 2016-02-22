@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using DemoApplication.Models;
 using Mindream;
 using Mindream.Attributes;
 using Mindream.Components;
+using Mindream.Descriptors;
 
 namespace DemoApplication.Components
 {
-    [FunctionComponent]
+    [FunctionComponent("Generators")]
     public class RandomTracksGenerator : AFunctionComponent
     {
         #region Fields
@@ -25,10 +23,10 @@ namespace DemoApplication.Components
         #region Inputs
 
         /// <summary>
-        /// Gets or sets the tracks.
+        ///     Gets or sets the tracks.
         /// </summary>
         /// <value>
-        /// The tracks.
+        ///     The tracks.
         /// </value>
         [Out]
         public List<Track> Tracks
@@ -72,56 +70,56 @@ namespace DemoApplication.Components
         protected override void ComponentStarted()
         {
             this.mRandom = new Random(DateTime.Now.Millisecond);
-            int lAction = this.mRandom.Next(0, 2);
+            var lAction = this.mRandom.Next(0, 2);
             switch (lAction)
             {
                 // Add a new track.
                 case 0:
-                    {
-                        this.AddTrack();
-                    }
+                {
+                    this.AddTrack();
+                }
                     break;
 
                 // Remove an existing track.
                 case 1:
+                {
+                    if (this.Tracks.Any())
                     {
-                        if (this.Tracks.Any())
-                        {
-                            int lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
-                            this.LasTrack = this.Tracks[lIndex];
-                            this.Tracks.RemoveAt(lIndex);
+                        var lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
+                        this.LasTrack = this.Tracks[lIndex];
+                        this.Tracks.RemoveAt(lIndex);
 
-                            if (this.TrackRemoved != null)
-                            {
-                                this.TrackRemoved();
-                            }
-                        }
-                        else
+                        if (this.TrackRemoved != null)
                         {
-                            this.AddTrack();
+                            this.TrackRemoved();
                         }
                     }
+                    else
+                    {
+                        this.AddTrack();
+                    }
+                }
                     break;
 
                 // Update an existing track.
                 case 2:
+                {
+                    if (this.Tracks.Any())
                     {
-                        if (this.Tracks.Any())
+                        var lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
+                        var lTrack = this.Tracks[lIndex];
+                        this.SetTrackValue(lTrack);
+                        this.LasTrack = lTrack;
+                        if (this.TrackUpdated != null)
                         {
-                            int lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
-                            Track lTrack = this.Tracks[lIndex];
-                            SetTrackValue(lTrack);
-                            this.LasTrack = lTrack;
-                            if (this.TrackUpdated != null)
-                            {
-                                this.TrackUpdated();
-                            }
-                        }
-                        else
-                        {
-                            this.AddTrack();
+                            this.TrackUpdated();
                         }
                     }
+                    else
+                    {
+                        this.AddTrack();
+                    }
+                }
                     break;
             }
             this.Stop();
@@ -129,12 +127,13 @@ namespace DemoApplication.Components
 
 
         /// <summary>
-        /// Adds a new track.
+        ///     Adds a new track.
         /// </summary>
         private void AddTrack()
         {
-            Track lTrack = new Track();
-            SetTrackValue(lTrack);
+            var lTrack = new Track();
+            lTrack.Id = this.mRandom.Next(1000);
+            this.SetTrackValue(lTrack);
             this.Tracks.Add(lTrack);
             this.LasTrack = lTrack;
             if (this.TrackAdded != null)
@@ -155,15 +154,15 @@ namespace DemoApplication.Components
         }
 
         /// <summary>
-        /// Sets the track value.
+        ///     Sets the track value.
         /// </summary>
         /// <param name="pTrack">The p track.</param>
         private void SetTrackValue(Track pTrack)
         {
             pTrack.Position.Latitude = this.mRandom.NextDouble() + 40;
             pTrack.Position.Longitude = this.mRandom.NextDouble() + 2;
-            pTrack.Position.Altitude = this.mRandom.NextDouble() * 1000 + 8000;
-            pTrack.Heading = this.mRandom.NextDouble() * 360;
+            pTrack.Position.Altitude = this.mRandom.NextDouble()*1000 + 8000;
+            pTrack.Heading = this.mRandom.NextDouble()*360;
         }
 
         #endregion // Methods

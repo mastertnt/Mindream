@@ -1,20 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
+using Mindream.Descriptors;
 
-namespace Mindream
+namespace Mindream.Components
 {
     /// <summary>
-    /// This interface describes a component instance.
+    ///     This interface describes a component instance.
     /// </summary>
     public interface IComponent
     {
         #region Properties
 
         /// <summary>
-        /// Gets the descriptor.
+        ///     Gets the descriptor.
         /// </summary>
         /// <value>
-        /// The descriptor.
+        ///     The descriptor.
         /// </value>
         IComponentDescriptor Descriptor
         {
@@ -26,22 +26,22 @@ namespace Mindream
         #region Events
 
         /// <summary>
-        /// This event is raised when the component is started.
+        ///     This event is raised when the component is started.
         /// </summary>
         event Action<IComponent> Started;
 
         /// <summary>
-        /// This event is raised when the component is stopped.
+        ///     This event is raised when the component is stopped.
         /// </summary>
         event Action<IComponent> Stopped;
 
         /// <summary>
-        /// This event is raised when the component has returned.
+        ///     This event is raised when the component has returned.
         /// </summary>
         event Action<IComponent, string> Returned;
 
         /// <summary>
-        /// This event is raised when the component failed.
+        ///     This event is raised when the component failed.
         /// </summary>
         event Action<IComponent> Failed;
 
@@ -50,26 +50,26 @@ namespace Mindream
         #region Methods
 
         /// <summary>
-        /// Gets or sets the <see cref="System.Object"/> with the specified p parameter.
+        ///     Gets or sets the <see cref="System.Object" /> with the specified p parameter.
         /// </summary>
         /// <value>
-        /// The <see cref="System.Object"/>.
+        ///     The <see cref="System.Object" />.
         /// </value>
         /// <param name="pParameterName">The parameter name.</param>
         /// <returns></returns>
         object this[string pParameterName]
         {
-            get; 
+            get;
             set;
         }
 
         /// <summary>
-        /// This method is called to start the component.
+        ///     This method is called to start the component.
         /// </summary>
         void Start();
 
         /// <summary>
-        /// This method is called to stop the component.
+        ///     This method is called to stop the component.
         /// </summary>
         void Stop();
 

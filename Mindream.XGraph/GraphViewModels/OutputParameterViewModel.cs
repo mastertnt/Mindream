@@ -1,4 +1,5 @@
-﻿using XGraph.ViewModels;
+﻿using Mindream.Reflection;
+using XGraph.ViewModels;
 
 namespace Mindream.XGraph.GraphViewModels
 {
