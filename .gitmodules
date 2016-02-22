@@ -1,0 +1,6 @@
+[submodule "SubModules/XRay"]
+	path = SubModules/XRay
+	url = https://github.com/mastertnt/XRay.git
+[submodule "SubModules/XGraph"]
+	path = SubModules/XGraph
+	url = https://github.com/mastertnt/XGraph.git
