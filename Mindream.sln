@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XSystem", "SubModules\XRay\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XTreeListView", "SubModules\XRay\XTreeListView\XTreeListView.csproj", "{C91EB045-4C68-4F7C-A03C-42362AEE5349}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGraph", "SubModules\XRay\XGraph\XGraph.csproj", "{152277E0-4E7A-4586-BF49-05AC85CEAFC1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "XGraph", "SubModules\XGraph\XGraph\XGraph.csproj", "{152277E0-4E7A-4586-BF49-05AC85CEAFC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
