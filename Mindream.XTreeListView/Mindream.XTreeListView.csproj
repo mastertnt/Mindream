@@ -40,9 +40,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
-    <Reference Include="XTreeListView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SubModules\XRay\XTreeListView\bin\Debug\XTreeListView.dll</HintPath>
+    <Reference Include="XTreeListView">
+      <HintPath>..\SubModules\XRay\Bin\Release\XTreeListView.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
