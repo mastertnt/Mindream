@@ -8,6 +8,8 @@ namespace Mindream.XGraph.GraphViewModels
     /// </summary>
     public class InputParameterViewModel : PortViewModel
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="InputParameterViewModel"/> class.
         /// </summary>
@@ -17,5 +19,7 @@ namespace Mindream.XGraph.GraphViewModels
             this.DisplayString = pParameter.Name;
             this.Direction = PortDirection.Input;
         }
+
+        #endregion // Constructors.
     }
 }

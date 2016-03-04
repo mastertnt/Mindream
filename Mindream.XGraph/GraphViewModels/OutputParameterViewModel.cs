@@ -8,6 +8,8 @@ namespace Mindream.XGraph.GraphViewModels
     /// </summary>
     public class OutputParameterViewModel : PortViewModel
     {
+        #region Constructors
+
         /// <summary>
         /// Initializes a new instance of the <see cref="OutputParameterViewModel"/> class.
         /// </summary>
@@ -17,5 +19,21 @@ namespace Mindream.XGraph.GraphViewModels
             this.DisplayString = string.IsNullOrWhiteSpace(pParameter.Name) ? "result" : pParameter.Name;
             this.Direction = PortDirection.Output;
         }
+
+        #endregion // Constructors.
+
+        #region Methods
+
+        /// <summary>
+        /// Determines whether this source port can be connected to the specified p port view model.
+        /// </summary>
+        /// <param name="pTargetPortViewModel">The target port view model.</param>
+        /// <returns>True if the connection can be done, false otherwise.</returns>
+        public override bool CanBeConnectedTo(PortViewModel pTargetPortViewModel)
+        {
+            return (pTargetPortViewModel is InputParameterViewModel);
+        }
+
+        #endregion // Methods.
     }
 }

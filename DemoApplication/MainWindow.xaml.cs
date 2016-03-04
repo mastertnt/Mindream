@@ -106,14 +106,14 @@ namespace DemoApplication
             var lOutputViewModel = this.mGraphViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Output)) as CallNodeViewModel;
 
             // Create the connection in call graph.
-            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is PortEndedViewModel && pEventArgs.Output is PortStartViewModel)
+            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is PortStartViewModel && pEventArgs.Output is PortEndedViewModel)
             {
-                this.mCallGraph.ConnectCall(lInputViewModel.Node, lOutputViewModel.Node, pEventArgs.Input.DisplayString);
+                this.mCallGraph.ConnectCall(lOutputViewModel.Node, lInputViewModel.Node, pEventArgs.Output.DisplayString);
             }
 
-            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is OutputParameterViewModel && pEventArgs.Output is InputParameterViewModel)
+            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is InputParameterViewModel && pEventArgs.Output is OutputParameterViewModel)
             {
-                this.mCallGraph.ConnectParameter(lInputViewModel.Node, pEventArgs.Input.DisplayString, lOutputViewModel.Node, pEventArgs.Output.DisplayString);
+                this.mCallGraph.ConnectParameter(lOutputViewModel.Node, pEventArgs.Output.DisplayString, lInputViewModel.Node, pEventArgs.Input.DisplayString);
             }
         }
 

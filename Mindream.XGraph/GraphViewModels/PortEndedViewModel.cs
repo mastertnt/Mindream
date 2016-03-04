@@ -21,5 +21,19 @@ namespace Mindream.XGraph.GraphViewModels
         }
 
         #endregion // Constructors.
+
+        #region Methods
+
+        /// <summary>
+        /// Determines whether this source port can be connected to the specified p port view model.
+        /// </summary>
+        /// <param name="pTargetPortViewModel">The target port view model.</param>
+        /// <returns>True if the connection can be done, false otherwise.</returns>
+        public override bool CanBeConnectedTo(PortViewModel pTargetPortViewModel)
+        {
+            return (pTargetPortViewModel is PortStartViewModel);
+        }
+
+        #endregion // Methods.
     }
 }

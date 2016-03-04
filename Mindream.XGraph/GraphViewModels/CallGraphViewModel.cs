@@ -51,9 +51,9 @@ namespace Mindream.XGraph.GraphViewModels
                                 if (lTargetViewModel != null)
                                 {
                                     PortViewModel lTargetPortViewModel = lTargetViewModel.Ports.FirstOrDefault(pPort => pPort is PortStartViewModel);
-                                    if (lTargetPortViewModel != null)
+                                    if (lSourcePortViewModel != null)
                                     {
-                                        ConnectionViewModel lConnection = new ConnectionViewModel { Output = lTargetPortViewModel, Input = lSourcePortViewModel };
+                                        ConnectionViewModel lConnection = new ConnectionViewModel { Output = lSourcePortViewModel, Input = lTargetPortViewModel };
                                         this.AddConnection(lConnection);
                                     }
                                 }
@@ -84,7 +84,7 @@ namespace Mindream.XGraph.GraphViewModels
                                         PortViewModel lTargetPortViewModel = lTargetViewModel.Ports.FirstOrDefault(pPort => pPort.DisplayString == lTarget && pPort.Direction == PortDirection.Input);
                                         if (lTargetPortViewModel != null)
                                         {
-                                            ConnectionViewModel lConnection = new ConnectionViewModel { Output = lTargetPortViewModel, Input = lSourcePortViewModel };
+                                            ConnectionViewModel lConnection = new ConnectionViewModel { Output = lSourcePortViewModel, Input = lTargetPortViewModel };
                                             this.AddConnection(lConnection);
                                         }
                                     }
