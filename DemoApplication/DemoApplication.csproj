@@ -87,6 +87,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\SubModules\XRay\Bin\Release\XTreeListView.dll</HintPath>
     </Reference>
+    <Reference Include="XZoomAndPan">
+      <HintPath>..\SubModules\XRay\Bin\Release\XZoomAndPan.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
