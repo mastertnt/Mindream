@@ -86,8 +86,16 @@ namespace DemoApplication
         /// <param name="pEventArgs">The event arguments.</param>
         private void OnNodeAdded(GraphViewModel pSender, NodeViewModel pEventArgs)
         {
-            pEventArgs.X = this.mDropPoint.X;
-            pEventArgs.Y = this.mDropPoint.Y;
+            Point lGraphPos;
+            if (this.mGraph.MapToGraph(this.mDropPoint, out lGraphPos) == false)
+            {
+                // Drop point is not in the graph limits. Adding the node at (0,0).
+                lGraphPos = new Point();
+            }
+
+            pEventArgs.X = lGraphPos.X;
+            pEventArgs.Y = lGraphPos.Y;
+
             this.mGraphViewModel.NodeAdded -= this.OnNodeAdded;
         }
 
