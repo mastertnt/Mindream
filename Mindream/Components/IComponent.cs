@@ -26,6 +26,11 @@ namespace Mindream.Components
         #region Events
 
         /// <summary>
+        ///     This event is raised when the component is initialized.
+        /// </summary>
+        event Action<IComponent> Initialized;
+
+        /// <summary>
         ///     This event is raised when the component is started.
         /// </summary>
         event Action<IComponent> Started;

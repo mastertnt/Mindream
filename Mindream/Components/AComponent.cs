@@ -137,6 +137,11 @@ namespace Mindream.Components
         #region Events
 
         /// <summary>
+        ///     This event is raised when the component is initialized.
+        /// </summary>
+        public event Action<IComponent> Initialized;
+
+        /// <summary>
         ///     This event is raised when the component is started.
         /// </summary>
         public event Action<IComponent> Started;
@@ -186,6 +191,10 @@ namespace Mindream.Components
                 }
             }
 
+            if (this.Initialized != null)
+            {
+                this.Initialized(this);
+            }
             this.ComponentInitilialized();
         }
 

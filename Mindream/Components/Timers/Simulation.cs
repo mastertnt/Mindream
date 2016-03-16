@@ -163,7 +163,7 @@ namespace Mindream.Components.Timers
         /// <summary>
         ///     Initializes a new instance of the <see cref="Simulation" /> class.
         /// </summary>
-        protected Simulation()
+        private Simulation()
         {
             this.UpdatePeriod = new TimeSpan(0, 0, 1);
         }
