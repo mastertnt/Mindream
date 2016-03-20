@@ -23,11 +23,6 @@ namespace Mindream.Descriptors
 
         #endregion // Constructors.
 
-        public abstract AComponentAttribute ComponentAttribute
-        {
-            get;
-        }
-
         #region Properties
 
         /// <summary>
@@ -76,6 +71,17 @@ namespace Mindream.Descriptors
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets the component attribute.
+        /// </summary>
+        /// <value>
+        /// The component attribute.
+        /// </value>
+        public abstract AComponentAttribute ComponentAttribute
+        {
+            get;
         }
 
         #endregion // Events.
