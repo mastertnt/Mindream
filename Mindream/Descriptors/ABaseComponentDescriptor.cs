@@ -18,6 +18,7 @@ namespace Mindream.Descriptors
         /// </summary>
         protected ABaseComponentDescriptor()
         {
+            // ReSharper disable once VirtualMemberCallInContructor
             this.Results = new List<IComponentReturnInfo>();
         }
 
@@ -74,10 +75,10 @@ namespace Mindream.Descriptors
         }
 
         /// <summary>
-        /// Gets the component attribute.
+        ///     Gets the component attribute.
         /// </summary>
         /// <value>
-        /// The component attribute.
+        ///     The component attribute.
         /// </value>
         public abstract AComponentAttribute ComponentAttribute
         {

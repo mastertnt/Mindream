@@ -37,7 +37,7 @@ namespace Mindream.Components.Timers
         #region Fields
 
         /// <summary>
-        /// The next action to execute.
+        ///     The next action to execute.
         /// </summary>
         private SimulationAction mAction;
 
@@ -97,10 +97,10 @@ namespace Mindream.Components.Timers
         }
 
         /// <summary>
-        /// Gets or sets the time elapsed.
+        ///     Gets or sets the time elapsed.
         /// </summary>
         /// <value>
-        /// The time elapsed.
+        ///     The time elapsed.
         /// </value>
         [Out]
         public TimeSpan TimeElapsed
@@ -110,10 +110,10 @@ namespace Mindream.Components.Timers
         }
 
         /// <summary>
-        /// Gets or sets the delta time.
+        ///     Gets or sets the delta time.
         /// </summary>
         /// <value>
-        /// The delta time.
+        ///     The delta time.
         /// </value>
         [Out]
         public TimeSpan DeltaTime
@@ -123,10 +123,10 @@ namespace Mindream.Components.Timers
         }
 
         /// <summary>
-        /// Gets or sets the index of the tick.
+        ///     Gets or sets the index of the tick.
         /// </summary>
         /// <value>
-        /// The index of the tick.
+        ///     The index of the tick.
         /// </value>
         [Out]
         public int TickIndex
@@ -236,9 +236,9 @@ namespace Mindream.Components.Timers
             {
                 this.DeltaTime = this.UpdatePeriod;
                 this.TickIndex++;
-                double lTotalMilliseconds = this.TickIndex*this.UpdatePeriod.TotalMilliseconds;
+                var lTotalMilliseconds = this.TickIndex*this.UpdatePeriod.TotalMilliseconds;
                 this.AbsoluteDate = this.InitialDate.AddMilliseconds(lTotalMilliseconds);
-                this.TimeElapsed = new TimeSpan(0, 0, 0, 0, (int)lTotalMilliseconds);
+                this.TimeElapsed = new TimeSpan(0, 0, 0, 0, (int) lTotalMilliseconds);
                 if (this.Ticked != null)
                 {
                     this.Ticked();

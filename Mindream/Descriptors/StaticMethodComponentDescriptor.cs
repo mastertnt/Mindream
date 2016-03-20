@@ -19,8 +19,7 @@ namespace Mindream.Descriptors
         ///     Initializes a new instance of the <see cref="StaticMethodComponent" /> class.
         /// </summary>
         /// <param name="pMethod">The method to introspect.</param>
-        /// <param name="pRegistry">The descriptor registry for dynamic type.</param>
-        public StaticMethodComponentDescriptor(MethodInfo pMethod, ComponentDescriptorRegistry pRegistry)
+        public StaticMethodComponentDescriptor(MethodInfo pMethod)
         {
             this.Method = pMethod;
 
@@ -42,6 +41,7 @@ namespace Mindream.Descriptors
                 this.mOutputs.Add(new BaseComponentMemberInfo("return", this.Method.ReturnType));
             }
 
+            // ReSharper disable once VirtualMemberCallInContructor
             this.Results.Add(new GenericReturnInfo("End"));
         }
 

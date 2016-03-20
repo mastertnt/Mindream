@@ -77,16 +77,16 @@ namespace Mindream.Descriptors
         public override IComponent Create()
         {
             AComponent lComponent;
-            if (typeof(ASingletonFunctionComponent).IsAssignableFrom(this.Type))
+            if (typeof (ASingletonFunctionComponent).IsAssignableFrom(this.Type))
             {
-                PropertyInfo lPropertyInfo = this.Type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+                var lPropertyInfo = this.Type.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
                 lComponent = (AComponent) lPropertyInfo.GetValue(null, null);
             }
             else
             {
                 lComponent = Activator.CreateInstance(this.Type) as AComponent;
             }
-             
+
             lComponent.Initialize(this);
             return lComponent;
         }
