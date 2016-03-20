@@ -83,7 +83,7 @@ namespace Mindream
                 lAttributes = lMethod.GetCustomAttributes(typeof (StaticMethodComponentAttribute), false);
                 if (lAttributes.Any())
                 {
-                    this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod, this));
+                    this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod));
                 }
             }
         }
