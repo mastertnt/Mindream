@@ -79,6 +79,9 @@ namespace Mindream.WPF.Components.Inputs
 
         #region Methods
 
+        /// <summary>
+        /// This method is called when the component is initialized.
+        /// </summary>
         protected override void ComponentInitilialized()
         {
             base.ComponentInitilialized();

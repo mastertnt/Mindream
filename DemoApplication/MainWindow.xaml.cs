@@ -32,7 +32,7 @@ namespace DemoApplication
             var lComponentDescriptorRegistry = new ComponentDescriptorRegistry();
             lComponentDescriptorRegistry.FindAllDescriptors();
             this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
-
+            this.mGraph.SelectionChanged += this.OnSelectionChanged;
             this.NewProject(null);
             Instance = this;
             Mindream.WPF.Components.Inputs.Keyboard.EventNotifier = this;
@@ -212,6 +212,7 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void RemoveClicked(object pSender, RoutedEventArgs pEventArgs)
         {
+
         }
 
         /// <summary>
@@ -254,6 +255,32 @@ namespace DemoApplication
         }
 
         /// <summary>
+        ///     Saves the clicked.
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void CloseClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
+            this.mGraphViewModel.ConnectionAdded -= this.OnConnectionAdded;
+            this.mGraphViewModel = null;
+            this.mGraph.DataContext = null;
+            this.mCallGraph = null;
+        }
+
+        /// <summary>
+        ///     Saves the clicked.
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void CollectClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.WaitForFullGCComplete();
+            GC.Collect();
+        }
+
+        /// <summary>
         ///     News the project.
         /// </summary>
         private void NewProject(MethodCallGraph pCallGraph)
@@ -269,9 +296,8 @@ namespace DemoApplication
 
             this.mGraphViewModel = new CallGraphViewModel(this.mCallGraph);
             this.mGraphViewModel.ConnectionAdded += this.OnConnectionAdded;
-            this.mGraph.SelectionChanged += this.OnSelectionChanged;
+           
             this.mGraph.DataContext = this.mGraphViewModel;
-            this.mGraphViewModel.Initialize();
             this.mSelectedViewModel = null;
         }
 

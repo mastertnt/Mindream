@@ -1,4 +1,5 @@
-﻿using System.Collections.Specialized;
+﻿using System;
+using System.Collections.Specialized;
 using System.Linq;
 using Mindream.CallGraph;
 using Mindream.XGraph.Model;
@@ -11,7 +12,17 @@ namespace Mindream.XGraph.GraphViewModels
     /// </summary>
     public class CallGraphViewModel : GraphViewModel
     {
-        private MethodCallGraph mGraph;
+        #region Fields
+        
+        /// <summary>
+        /// This field stores a graph node.
+        /// </summary>
+        // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
+        private readonly MethodCallGraph mGraph;
+
+        #endregion // Fields.
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CallGraphViewModel"/> class.
@@ -21,6 +32,7 @@ namespace Mindream.XGraph.GraphViewModels
         {
             this.mGraph = pGraph;
             pGraph.CallNodes.CollectionChanged += this.OnCallNodesChanged;
+
             // Create call nodes.
             foreach (var lCallNode in this.mGraph.CallNodes)
             {
@@ -96,13 +108,9 @@ namespace Mindream.XGraph.GraphViewModels
             }
         }
 
-        /// <summary>
-        /// Initializes this instance.
-        /// </summary>
-        public void Initialize()
-        {
-            
-        }
+        #endregion // Constructors.
+
+        #region Methods
 
         /// <summary>
         /// Called when [call nodes changed].
@@ -126,11 +134,12 @@ namespace Mindream.XGraph.GraphViewModels
 
                 case NotifyCollectionChangedAction.Remove:
                 {
-
+                    
                 }
                 break;
             }
         }
 
+        #endregion // Methods.
     }
 }
