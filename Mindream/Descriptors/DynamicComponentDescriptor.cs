@@ -10,6 +10,10 @@ using XSystem;
 
 namespace Mindream.Descriptors
 {
+    /// <summary>
+    /// This class represents a dynamic component descriptor.
+    /// </summary>
+    /// <seealso cref="Mindream.Descriptors.ABaseComponentDescriptor" />
     public class DynamicComponentDescriptor : ABaseComponentDescriptor
     {
         #region Constructors

@@ -2,6 +2,10 @@
 
 namespace Mindream.Components
 {
+    /// <summary>
+    /// This class represents a simple method (C#).
+    /// </summary>
+    /// <seealso cref="Mindream.Components.AFunctionComponent" />
     public abstract class AMethodComponent : AFunctionComponent
     {
         #region Events

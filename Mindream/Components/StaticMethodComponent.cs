@@ -83,7 +83,6 @@ namespace Mindream.Components
             }
         }
 
-
         /// <summary>
         ///     This method is called when the component is started.
         /// </summary>

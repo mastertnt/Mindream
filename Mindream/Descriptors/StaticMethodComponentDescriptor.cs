@@ -29,7 +29,6 @@ namespace Mindream.Descriptors
                 this.mInputs.Add(new ParameterMemberInfo(lInputParameter));
             }
 
-
             var lOutputParameters = this.Method.GetParameters().Where(pParameter => pParameter.IsOut || (pParameter.IsOut == false && pParameter.ParameterType.IsByRef));
             foreach (var lOutputParameter in lOutputParameters)
             {
