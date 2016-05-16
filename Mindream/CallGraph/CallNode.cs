@@ -78,6 +78,30 @@ namespace Mindream.CallGraph
         }
 
         /// <summary>
+        /// Suspends this instance.
+        /// </summary>
+        public void Suspend()
+        {
+            this.Component.Suspend();
+        }
+
+        /// <summary>
+        /// Resumes this instance.
+        /// </summary>
+        public void Resume()
+        {
+            this.Component.Resume();
+        }
+
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
+        public void Stop()
+        {
+            this.Component.Stop();
+        }
+
+        /// <summary>
         ///     Called when [component started].
         /// </summary>
         /// <param name="pComponent">The p component.</param>

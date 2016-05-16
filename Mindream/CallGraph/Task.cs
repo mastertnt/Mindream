@@ -1,20 +1,33 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Linq;
 
 namespace Mindream.CallGraph
 {
     /// <summary>
     /// </summary>
-    public class MethodCallGraph
+    public class Task
     {
+        #region Fields
+
+        /// <summary>
+        /// The list of entry nodes.
+        /// </summary>
+        private List<CallNode> mEntryNodes = new List<CallNode>(); 
+
+        #endregion // Fields.
+
         #region Constructors
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="MethodCallGraph" /> class.
+        ///     Initializes a new instance of the <see cref="Task" /> class.
         /// </summary>
-        public MethodCallGraph()
+        internal Task()
         {
             this.CallNodes = new ObservableCollection<CallNode>();
+            this.CallNodes.CollectionChanged += this.OnCallNodesOnCollectionChanged;
         }
 
         #endregion // Constructors
@@ -31,6 +44,20 @@ namespace Mindream.CallGraph
         {
             get;
             set;
+        }
+
+        /// <summary>
+        /// Gets or sets the entry nodes.
+        /// </summary>
+        /// <value>
+        /// The entry nodes.
+        /// </value>
+        internal CallNode EntryNode
+        {
+            get
+            {
+                return this.mEntryNodes.FirstOrDefault();
+            }
         }
 
         #endregion // Properties
@@ -50,6 +77,7 @@ namespace Mindream.CallGraph
                 pSource.NodeToCall[pResultName] = new List<CallNode>();
             }
             pSource.NodeToCall[pResultName].Add(pTarget);
+            this.mEntryNodes.Remove(pTarget);
         }
 
         /// <summary>
@@ -80,6 +108,41 @@ namespace Mindream.CallGraph
                 pSource.NodeParameters[pTarget][pSourceName] = new List<string>();
             }
             pSource.NodeParameters[pTarget][pSourceName].Add(pTargetName);
+        }
+
+        /// <summary>
+        /// Called when the call nodes collection has been modified.
+        /// </summary>
+        /// <param name="pSender">The sender.</param>
+        /// <param name="pNotifyCollectionChangedEventArgs">The <see cref="NotifyCollectionChangedEventArgs"/> instance containing the event data.</param>
+        private void OnCallNodesOnCollectionChanged(object pSender, NotifyCollectionChangedEventArgs pNotifyCollectionChangedEventArgs)
+        {
+            switch (pNotifyCollectionChangedEventArgs.Action)
+            {
+                case NotifyCollectionChangedAction.Add:
+                {
+                    foreach (var lNewItem in pNotifyCollectionChangedEventArgs.NewItems)
+                    {
+                        this.mEntryNodes.Add(lNewItem as CallNode);
+                    }
+                }
+                break;
+
+                case NotifyCollectionChangedAction.Remove:
+                {
+                    foreach (var lOldItem in pNotifyCollectionChangedEventArgs.OldItems)
+                    {
+                        this.mEntryNodes.Remove(lOldItem as CallNode);
+                    }
+                }
+                break;
+
+                case NotifyCollectionChangedAction.Reset:
+                {
+                    this.mEntryNodes.Clear();
+                }
+                break;
+            }
         }
 
         #endregion // Methods.

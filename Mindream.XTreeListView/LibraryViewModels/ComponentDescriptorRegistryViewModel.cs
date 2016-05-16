@@ -8,7 +8,7 @@ namespace Mindream.XTreeListView.LibraryViewModels
     /// <summary>
     /// This class is the root view model for the component descriptor registry.
     /// </summary>
-    public sealed class ComponentDescriptorRegistryViewModel : ARootHierarchicalItemViewModel<ComponentDescriptorRegistry>
+    public sealed class ComponentDescriptorRegistryViewModel : ARootHierarchicalItemViewModel<ComponentDescriptorRegistry>, IRootHierarchicalItemViewModel
     {
         #region Constructors
 

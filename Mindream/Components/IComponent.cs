@@ -36,6 +36,16 @@ namespace Mindream.Components
         event Action<IComponent> Started;
 
         /// <summary>
+        ///     This event is raised when the component is suspended.
+        /// </summary>
+        event Action<IComponent> Suspended;
+
+        /// <summary>
+        ///     This event is raised when the component is resumed.
+        /// </summary>
+        event Action<IComponent> Resumed;
+
+        /// <summary>
         ///     This event is raised when the component is stopped.
         /// </summary>
         event Action<IComponent> Stopped;
@@ -72,6 +82,16 @@ namespace Mindream.Components
         ///     This method is called to start the component.
         /// </summary>
         void Start();
+
+        /// <summary>
+        ///     This method is called to suspend the component.
+        /// </summary>
+        void Suspend();
+
+        /// <summary>
+        ///     This method is called to resume the component.
+        /// </summary>
+        void Resume();
 
         /// <summary>
         ///     This method is called to stop the component.

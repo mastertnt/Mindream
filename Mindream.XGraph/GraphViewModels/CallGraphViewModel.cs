@@ -18,7 +18,7 @@ namespace Mindream.XGraph.GraphViewModels
         /// This field stores a graph node.
         /// </summary>
         // ReSharper disable once PrivateFieldCanBeConvertedToLocalVariable
-        private readonly MethodCallGraph mGraph;
+        private readonly Task mGraph;
 
         #endregion // Fields.
 
@@ -28,7 +28,7 @@ namespace Mindream.XGraph.GraphViewModels
         /// Initializes a new instance of the <see cref="CallGraphViewModel"/> class.
         /// </summary>
         /// <param name="pGraph">The p graph.</param>
-        public CallGraphViewModel(MethodCallGraph pGraph)
+        public CallGraphViewModel(Task pGraph)
         {
             this.mGraph = pGraph;
             pGraph.CallNodes.CollectionChanged += this.OnCallNodesChanged;

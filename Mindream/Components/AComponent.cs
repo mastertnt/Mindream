@@ -83,6 +83,18 @@ namespace Mindream.Components
         #region Properties
 
         /// <summary>
+        /// Gets a value indicating whether this instance is suspended.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is suspended; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsSuspended
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         ///     Gets or sets the name of the result.
         /// </summary>
         /// <value>
@@ -147,6 +159,16 @@ namespace Mindream.Components
         public event Action<IComponent> Started;
 
         /// <summary>
+        ///     This event is raised when the component is suspended.
+        /// </summary>
+        public event Action<IComponent> Suspended;
+
+        /// <summary>
+        ///     This event is raised when the component is resumed.
+        /// </summary>
+        public event Action<IComponent> Resumed;
+
+        /// <summary>
         ///     This event is raised when the component is stopped.
         /// </summary>
         public event Action<IComponent> Stopped;
@@ -203,6 +225,7 @@ namespace Mindream.Components
         /// </summary>
         public void Start()
         {
+            this.IsSuspended = false;
             if (this.Started != null)
             {
                 this.Started(this);
@@ -222,10 +245,35 @@ namespace Mindream.Components
         }
 
         /// <summary>
+        /// This method is called to suspend the component.
+        /// </summary>
+        public void Suspend()
+        {
+            this.IsSuspended = true;
+            if (this.Suspended != null)
+            {
+                this.Suspended(this);
+            }
+        }
+
+        /// <summary>
+        /// This method is called to resume the component.
+        /// </summary>
+        public void Resume()
+        {
+            this.IsSuspended = false;
+            if (this.Resumed != null)
+            {
+                this.Resumed(this);
+            }
+        }
+
+        /// <summary>
         ///     This method is called to stop the component.
         /// </summary>
         public void Stop()
         {
+            this.IsSuspended = false;
             this.ComponentStopped();
             if (this.Stopped != null)
             {

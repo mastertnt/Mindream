@@ -59,6 +59,7 @@
     <Compile Include="Attributes\InOutAttribute.cs" />
     <Compile Include="Attributes\OutAttribute.cs" />
     <Compile Include="Attributes\ParameterAttribute.cs" />
+    <Compile Include="TaskManager.cs" />
     <Compile Include="Components\AFunctionComponent.cs" />
     <Compile Include="Components\AMethodComponent.cs" />
     <Compile Include="Components\Debugs\LogFile.cs" />
@@ -93,7 +94,7 @@
     <Compile Include="Descriptors\FunctionComponentDescriptor.cs" />
     <Compile Include="Components\IComponent.cs" />
     <Compile Include="Descriptors\IComponentDescriptor.cs" />
-    <Compile Include="CallGraph\MethodCallGraph.cs">
+    <Compile Include="CallGraph\Task.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

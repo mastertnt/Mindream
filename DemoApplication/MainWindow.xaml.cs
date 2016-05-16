@@ -22,6 +22,47 @@ namespace DemoApplication
     /// </summary>
     public partial class MainWindow
     {
+        #region Fields
+
+        /// <summary>
+        ///     This field stores the position where a drag is started.
+        /// </summary>
+        private Point mStartPoint;
+
+        /// <summary>
+        ///     This field stores the position where a drop is done.
+        /// </summary>
+        private Point mDropPoint;
+
+        /// <summary>
+        ///     This field stores the call graph.
+        /// </summary>
+        private Task mCallGraph;
+
+        /// <summary>
+        ///     This field stores the graph view model.
+        /// </summary>
+        private CallGraphViewModel mGraphViewModel;
+
+        /// <summary>
+        ///     This field stores the selected view model
+        /// </summary>
+        private CallNodeViewModel mSelectedViewModel;
+
+
+        /// <summary>
+        ///     Gets the instance.
+        /// </summary>
+        public static MainWindow Instance
+        {
+            get;
+            private set;
+        }
+
+        #endregion // Fields.
+
+        #region Constructors
+
         /// <summary>
         ///     Initializes a new instance of the <see cref="MainWindow" /> class.
         /// </summary>
@@ -33,10 +74,14 @@ namespace DemoApplication
             lComponentDescriptorRegistry.FindAllDescriptors();
             this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
             this.mGraph.SelectionChanged += this.OnSelectionChanged;
-            this.NewProject(null);
+            this.NewProject();
             Instance = this;
             Mindream.WPF.Components.Inputs.Keyboard.EventNotifier = this;
         }
+
+        #endregion // Constructors.
+
+        #region Methods
 
         /// <summary>
         ///     Called when [drop].
@@ -183,7 +228,7 @@ namespace DemoApplication
         }
 
         /// <summary>
-        ///     Handles the Click event of the start button.
+        ///     Handles the click event on "Start".
         /// </summary>
         /// <param name="pSender">The event sender.</param>
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
@@ -196,13 +241,13 @@ namespace DemoApplication
         }
 
         /// <summary>
-        ///     Handles the Click event of the start button.
+        ///     Handles the click event on "New project".
         /// </summary>
         /// <param name="pSender">The event sender.</param>
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void NewClicked(object pSender, RoutedEventArgs pEventArgs)
         {
-            this.NewProject(null);
+            this.NewProject();
         }
 
         /// <summary>
@@ -230,8 +275,8 @@ namespace DemoApplication
             if (lDialog.ShowDialog() == true)
             {
                 var lSerializer = new XSerializer();
-                var lCallGraph = lSerializer.Deserialize(lDialog.FileName) as MethodCallGraph;
-                this.NewProject(lCallGraph);
+                var lCallGraph = lSerializer.Deserialize(lDialog.FileName) as Task;
+                this.NewProject();
             }
         }
 
@@ -283,61 +328,12 @@ namespace DemoApplication
         /// <summary>
         ///     News the project.
         /// </summary>
-        private void NewProject(MethodCallGraph pCallGraph)
+        private void NewProject()
         {
-            if (pCallGraph == null)
-            {
-                this.mCallGraph = new MethodCallGraph();
-            }
-            else
-            {
-                this.mCallGraph = pCallGraph;
-            }
-
-            this.mGraphViewModel = new CallGraphViewModel(this.mCallGraph);
-            this.mGraphViewModel.ConnectionAdded += this.OnConnectionAdded;
-           
-            this.mGraph.DataContext = this.mGraphViewModel;
-            this.mSelectedViewModel = null;
+            TaskManager.Instance.ClearAll();
+            TaskManager.Instance.CreateTask();
         }
 
-        #region Fields
-
-        /// <summary>
-        ///     This field stores the position where a drag is started.
-        /// </summary>
-        private Point mStartPoint;
-
-        /// <summary>
-        ///     This field stores the position where a drop is done.
-        /// </summary>
-        private Point mDropPoint;
-
-        /// <summary>
-        ///     This field stores the call graph.
-        /// </summary>
-        private MethodCallGraph mCallGraph;
-
-        /// <summary>
-        ///     This field stores the graph view model.
-        /// </summary>
-        private CallGraphViewModel mGraphViewModel;
-
-        /// <summary>
-        ///     This field stores the selected view model
-        /// </summary>
-        private CallNodeViewModel mSelectedViewModel;
-
-
-        /// <summary>
-        ///     Gets the instance.
-        /// </summary>
-        public static MainWindow Instance
-        {
-            get;
-            private set;
-        }
-
-        #endregion // Fields.
+        #endregion // Methods.
     }
 }
