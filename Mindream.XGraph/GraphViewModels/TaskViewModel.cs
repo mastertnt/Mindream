@@ -10,7 +10,7 @@ namespace Mindream.XGraph.GraphViewModels
     /// <summary>
     /// This view model represents a call graph.
     /// </summary>
-    public class CallGraphViewModel : GraphViewModel
+    public class TaskViewModel : GraphViewModel
     {
         #region Fields
         
@@ -25,10 +25,10 @@ namespace Mindream.XGraph.GraphViewModels
         #region Constructors
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CallGraphViewModel"/> class.
+        /// Initializes a new instance of the <see cref="TaskViewModel"/> class.
         /// </summary>
         /// <param name="pGraph">The p graph.</param>
-        public CallGraphViewModel(Task pGraph)
+        public TaskViewModel(Task pGraph)
         {
             this.mGraph = pGraph;
             pGraph.CallNodes.CollectionChanged += this.OnCallNodesChanged;

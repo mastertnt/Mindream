@@ -37,12 +37,12 @@ namespace DemoApplication
         /// <summary>
         ///     This field stores the call graph.
         /// </summary>
-        private Task mCallGraph;
+        private Task mCurrentTask;
 
         /// <summary>
         ///     This field stores the graph view model.
         /// </summary>
-        private CallGraphViewModel mGraphViewModel;
+        private TaskViewModel mTaskViewModel;
 
         /// <summary>
         ///     This field stores the selected view model
@@ -118,8 +118,8 @@ namespace DemoApplication
                 if (lDescriptor != null && pSender is IInputElement)
                 {
                     this.mDropPoint = pEventArgs.GetPosition((IInputElement) pSender);
-                    this.mGraphViewModel.NodeAdded += this.OnNodeAdded;
-                    this.mCallGraph.CallNodes.Add(new LocatableCallNode {Component = lDescriptor.Create()});
+                    this.mTaskViewModel.NodeAdded += this.OnNodeAdded;
+                    this.mCurrentTask.CallNodes.Add(new LocatableCallNode {Component = lDescriptor.Create()});
                 }
             }
         }
@@ -141,7 +141,7 @@ namespace DemoApplication
             pEventArgs.X = lGraphPos.X;
             pEventArgs.Y = lGraphPos.Y;
 
-            this.mGraphViewModel.NodeAdded -= this.OnNodeAdded;
+            this.mTaskViewModel.NodeAdded -= this.OnNodeAdded;
         }
 
         /// <summary>
@@ -153,20 +153,20 @@ namespace DemoApplication
         private void OnConnectionAdded(GraphViewModel pSender, ConnectionViewModel pEventArgs)
         {
             // Look for the input node.
-            var lInputViewModel = this.mGraphViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Input)) as CallNodeViewModel;
+            var lInputViewModel = this.mTaskViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Input)) as CallNodeViewModel;
 
             // Look for the ouput node.
-            var lOutputViewModel = this.mGraphViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Output)) as CallNodeViewModel;
+            var lOutputViewModel = this.mTaskViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Output)) as CallNodeViewModel;
 
             // Create the connection in call graph.
             if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is PortStartViewModel && pEventArgs.Output is PortEndedViewModel)
             {
-                this.mCallGraph.ConnectCall(lOutputViewModel.Node, lInputViewModel.Node, pEventArgs.Output.DisplayString);
+                this.mCurrentTask.ConnectCall(lOutputViewModel.Node, lInputViewModel.Node, pEventArgs.Output.DisplayString);
             }
 
             if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is InputParameterViewModel && pEventArgs.Output is OutputParameterViewModel)
             {
-                this.mCallGraph.ConnectParameter(lOutputViewModel.Node, pEventArgs.Output.DisplayString, lInputViewModel.Node, pEventArgs.Input.DisplayString);
+                this.mCurrentTask.ConnectParameter(lOutputViewModel.Node, pEventArgs.Output.DisplayString, lInputViewModel.Node, pEventArgs.Input.DisplayString);
             }
         }
 
@@ -295,7 +295,7 @@ namespace DemoApplication
             if (lDialog.ShowDialog() == true)
             {
                 var lSerializer = new XSerializer();
-                lSerializer.Serialize(this.mCallGraph, lDialog.FileName);
+                lSerializer.Serialize(this.mCurrentTask, lDialog.FileName);
             }
         }
 
@@ -306,10 +306,10 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void CloseClicked(object pSender, RoutedEventArgs pEventArgs)
         {
-            this.mGraphViewModel.ConnectionAdded -= this.OnConnectionAdded;
-            this.mGraphViewModel = null;
+            this.mTaskViewModel.ConnectionAdded -= this.OnConnectionAdded;
+            this.mTaskViewModel = null;
             this.mGraph.DataContext = null;
-            this.mCallGraph = null;
+            this.mCurrentTask = null;
         }
 
         /// <summary>
@@ -331,7 +331,9 @@ namespace DemoApplication
         private void NewProject()
         {
             TaskManager.Instance.ClearAll();
-            TaskManager.Instance.CreateTask();
+            this.mCurrentTask = TaskManager.Instance.CreateTask();
+            this.mTaskViewModel = new TaskViewModel(this.mCurrentTask);
+            this.mGraph.DataContext = this.mTaskViewModel;
         }
 
         #endregion // Methods.

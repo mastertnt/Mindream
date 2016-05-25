@@ -15,7 +15,7 @@ namespace Mindream.CallGraph
         /// <summary>
         /// The list of entry nodes.
         /// </summary>
-        private List<CallNode> mEntryNodes = new List<CallNode>(); 
+        private readonly List<CallNode> mEntryNodes = new List<CallNode>(); 
 
         #endregion // Fields.
 

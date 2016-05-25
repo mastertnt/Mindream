@@ -44,7 +44,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GraphViewModels\CallGraphViewModel.cs" />
+    <Compile Include="GraphViewModels\TaskViewModel.cs" />
     <Compile Include="GraphViewModels\CallNodeViewModel.cs" />
     <Compile Include="GraphViewModels\InputParameterViewModel.cs" />
     <Compile Include="GraphViewModels\OutputParameterViewModel.cs" />
