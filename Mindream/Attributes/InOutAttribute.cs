@@ -1,5 +1,8 @@
 ﻿namespace Mindream.Attributes
 {
+    /// <summary>
+    /// Varying attribute class definition.
+    /// </summary>
     public class InOutAttribute : ParameterAttribute
     {
         /// <summary>

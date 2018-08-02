@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using DemoApplication.Models;
-using Mindream;
 using Mindream.Attributes;
 using Mindream.Components;
 using Mindream.Descriptors;
 
 namespace DemoApplication.Components
 {
+    /// <summary>
+    /// A track array generator just for debug.
+    /// </summary>
+    /// <seealso cref="Mindream.Components.AComponent" />
     [FunctionComponent("Generators")]
-    public class TrackArray : AFunctionComponent
+    public class TrackArray : AComponent
     {
         #region Fields
 
@@ -43,6 +46,12 @@ namespace DemoApplication.Components
             }
         }
 
+        /// <summary>
+        /// Gets the last track.
+        /// </summary>
+        /// <value>
+        /// The last track.
+        /// </value>
         [Out]
         public Track LastTrack
         {
@@ -54,18 +63,33 @@ namespace DemoApplication.Components
 
         #region Events
 
+        /// <summary>
+        /// Occurs when [track removed].
+        /// </summary>
         public event ComponentReturnDelegate TrackRemoved;
 
+        /// <summary>
+        /// Occurs when [track updated].
+        /// </summary>
         public event ComponentReturnDelegate TrackUpdated;
 
+        /// <summary>
+        /// Occurs when [track added].
+        /// </summary>
         public event ComponentReturnDelegate TrackAdded;
 
+        /// <summary>
+        /// Occurs when [ended].
+        /// </summary>
         public event ComponentReturnDelegate Ended;
 
         #endregion // Events.
 
         #region Methods
 
+        /// <summary>
+        /// This method is called when the component is initialized.
+        /// </summary>
         protected override void ComponentInitilialized()
         {
             this.mIndex = 0;
@@ -75,7 +99,8 @@ namespace DemoApplication.Components
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
         {
             this.mRandom = new Random(DateTime.Now.Millisecond);
             var lAction = this.mRandom.Next(0, 2);
@@ -180,17 +205,16 @@ namespace DemoApplication.Components
         }
 
         /// <summary>
-        ///     Sets the track value.
+        /// Sets the track value.
         /// </summary>
-        /// <param name="pTrack">The p track.</param>
+        /// <param name="pTrack">The track.</param>
+        /// <param name="pPreviousTrack">The previous track.</param>
         private void SetTrackValue(Track pTrack, Track pPreviousTrack)
         {
             var lPosition = new GeoPosition(0, 0, 0);
-            double lHeading = 0;
             if (pPreviousTrack != null)
             {
                 lPosition = pPreviousTrack.Position;
-                lHeading = pPreviousTrack.Heading;
             }
 
             pTrack.Position.Latitude = lPosition.Latitude + 1;

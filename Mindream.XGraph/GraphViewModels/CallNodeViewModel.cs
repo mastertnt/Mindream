@@ -1,6 +1,9 @@
 ﻿using Mindream.CallGraph;
+using Mindream.Components;
 using Mindream.XGraph.Model;
+using System.Windows.Media;
 using XGraph.ViewModels;
+using System.Linq;
 
 namespace Mindream.XGraph.GraphViewModels
 {
@@ -14,12 +17,10 @@ namespace Mindream.XGraph.GraphViewModels
         /// <summary>
         /// Gets the node.
         /// </summary>
-        /// <value>
-        /// The node.
-        /// </value>
         public CallNode Node
         {
-            get; private set;
+            get;
+            private set;
         }
 
         /// <summary>
@@ -29,15 +30,24 @@ namespace Mindream.XGraph.GraphViewModels
         {
             get
             {
+                LocatableCallNode lNode = this.Node as LocatableCallNode;
+                if (lNode != null)
+                {
+                    return lNode.X;
+                }
+
                 return base.X;
             }
             set
             {
-                base.X = value;
-                var lNode = this.Node as LocatableCallNode;
+                LocatableCallNode lNode = this.Node as LocatableCallNode;
                 if (lNode != null)
                 {
                     lNode.X = value;
+                }
+                else
+                {
+                    base.X = value;
                 }
             }
         }
@@ -49,20 +59,72 @@ namespace Mindream.XGraph.GraphViewModels
         {
             get
             {
+                LocatableCallNode lNode = this.Node as LocatableCallNode;
+                if (lNode != null)
+                {
+                    return lNode.Y;
+                }
+
                 return base.Y;
             }
             set
             {
-                base.Y = value;
-                var lNode = this.Node as LocatableCallNode;
+                LocatableCallNode lNode = this.Node as LocatableCallNode;
                 if (lNode != null)
                 {
                     lNode.Y = value;
                 }
+                else
+                {
+                    base.Y = value;
+                }
             }
         }
 
+        /// <summary>
+        /// Gets or sets the selection.
+        /// </summary>
+        public virtual object Selection
+        {
+            get
+            {
+                return this.Node.Component;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the display string.
+        /// </summary>
+        public override string DisplayString
+        {
+            get
+            {
+                return this.Node.Component.Descriptor.Id;
+            }
+            set
+            {
+                // Cannot be modified.
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets the description.
+        /// </summary>
+        public override string Description
+        {
+            get
+            {
+                return this.Node.Component.Descriptor.Id;
+            }
+            set
+            {
+                // Cannot be modified.
+            }
+        }       
+
         #endregion // Properties
+
+        #region Constructors
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CallNodeViewModel"/> class.
@@ -70,7 +132,37 @@ namespace Mindream.XGraph.GraphViewModels
         public CallNodeViewModel(CallNode pNode)
         {
             this.Node = pNode;
-            this.Ports.Add(new PortStartViewModel());
+            this.Node.Component.Started += this.OnComponentStarted;
+            this.Node.Component.Stopped += this.OnComponentStopped;
+            this.Node.Component.Aborted += this.OnComponentStopped;
+            this.InitializePorts();
+        }
+
+        #endregion // Constructors.
+
+        #region Methods
+
+        /// <summary>
+        /// Initializes the ports.
+        /// </summary>
+        protected virtual void InitializePorts()
+        {
+            if (this.Node.Component.Descriptor.IsOperator == false)
+            {
+                if (this.Node.Component.Descriptor.AdditionalStartPorts.Count != 0)
+                {
+                    foreach (string lPortName in this.Node.Component.Descriptor.AdditionalStartPorts)
+                    {
+                        this.Ports.Add(new PortStartViewModel(lPortName, lPortName));
+                    }
+                }
+                else
+                {
+                    // Add the defaut port.
+                    this.Ports.Add(new PortStartViewModel("Start", "Start"));
+                }
+
+            }
 
             foreach (var lResult in this.Node.Component.Descriptor.Results)
             {
@@ -89,39 +181,33 @@ namespace Mindream.XGraph.GraphViewModels
         }
 
         /// <summary>
-        /// Gets or sets the display string.
+        /// Called when [component started].
         /// </summary>
-        /// <value>
-        /// The display string.
-        /// </value>
-        public override string DisplayString
+        /// <param name="pComponent">The component.</param>
+        /// <param name="pPortName">The name of the execution port to start</param>
+        private void OnComponentStarted(IComponent pComponent, string pPortName)
         {
-            get
-            {
-                return this.Node.Component.Descriptor.Id;
-            }
-            set
-            {
-                // Cannot be modified.
-            }
+            this.IsActive = true;
+            this.OnPropertyChanged("IsActive");
         }
 
         /// <summary>
-        /// Gets or sets the description.
+        /// Called when [component stopped].
         /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public override string Description
+        /// <param name="pComponent">The component.</param>
+        private void OnComponentStopped(IComponent pComponent)
         {
-            get
-            {
-                return this.Node.Component.Descriptor.Id;
-            }
-            set
-            {
-                // Cannot be modified.
-            }
+            this.IsActive = false;
+            this.OnPropertyChanged("IsActive");
         }
+
+        /// <summary>
+        /// Callen when the call node must be validated (on connection or disconnection).
+        /// </summary>
+        protected internal virtual void Validate()
+        {
+        }
+
+        #endregion // Methods.
     }
 }

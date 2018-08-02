@@ -2,15 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using DemoApplication.Models;
-using Mindream;
 using Mindream.Attributes;
 using Mindream.Components;
 using Mindream.Descriptors;
 
 namespace DemoApplication.Components
 {
+    /// <summary>
+    /// A track array generator just for debug.
+    /// </summary>
+    /// <seealso cref="Mindream.Components.AComponent" />
     [FunctionComponent("Generators")]
-    public class RandomTracksGenerator : AFunctionComponent
+    public class RandomTracksGenerator : AComponent
     {
         #region Fields
 
@@ -41,8 +44,14 @@ namespace DemoApplication.Components
             }
         }
 
+        /// <summary>
+        /// Gets the las track.
+        /// </summary>
+        /// <value>
+        /// The las track.
+        /// </value>
         [Out]
-        public Track LasTrack
+        public Track LastTrack
         {
             get;
             private set;
@@ -52,12 +61,24 @@ namespace DemoApplication.Components
 
         #region Events
 
+        /// <summary>
+        /// Occurs when [track removed].
+        /// </summary>
         public event ComponentReturnDelegate TrackRemoved;
 
+        /// <summary>
+        /// Occurs when [track updated].
+        /// </summary>
         public event ComponentReturnDelegate TrackUpdated;
 
+        /// <summary>
+        /// Occurs when [track added].
+        /// </summary>
         public event ComponentReturnDelegate TrackAdded;
 
+        /// <summary>
+        /// Occurs when [ended].
+        /// </summary>
         public event ComponentReturnDelegate Ended;
 
         #endregion // Events.
@@ -67,7 +88,8 @@ namespace DemoApplication.Components
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
         {
             this.mRandom = new Random(DateTime.Now.Millisecond);
             var lAction = this.mRandom.Next(0, 2);
@@ -86,7 +108,7 @@ namespace DemoApplication.Components
                     if (this.Tracks.Any())
                     {
                         var lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
-                        this.LasTrack = this.Tracks[lIndex];
+                        this.LastTrack = this.Tracks[lIndex];
                         this.Tracks.RemoveAt(lIndex);
 
                         if (this.TrackRemoved != null)
@@ -109,7 +131,7 @@ namespace DemoApplication.Components
                         var lIndex = this.mRandom.Next(0, this.Tracks.Count - 1);
                         var lTrack = this.Tracks[lIndex];
                         this.SetTrackValue(lTrack);
-                        this.LasTrack = lTrack;
+                        this.LastTrack = lTrack;
                         if (this.TrackUpdated != null)
                         {
                             this.TrackUpdated();
@@ -135,7 +157,7 @@ namespace DemoApplication.Components
             lTrack.Id = this.mRandom.Next(1000);
             this.SetTrackValue(lTrack);
             this.Tracks.Add(lTrack);
-            this.LasTrack = lTrack;
+            this.LastTrack = lTrack;
             if (this.TrackAdded != null)
             {
                 this.TrackAdded();

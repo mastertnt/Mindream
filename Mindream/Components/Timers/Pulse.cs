@@ -6,7 +6,7 @@ using Mindream.Descriptors;
 namespace Mindream.Components.Timers
 {
     [FunctionComponent("Timing")]
-    public class Pulse : AFunctionComponent
+    public class Pulse : AComponent
     {
         #region Fields
 
@@ -26,6 +26,8 @@ namespace Mindream.Components.Timers
         }
 
         #endregion // Constructors.
+
+        #region Methods
 
         /// <summary>
         ///     This method is called when the component is started.
@@ -76,8 +78,16 @@ namespace Mindream.Components.Timers
             }
         }
 
+        #endregion // Methods.
+
         #region Inputs
 
+        /// <summary>
+        /// Gets or sets the update period.
+        /// </summary>
+        /// <value>
+        /// The update period.
+        /// </value>
         [In]
         public TimeSpan UpdatePeriod
         {
@@ -85,6 +95,12 @@ namespace Mindream.Components.Timers
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the duration.
+        /// </summary>
+        /// <value>
+        /// The duration.
+        /// </value>
         [In]
         public TimeSpan Duration
         {

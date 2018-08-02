@@ -1,5 +1,8 @@
 ﻿namespace Mindream.Attributes
 {
+    /// <summary>
+    /// Output attribute class definition.
+    /// </summary>
     public class OutAttribute : ParameterAttribute
     {
         /// <summary>

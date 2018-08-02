@@ -1,17 +1,29 @@
-﻿using System;
+﻿using Mindream.Attributes;
+using Mindream.Components;
+using Mindream.Descriptors;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reflection;
-using Mindream.Attributes;
-using Mindream.Descriptors;
+using XSystem;
 
 namespace Mindream
 {
     /// <summary>
-    ///     This class represents a simulation.
+    /// This class represents a simulation.
     /// </summary>
     public class ComponentDescriptorRegistry
     {
+        #region Fields
+
+        /// <summary>
+        /// This field stores the dynamic type in progress.
+        /// </summary>
+        private readonly HashSet<Type> mInProgress = new HashSet<Type>();
+
+        #endregion // Fields.
+
         #region Constructors
 
         /// <summary>
@@ -43,45 +55,48 @@ namespace Mindream
         #region Methods
 
         /// <summary>
-        ///     This method can be used to find all component descriptors for all loaded assemblies
+        /// Find all IComponent based types to get their corresponding component descriptors in cache.
         /// </summary>
         public void FindAllDescriptors()
         {
-            var lAssembliesLoaded = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (var lLoadedAssembly in lAssembliesLoaded)
+            IEnumerable<Type> lDescriptorTypes = typeof(IComponent).GetInheritedTypes();
+            foreach ( Type lDescriptorType in lDescriptorTypes )
             {
-                this.FindAllDescriptors(lLoadedAssembly);
+                this.FindAllDescriptors( lDescriptorType );
             }
         }
 
         /// <summary>
-        ///     This method can be used to find all component descriptors in a given assembly.
-        /// </summary>
-        public void FindAllDescriptors(Assembly pAssembly)
-        {
-            var lExportedTypes = pAssembly.GetExportedTypes();
-            foreach (var lExportedType in lExportedTypes)
-            {
-                // Try to locate [StaticMethodComponentAttribute] on methods. 
-                this.FindAllDescriptors(lExportedType);
-            }
-        }
-
-        /// <summary>
-        ///     This method can be used to find all component descriptors in a given assembly.
+        /// This method can be used to find all component descriptors in a given assembly.
         /// </summary>
         public void FindAllDescriptors(Type pType)
         {
-            var lAttributes = pType.GetCustomAttributes(typeof (FunctionComponentAttribute), false);
-            if (lAttributes.Any())
+            object[] lAttributes = pType.GetCustomAttributes(typeof (FunctionComponentAttribute), false);
+            if ( lAttributes.Length > 0 )
             {
-                this.Descriptors.Add(new FunctionComponentDescriptor(pType, this));
+                this.Descriptors.Add( new ComponentDescriptor( pType, this ) );
             }
 
-            foreach (var lMethod in pType.GetMethods())
+            lAttributes = pType.GetCustomAttributes(typeof(VariableComponentAttribute), false);
+            if (lAttributes.Length > 0)
             {
-                lAttributes = lMethod.GetCustomAttributes(typeof (StaticMethodComponentAttribute), false);
-                if (lAttributes.Any())
+                this.Descriptors.Add(new VariableComponentDescriptor(pType, this));
+            }
+        }
+
+        /// <summary>
+        /// Finds all static descriptors in a given type.
+        /// </summary>
+        /// <param name="pType">Type of the explore.</param>
+        public void FindStaticDescriptor(Type pType)
+        {
+            MethodInfo[] lMethods = pType.GetMethods();
+            int lMethodCount = lMethods.Length;
+            for (int lCurr = 0; lCurr < lMethodCount; lCurr++)
+            {
+                MethodInfo lMethod = lMethods[lCurr];
+                object[] lAttributes =  lMethod.GetCustomAttributes(typeof(StaticMethodComponentAttribute), false);
+                if (lAttributes.Length > 0)
                 {
                     this.Descriptors.Add(new StaticMethodComponentDescriptor(lMethod));
                 }
@@ -89,14 +104,16 @@ namespace Mindream
         }
 
         /// <summary>
-        ///     This method can be used to exponent a dynamic type used by a component.
+        /// This method can be used to exponent a dynamic type used by a component.
         /// </summary>
         public void ExposeDynamicType(Type pType)
         {
-            if (this.Descriptors.FirstOrDefault(pDesc => pDesc.Id == pType.Name) == null)
+            this.mInProgress.Add(pType);
+            if (this.Descriptors.FirstOrDefault(pDesc => pDesc.Id == pType.Name) == null && this.mInProgress.Contains(pType) == false)
             {
                 this.Descriptors.Add(new DynamicComponentDescriptor(pType, this));
             }
+            this.mInProgress.Remove(pType);
         }
 
         #endregion // Methods.

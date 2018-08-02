@@ -11,7 +11,7 @@ namespace DemoApplication.Components
     ///     The PrintString node serves as a simple way to display a string in the console.
     /// </summary>
     [FunctionComponent("Debug")]
-    public class PrintString : AFunctionComponent
+    public class PrintString : AComponent
     {
         #region Inputs
 
@@ -28,6 +28,12 @@ namespace DemoApplication.Components
             set;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether a new line must be printed.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [new line]; otherwise, <c>false</c>.
+        /// </value>
         [In]
         public bool NewLine
         {
@@ -51,7 +57,8 @@ namespace DemoApplication.Components
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
         {
             MainWindow.Instance.Dispatcher.Invoke(DispatcherPriority.Background, new Action(() => MainWindow.Instance.mOutput.Text += this.String));
             if (this.NewLine)

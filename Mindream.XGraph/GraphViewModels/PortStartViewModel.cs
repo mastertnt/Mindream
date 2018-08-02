@@ -12,10 +12,11 @@ namespace Mindream.XGraph.GraphViewModels
         /// <summary>
         /// Initializes a new instance of the <see cref="PortStartViewModel"/> class.
         /// </summary>
-        public PortStartViewModel()
+        public PortStartViewModel(string pId, string pDisplayString)
         {
             this.Direction = PortDirection.Input;
-            this.DisplayString = "Start";
+            this.DisplayString = pDisplayString;
+            this.Id = pId;
         }
 
         #endregion // Constructors.

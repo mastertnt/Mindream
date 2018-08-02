@@ -9,9 +9,9 @@ namespace DemoApplication.Components
     /// <summary>
     ///     This component computes the distance, heading and site between two geographical positions.
     /// </summary>
-    /// <seealso cref="Mindream.Components.AFunctionComponent" />
+    /// <seealso cref="Mindream.Components.AComponent" />
     [FunctionComponent("Geographic")]
-    public class DistanceHeadingSite : AFunctionComponent
+    public class DistanceHeadingSite : AComponent
     {
         #region Events
 
@@ -89,14 +89,28 @@ namespace DemoApplication.Components
             set;
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [second start].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [second start]; otherwise, <c>false</c>.
+        /// </value>
+        [Start("SecondStart")]
+        public bool SecondStart
+        {
+            get;
+            set;
+        }
+
         #endregion // Properties
 
         #region Methods
 
         /// <summary>
-        ///     This method is called to start the component.
+        /// This method is called to start the component.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
         {
             this.Heading = this.First.InitialBearingTo(this.Second);
             this.Distance = this.First.Distance2DTo(this.Second);

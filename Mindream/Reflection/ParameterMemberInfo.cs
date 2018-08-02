@@ -86,7 +86,18 @@ namespace Mindream.Reflection
         /// <param name="pNewValue">The value of component member info.</param>
         public void SetValue(IComponent pInstance, object pNewValue)
         {
-            pInstance[this.Name] = pNewValue;
+            if (pInstance is AComponent)
+            {
+                var lComponent = pInstance as AComponent;
+                if (pInstance.Descriptor.Inputs.Contains(this))
+                {
+                    lComponent.Inputs.SetValue(this.Name, pNewValue);
+                }
+                if (pInstance.Descriptor.Outputs.Contains(this))
+                {
+                    lComponent.Outputs.SetValue(this.Name, pNewValue);
+                }
+            }
         }
 
         /// <summary>
@@ -95,7 +106,19 @@ namespace Mindream.Reflection
         /// <returns>The value of the component member info.</returns>
         public object GetValue(IComponent pInstance)
         {
-            return pInstance[this.Name];
+            if (pInstance is AComponent)
+            {
+                var lComponent = pInstance as AComponent;
+                if (pInstance.Descriptor.Inputs.Contains(this))
+                {
+                    return lComponent.Inputs.GetValue(this.Name);
+                }
+                if (pInstance.Descriptor.Outputs.Contains(this))
+                {
+                    return lComponent.Outputs.GetValue(this.Name);
+                }
+            }
+            return null;
         }
 
         #endregion // Methods.

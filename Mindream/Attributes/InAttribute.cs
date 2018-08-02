@@ -1,5 +1,8 @@
 ﻿namespace Mindream.Attributes
 {
+    /// <summary>
+    /// Input attribute class definition.
+    /// </summary>
     public class InAttribute : ParameterAttribute
     {
         /// <summary>

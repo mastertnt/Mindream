@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using Mindream.Components;
+using XSystem;
 
 namespace Mindream.Reflection
 {
@@ -14,7 +15,7 @@ namespace Mindream.Reflection
         /// <summary>
         ///     The fields stores the underlying information.
         /// </summary>
-        private readonly PropertyInfo mUnderlyingInfo;
+        protected readonly PropertyInfo mUnderlyingInfo;
 
         #endregion // Fields.
 
@@ -84,18 +85,18 @@ namespace Mindream.Reflection
         /// </summary>
         /// <param name="pInstance">The instance to modify.</param>
         /// <param name="pNewValue">The value of component member info.</param>
-        public void SetValue(IComponent pInstance, object pNewValue)
+        public virtual void SetValue(IComponent pInstance, object pNewValue)
         {
-            this.mUnderlyingInfo.SetValue(pInstance, pNewValue, null);
+            pInstance.SetPropertyValue(this.Name, pNewValue);
         }
 
         /// <summary>
         ///     Gets the value.
         /// </summary>
         /// <returns>The value of the component member info.</returns>
-        public object GetValue(IComponent pInstance)
+        public virtual object GetValue(IComponent pInstance)
         {
-            return this.mUnderlyingInfo.GetValue(pInstance, null);
+            return pInstance.GetPropertyValue(this.Name);
         }
 
         #endregion // Methods.

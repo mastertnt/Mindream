@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Input;
 using Mindream.Attributes;
@@ -8,8 +9,11 @@ using XSerialization.Attributes;
 
 namespace Mindream.WPF.Components.Inputs
 {
+    /// <summary>
+    /// A component to catch all the keyboards.
+    /// </summary>
     [FunctionComponent("Input")]
-    public class Keyboard : AFunctionComponent
+    public class Keyboard : AUpdatableComponent
     {
         #region Fields
 
@@ -61,6 +65,12 @@ namespace Mindream.WPF.Components.Inputs
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the key pressed buffer.
+        /// </summary>
+        /// <value>
+        /// The key pressed buffer.
+        /// </value>
         [Out]
         public List<Key> KeyPressedBuffer
         {
@@ -68,6 +78,12 @@ namespace Mindream.WPF.Components.Inputs
             set;
         }
 
+        /// <summary>
+        /// Gets or sets the key released buffer.
+        /// </summary>
+        /// <value>
+        /// The key released buffer.
+        /// </value>
         [Out]
         public List<Key> KeyReleasedBuffer
         {
@@ -85,9 +101,6 @@ namespace Mindream.WPF.Components.Inputs
         protected override void ComponentInitilialized()
         {
             base.ComponentInitilialized();
-
-            EventNotifier.KeyDown += this.EventNotifierOnKeyDown;
-            EventNotifier.KeyUp += this.EventNotifierOnKeyUp;
             this.KeyPressedBuffer = new List<Key>();
             this.KeyReleasedBuffer = new List<Key>();
         }
@@ -123,7 +136,17 @@ namespace Mindream.WPF.Components.Inputs
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
+        {
+            EventNotifier.KeyDown += this.EventNotifierOnKeyDown;
+            EventNotifier.KeyUp += this.EventNotifierOnKeyUp;
+        }
+
+        /// <summary>
+        ///     This method is called to update the component.
+        /// </summary>
+        public override void Update(TimeSpan pDeltaTime)
         {
             if (this.mIsKeyDown)
             {
@@ -139,11 +162,9 @@ namespace Mindream.WPF.Components.Inputs
                     this.KeyReleased();
                 }
             }
-            this.mIsKeyUp = false;
-            this.mIsKeyDown = false;
 
-
-            this.Stop();
+            this.KeyReleasedBuffer.Clear();
+            this.KeyPressedBuffer.Clear();
         }
 
         /// <summary>
@@ -151,8 +172,8 @@ namespace Mindream.WPF.Components.Inputs
         /// </summary>
         protected override void ComponentStopped()
         {
-            this.KeyReleasedBuffer.Clear();
-            this.KeyPressedBuffer.Clear();
+            EventNotifier.KeyDown -= this.EventNotifierOnKeyDown;
+            EventNotifier.KeyUp -= this.EventNotifierOnKeyUp;
         }
 
         #endregion // Methods

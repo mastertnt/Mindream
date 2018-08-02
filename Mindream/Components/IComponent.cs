@@ -1,14 +1,27 @@
 ﻿using System;
 using Mindream.Descriptors;
+using XSerialization.Attributes;
+using System.ComponentModel;
 
 namespace Mindream.Components
 {
     /// <summary>
     ///     This interface describes a component instance.
     /// </summary>
-    public interface IComponent
+    public interface IComponent : IDisposable, INotifyPropertyChanged
     {
         #region Properties
+
+        /// <summary>
+        ///     Gets the state of the component.
+        /// </summary>
+        /// <value>
+        ///     The state.
+        /// </value>
+        TaskState State
+        {
+            get;
+        }
 
         /// <summary>
         ///     Gets the descriptor.
@@ -17,6 +30,28 @@ namespace Mindream.Components
         ///     The descriptor.
         /// </value>
         IComponentDescriptor Descriptor
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is updatable.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is updatable; otherwise, <c>false</c>.
+        /// </value>
+        bool IsUpdatable
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets the maximum start count.
+        /// </summary>
+        /// <value>
+        /// The maximum start count.
+        /// </value>
+        int MaxStartCount
         {
             get;
         }
@@ -32,8 +67,9 @@ namespace Mindream.Components
 
         /// <summary>
         ///     This event is raised when the component is started.
+        ///     If the value is empty or null, the default port is started.
         /// </summary>
-        event Action<IComponent> Started;
+        event Action<IComponent, string> Started;
 
         /// <summary>
         ///     This event is raised when the component is suspended.
@@ -49,6 +85,11 @@ namespace Mindream.Components
         ///     This event is raised when the component is stopped.
         /// </summary>
         event Action<IComponent> Stopped;
+
+        /// <summary>
+        ///     This event is raised when the component is aborted.
+        /// </summary>
+        event Action<IComponent> Aborted;
 
         /// <summary>
         ///     This event is raised when the component has returned.
@@ -81,12 +122,18 @@ namespace Mindream.Components
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        void Start();
+        /// <param name="pPortName">The name of the execution port to start</param>
+        void Start(string pPortName = "");
 
         /// <summary>
         ///     This method is called to suspend the component.
         /// </summary>
         void Suspend();
+
+        /// <summary>
+        ///     This method is called to update the component.
+        /// </summary>
+        void Update(TimeSpan pDeltaTime);
 
         /// <summary>
         ///     This method is called to resume the component.
@@ -97,6 +144,11 @@ namespace Mindream.Components
         ///     This method is called to stop the component.
         /// </summary>
         void Stop();
+
+        /// <summary>
+        ///     This method is called to abort the component.
+        /// </summary>
+        void Abort();
 
         #endregion // Methods.
     }

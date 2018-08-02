@@ -1,12 +1,22 @@
-﻿using System.Linq;
+﻿using System.ComponentModel;
+using System.Linq;
 using Mindream.Attributes;
 using XSystem;
 
 namespace Mindream.Components.Variables
 {
-    [FunctionComponent("Types")]
+    /// <summary>
+    /// A dynamic variable component.
+    /// </summary>
+    //[VariableComponent("Types")]
     public class Dynamic : AMethodComponent
     {
+        #region Fields
+
+        private object mValue;
+
+        #endregion // Fields.
+
         #region Inputs
 
         /// <summary>
@@ -15,11 +25,33 @@ namespace Mindream.Components.Variables
         /// <value>
         ///     The value.
         /// </value>
-        [InOut]
-        public object Value
+        [Out]
+        [Browsable(false)]
+        public object Get
         {
-            get;
-            set;
+            get
+            {
+                return this.mValue;
+            } 
+        }
+
+        /// <summary>
+        ///     Gets or sets the value.
+        /// </summary>
+        /// <value>
+        ///     The value.
+        /// </value>
+        [In]
+        public object Set
+        {
+            get
+            {
+                return this.mValue;
+            }
+            set
+            {
+                this.mValue = value;
+            }
         }
 
         #endregion // Inputs
@@ -29,7 +61,8 @@ namespace Mindream.Components.Variables
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
         {
             this.Stop();
         }
@@ -48,26 +81,26 @@ namespace Mindream.Components.Variables
             {
                 if (pParameterName == "Value")
                 {
-                    this.Value = value;
+                    this.Set = value;
                     return;
                 }
                 var lComponentMemberInfo = this.Descriptor.Inputs.FirstOrDefault(pParameter => pParameter.Name == pParameterName);
                 if (lComponentMemberInfo != null)
                 {
-                    this.Value.SetPropertyValue(lComponentMemberInfo.Name, value);
+                    this.Set.SetPropertyValue(lComponentMemberInfo.Name, value);
                 }
             }
             get
             {
                 if (pParameterName == "Value")
                 {
-                    return this.Value;
+                    return this.Get;
                 }
 
                 var lComponentMemberInfo = this.Descriptor.Outputs.FirstOrDefault(pParameter => pParameter.Name == pParameterName);
                 if (lComponentMemberInfo != null)
                 {
-                    return this.Value.GetPropertyValue(lComponentMemberInfo.Name);
+                    return this.Get.GetPropertyValue(lComponentMemberInfo.Name);
                 }
                 return null;
             }

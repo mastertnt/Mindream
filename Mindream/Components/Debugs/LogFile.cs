@@ -9,7 +9,7 @@ namespace Mindream.Components.Debugs
     ///     The PrintString node serves as a simple way to log a string into a file.
     /// </summary>
     [FunctionComponent("Debug")]
-    public class LogFile : AFunctionComponent
+    public class LogFile : AComponent
     {
         #region Events
 
@@ -57,7 +57,7 @@ namespace Mindream.Components.Debugs
         /// </summary>
         protected override void ComponentStarted()
         {
-            File.AppendAllText(this.Filename, this.String + Environment.NewLine);
+            File.AppendAllText(this.Filename, DateTime.Now.ToShortTimeString() + "=" + this.String + Environment.NewLine);
             this.Stop();
         }
 

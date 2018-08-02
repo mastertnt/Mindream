@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reflection;
 using Mindream.Attributes;
 using Mindream.Components;
 using Mindream.Reflection;
+using IComponent = Mindream.Components.IComponent;
 
 namespace Mindream.Descriptors
 {
@@ -13,6 +16,15 @@ namespace Mindream.Descriptors
     /// </summary>
     public class StaticMethodComponentDescriptor : ABaseComponentDescriptor
     {
+        #region Constants
+
+        /// <summary>
+        /// The constant which defines the result name.
+        /// </summary>
+        public const string RESULT_NAME = "result";
+
+        #endregion // Constants.
+
         #region Constructors
 
         /// <summary>
@@ -37,11 +49,12 @@ namespace Mindream.Descriptors
 
             if (this.Method.ReturnType != typeof (void))
             {
-                this.mOutputs.Add(new BaseComponentMemberInfo("return", this.Method.ReturnType));
+                this.mOutputs.Add(new UserComponentMemberInfo(RESULT_NAME, this.Method.ReturnType));
             }
-
-            // ReSharper disable once VirtualMemberCallInContructor
-            this.Results.Add(new GenericReturnInfo("End"));
+            else
+            {
+                this.Results.Add(new MethodReturnInfo("End"));
+            }
         }
 
         #endregion // Constructors.
@@ -127,6 +140,7 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The method.
         /// </value>
+        [Browsable(false)]
         public MethodInfo Method
         {
             get;
@@ -144,6 +158,36 @@ namespace Mindream.Descriptors
             get
             {
                 return this.Method.GetCustomAttributes(typeof (AComponentAttribute), true).FirstOrDefault() as AComponentAttribute;
+            }
+        }
+
+        /// <summary>
+        ///     Gets or sets the component type.
+        /// </summary>
+        /// <value>
+        ///     The component type (can be null)
+        /// </value>
+        public override Type ComponentType
+        {
+            get
+            {
+                return typeof (MethodInfo);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is an operator.
+        /// An operator has no start and end.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is an operator; otherwise, <c>false</c>.
+        /// </value>
+        [Browsable(false)]
+        public override bool IsOperator
+        {
+            get
+            {
+                return true;
             }
         }
 

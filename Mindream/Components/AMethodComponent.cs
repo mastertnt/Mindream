@@ -5,13 +5,13 @@ namespace Mindream.Components
     /// <summary>
     /// This class represents a simple method (C#).
     /// </summary>
-    /// <seealso cref="Mindream.Components.AFunctionComponent" />
-    public abstract class AMethodComponent : AFunctionComponent
+    /// <seealso cref="Mindream.Components.AComponent" />
+    public abstract class AMethodComponent : AComponent
     {
         #region Events
 
         /// <summary>
-        ///     This event is raised when the loop is ended.
+        /// This event is raised when the loop is ended.
         /// </summary>
         public event ComponentReturnDelegate Ended;
 
@@ -20,7 +20,7 @@ namespace Mindream.Components
         #region Methods
 
         /// <summary>
-        ///     This method is called to start the component.
+        /// This method is called to start the component.
         /// </summary>
         protected override void ComponentStopped()
         {

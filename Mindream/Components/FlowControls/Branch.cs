@@ -9,7 +9,7 @@ namespace Mindream.Components.FlowControls
     ///     down the appropriate output.
     /// </summary>
     [FunctionComponent("Flow control")]
-    public class Branch : AFunctionComponent
+    public class Branch : AComponent
     {
         #region Inputs
 
@@ -47,7 +47,8 @@ namespace Mindream.Components.FlowControls
         /// <summary>
         ///     This method is called to start the component.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
         {
             this.Stop();
         }

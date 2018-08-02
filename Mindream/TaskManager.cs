@@ -1,57 +1,65 @@
-﻿using System;
+﻿using Mindream.CallGraph;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Task = Mindream.CallGraph.Task;
+using XSerialization.Attributes;
 
 namespace Mindream
 {
-    // Summary:
-    //     Represents the current stage in the lifecycle of a Mindream.Task.
+    /// <summary>
+    ///     Represents the current stage in the lifecycle of a Mindream.Task.
+    /// </summary>
     public enum TaskState
     {
-        // Summary:
-        //     The task has been created but has not yet been started.
+        /// <summary>
+        ///     The task has been created but has not yet been started.
+        /// </summary>
         Created = 0,
-        //
-        // Summary:
-        //     The task is running but has not yet completed.
+
+        /// <summary>
+        ///     The task is running but has not yet completed.
+        /// </summary>
         Running = 1,
-        //
-        // Summary:
-        //     The task is suspended (waiting for a resume or stop).
+
+        /// <summary>
+        ///     The task is suspended (waiting for a resume or stop).
+        /// </summary>
         Suspended = 2,
-        //
-        // Summary:
-        //     The task is implicitly waiting for attached child tasks to complete.
+
+        /// <summary>
+        ///     The task is implicitly waiting for attached child tasks to complete.
+        /// </summary>
         WaitingForChildrenToComplete = 3,
-        //
-        // Summary:
-        //     The task completed execution successfully.
+
+        /// <summary>
+        ///     The task completed execution successfully.
+        /// </summary>
         Terminated = 4,
-        //
-        // Summary:
-        //     The task has been stopped explicitly by the manager.
+
+        /// <summary>
+        ///     The task has been stopped explicitly by the manager.
+        /// </summary>
         Stopped = 6,
-        //
-        // Summary:
-        //     The task stopped due to an error.
-        Faulted = 7,
+
+        /// <summary>
+        ///     The task stopped due to an error.
+        /// </summary>
+        Faulted = 7
     }
 
     /// <summary>
-    /// This class is used internally to the manager.
+    ///     This class is used internally to the manager.
     /// </summary>
-    /// <seealso cref="Mindream.CallGraph.Task"/>
+    /// <seealso cref="Mindream.CallGraph.Task" />
     internal class ManagedTask : Task
     {
         /// <summary>
-        /// Gets or sets the state.
+        ///     Gets or sets the state.
         /// </summary>
         /// <value>
-        /// The state.
+        ///     The state.
         /// </value>
+        [SkipXSerialization]
         public TaskState State
         {
             get;
@@ -60,45 +68,50 @@ namespace Mindream
     }
 
     /// <summary>
-    /// This class represent a manager which manages creation, destruction, debug of tasks.
+    ///     This class represent a manager which manages creation, destruction, debug of tasks.
     /// </summary>
     public class TaskManager
     {
         #region Fields
 
         /// <summary>
-        /// The container of all tasks.
+        ///     The container of all tasks.
         /// </summary>
-        private readonly HashSet<ManagedTask> mTasks;
+        private readonly Dictionary<string, ManagedTask> mTasks;
 
         /// <summary>
-        /// The ms instance
+        ///     The ms instance
         /// </summary>
         private static readonly TaskManager INSTANCE;
+
+        /// <summary>
+        /// This field stores the current simulation step.
+        /// </summary>
+        private int mSimulationStep;
 
         #endregion // Fields.
 
         #region Properties
 
         /// <summary>
-        /// Gets the tasks.
+        ///     Gets the tasks.
         /// </summary>
         /// <value>
-        /// The tasks.
+        ///     The tasks.
         /// </value>
         public IEnumerable<Task> Tasks
         {
             get
             {
-                return this.mTasks;
+                return this.mTasks.Values;
             }
         }
 
         /// <summary>
-        /// Gets the unique instance of the class.
+        ///     Gets the unique instance of the class.
         /// </summary>
         /// <value>
-        /// The instance of the class.
+        ///     The instance of the class.
         /// </value>
         public static TaskManager Instance
         {
@@ -108,24 +121,49 @@ namespace Mindream
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is running.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is running; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsRunning
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the task having the given id.
+        /// </summary>
+        /// <param name="pId">The task id to look for.</param>
+        /// <returns>The found task, null otherwise.</returns>
+        public Task this[string pId]
+        {
+            get
+            {
+                return this.GetTask( pId );
+            }
+        }
+
         #endregion // Properties.
 
         #region Constructors
 
         /// <summary>
-        /// Initializes the <see cref="TaskManager"/> class.
+        ///     Initializes the <see cref="TaskManager" /> class.
         /// </summary>
         static TaskManager()
         {
-            INSTANCE = new TaskManager();            
+            INSTANCE = new TaskManager();
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TaskManager"/> class.
+        ///     Initializes a new instance of the <see cref="TaskManager" /> class.
         /// </summary>
-        internal TaskManager()
+        private TaskManager()
         {
-            this.mTasks = new HashSet<ManagedTask>();
+            this.mTasks = new Dictionary<string, ManagedTask>();
         }
 
         #endregion // Constructors.
@@ -133,27 +171,27 @@ namespace Mindream
         #region Events
 
         /// <summary>
-        /// Occurs when a new task is created.
+        ///     Occurs when a new task is created.
         /// </summary>
         public event Action<TaskManager, Task> TaskCreated;
 
         /// <summary>
-        /// Occurs when a task is started.
+        ///     Occurs when a task is started.
         /// </summary>
         public event Action<TaskManager, Task, bool> TaskStarted;
 
         /// <summary>
-        /// Occurs when a new task is stopped.
+        ///     Occurs when a new task is stopped.
         /// </summary>
         public event Action<TaskManager, Task> TaskStopped;
 
         /// <summary>
-        /// Occurs when a new task is suspended.
+        ///     Occurs when a new task is suspended.
         /// </summary>
         public event Action<TaskManager, Task> TaskSuspended;
 
         /// <summary>
-        /// Occurs when a new task is destroyed.
+        ///     Occurs when a new task is destroyed.
         /// </summary>
         public event Action<TaskManager, Task> TaskDestroyed;
 
@@ -162,56 +200,98 @@ namespace Mindream
         #region Methods
 
         /// <summary>
-        /// Creates the task.
+        /// Gets the task having the given id.
+        /// </summary>
+        /// <param name="pId">The task id</param>
+        /// <returns>The task if found, null otherwise.</returns>
+        public Task GetTask(string pId)
+        {
+            if ( string.IsNullOrEmpty( pId ) )
+            {
+                return null;
+            }
+
+            ManagedTask lToReturn = null;
+            if ( this.mTasks.TryGetValue( pId, out lToReturn ) )
+            {
+                return lToReturn;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        ///     Creates the task.
         /// </summary>
         /// <returns>The new created task</returns>
-        public Task CreateTask()
+        public Task CreateTask(string pId)
         {
-            ManagedTask lTask = new ManagedTask();
-            this.mTasks.Add(lTask);
+            ManagedTask lTask = null;
+            if ( this.mTasks.TryGetValue( pId, out lTask ) )
+            {
+                // Already exist, Edit it?? Implicit get.
+                return lTask;
+            }
+
+            // Not existing, create it.
+            lTask = new ManagedTask() { Id = pId };
+            this.mTasks.Add( pId, lTask);
             if (this.TaskCreated != null)
             {
                 this.TaskCreated(this, lTask);
             }
+
             return lTask;
         }
 
         /// <summary>
-        /// Destroys a task.
+        ///     Destroys a task.
         /// </summary>
         /// <param name="pTask">The task to destroy.</param>
         /// <returns>True if the destruction occured, false otherwise.</returns>
         public bool DestroyTask(Task pTask)
         {
             ManagedTask lTask = pTask as ManagedTask;
-            if (this.mTasks.Contains(lTask))
+            if ( lTask != null )
             {
-                this.mTasks.Remove(lTask);
-                if (this.TaskDestroyed != null)
+                if ( lTask.State == TaskState.Running )
                 {
-                    this.TaskDestroyed(this, pTask);
+                    this.InternalStop( lTask );
                 }
-                return true;
+
+                if ( this.mTasks.Remove( lTask.Id ) )
+                {
+                    if (this.TaskDestroyed != null)
+                    {
+                        this.TaskDestroyed(this, pTask);
+                    }
+
+                    pTask.Dispose();
+                    return true;
+                }
             }
+
+            pTask.Dispose();
             return false;
         }
 
         /// <summary>
-        /// Clears all tasks from the manager.
+        ///     Clears all tasks from the manager.
         /// </summary>
         /// <returns>The number of removed tasks.</returns>
         public int ClearAll()
         {
-            int lTaskCount = this.mTasks.Count;
-            for (int lIndex = 0; lIndex < lTaskCount; lIndex++)
+            this.StopAll();
+            var lTaskCount = this.mTasks.Count;
+            for (var lIndex = 0; lIndex < lTaskCount; lIndex++)
             {
-                this.DestroyTask(this.mTasks.First());
+                this.DestroyTask( this.mTasks.Values.First() );
             }
             return lTaskCount;
         }
 
         /// <summary>
-        /// Restarts all tasks (stop and start)
+        ///     Restarts all tasks (stop and start)
         /// </summary>
         public void RestartAll()
         {
@@ -220,11 +300,13 @@ namespace Mindream
         }
 
         /// <summary>
-        /// Starts all running tasks.
+        ///     Starts all tasks.
         /// </summary>
         public void StartAll()
         {
-            List<ManagedTask> lNotRunningTasks = this.mTasks.Where(pTask => pTask.State != TaskState.Running).ToList();
+            this.mSimulationStep = 0;
+            this.IsRunning = true;
+            var lNotRunningTasks = this.mTasks.Values.Where(pTask => pTask.State != TaskState.Running).ToList();
             foreach (var lTask in lNotRunningTasks)
             {
                 this.StartTask(lTask);
@@ -232,28 +314,71 @@ namespace Mindream
         }
 
         /// <summary>
-        /// Stops all running tasks.
+        ///     Updates all running tasks.
+        /// </summary>
+        public void UpdateAll(TimeSpan pDeltaTime)
+        {
+            var lRunningTasks = this.mTasks.Values.Where(pTask => pTask.State == TaskState.Running).ToList();
+            foreach (var lTask in lRunningTasks)
+            {
+                lTask.Update(pDeltaTime, this.mSimulationStep);
+            }
+            this.mSimulationStep++;
+        }
+
+        /// <summary>
+        ///     Stops all running tasks.
         /// </summary>
         public void StopAll()
         {
-            List<ManagedTask> lRunningTasks = this.mTasks.Where(pTask => pTask.State == TaskState.Running).ToList();
+            var lRunningTasks = this.mTasks.Values.Where(pTask => pTask.State == TaskState.Running).ToList();
             foreach (var lTask in lRunningTasks)
             {
+                foreach (var lCallNode in lTask.CallNodes)
+                {
+                    lCallNode.RestoreValues();
+                }
+
                 this.StopTask(lTask);
+            }
+
+            this.IsRunning = false;
+            this.mSimulationStep = 0;
+        }
+
+        /// <summary>
+        /// Stores all values before execution.
+        /// </summary>
+        public void StoreAllValues()
+        {           
+            var lNotRunningTasks = this.mTasks.Values.Where(pTask => pTask.State != TaskState.Running).ToList();
+            foreach (var lTask in lNotRunningTasks)
+            {
+                foreach (var lCallNode in lTask.CallNodes)
+                {
+                    lCallNode.StoreValues();
+                }
             }
         }
 
         /// <summary>
-        /// Starts a task.
+        ///     Starts a task.
         /// </summary>
         /// <returns></returns>
         public bool StartTask(Task pTask)
         {
-            ManagedTask lTask = pTask as ManagedTask;
-            if (this.mTasks.Contains(lTask) && lTask != null && lTask.State != TaskState.Running)
+            var lTask = pTask as ManagedTask;
+            if ( lTask != null && 
+                 this.mTasks.ContainsKey( lTask.Id ) && 
+                 lTask.State != TaskState.Running)
             {
                 // Look for the first node.
-                lTask.EntryNode.Start();
+                foreach (var lEntryNode in lTask.EntryNodes)
+                {
+                    lEntryNode.Start(string.Empty, this.mSimulationStep);
+                }
+                
+                lTask.State = TaskState.Running;
                 if (this.TaskStarted != null)
                 {
                     this.TaskStarted(this, lTask, lTask.State != TaskState.Suspended);
@@ -264,35 +389,57 @@ namespace Mindream
         }
 
         /// <summary>
-        /// Stop a task.
+        ///     Stop a task.
         /// </summary>
         /// <returns></returns>
         public bool StopTask(Task pTask)
         {
             ManagedTask lTask = pTask as ManagedTask;
-            if (this.mTasks.Contains(lTask) && lTask != null && lTask.State == TaskState.Running)
+            if ( lTask != null && 
+                 this.mTasks.ContainsKey( lTask.Id ) && 
+                 lTask.State == TaskState.Running )
             {
-                // TODO.
-                if (this.TaskStopped != null)
-                {
-                    this.TaskStopped(this, lTask);
-                }
+                this.InternalStop( lTask );
 
                 return true;
             }
+
             return false;
         }
 
         /// <summary>
-        /// Stop a task.
+        /// Internal task stop
+        /// Note: This method assumes task is not null.
+        /// </summary>
+        /// <param name="pTask">The task to stop.</param>
+        private void InternalStop(ManagedTask pTask)
+        {
+            foreach ( var lCallNode in pTask.CallNodes )
+            {
+                lCallNode.Abort();
+            }
+
+            pTask.State = TaskState.Stopped;
+
+            if (this.TaskStopped != null)
+            {
+                this.TaskStopped( this, pTask);
+            }
+        }
+
+        /// <summary>
+        ///     Stop a task.
         /// </summary>
         /// <returns></returns>
         public bool SuspendTask(Task pTask)
         {
-            ManagedTask lTask = pTask as ManagedTask;
-            if (this.mTasks.Contains(lTask) && lTask != null && lTask.State == TaskState.Running)
+            var lTask = pTask as ManagedTask;
+            if ( lTask != null && 
+                 this.mTasks.ContainsKey( lTask.Id ) && 
+                 lTask.State == TaskState.Running )
             {
-                // TODO.
+                lTask.State = TaskState.Suspended;
+                // Do something on call node.
                 if (this.TaskSuspended != null)
                 {
                     this.TaskSuspended(this, lTask);
@@ -302,8 +449,6 @@ namespace Mindream
             }
             return false;
         }
-
-        
 
         #endregion // Methods.
     }

@@ -2,7 +2,10 @@
 
 namespace Mindream.Components.Variables
 {
-    [FunctionComponent("Types")]
+    /// <summary>
+    /// A boolean variable component.
+    /// </summary>
+    [VariableComponent("Types")]
     public class Boolean : AVariableComponent<bool>
     {
     }

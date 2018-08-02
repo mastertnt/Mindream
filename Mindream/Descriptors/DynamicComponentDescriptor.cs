@@ -11,7 +11,7 @@ using XSystem;
 namespace Mindream.Descriptors
 {
     /// <summary>
-    /// This class represents a dynamic component descriptor.
+    ///     This class represents a dynamic component descriptor.
     /// </summary>
     /// <seealso cref="Mindream.Descriptors.ABaseComponentDescriptor" />
     public class DynamicComponentDescriptor : ABaseComponentDescriptor
@@ -25,8 +25,9 @@ namespace Mindream.Descriptors
         /// <param name="pRegistry">The descriptor registry for dynamic type.</param>
         public DynamicComponentDescriptor(Type pType, ComponentDescriptorRegistry pRegistry)
         {
-            this.Type = pType;
+            this.mComponentType = pType;
             var lType = typeof (Dynamic);
+
             // Look for inputs in dynamic.
             foreach (var lPropertyInfo in lType.GetProperties())
             {
@@ -55,7 +56,7 @@ namespace Mindream.Descriptors
             }
 
             // Look for inputs.
-            foreach (var lPropertyInfo in this.Type.GetProperties())
+            foreach (var lPropertyInfo in this.ComponentType.GetProperties())
             {
                 if (lPropertyInfo.CanRead)
                 {
@@ -101,6 +102,11 @@ namespace Mindream.Descriptors
         #region Fields
 
         /// <summary>
+        ///     This field stores the component type.
+        /// </summary>
+        private readonly Type mComponentType;
+
+        /// <summary>
         ///     This field stores the inputs.
         /// </summary>
         private readonly List<IComponentMemberInfo> mInputs = new List<IComponentMemberInfo>();
@@ -124,7 +130,7 @@ namespace Mindream.Descriptors
         {
             get
             {
-                return this.Type.Name;
+                return this.ComponentType.Name;
             }
         }
 
@@ -162,10 +168,12 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The type.
         /// </value>
-        public Type Type
+        public override Type ComponentType
         {
-            get;
-            private set;
+            get
+            {
+                return this.mComponentType;
+            }
         }
 
         /// <summary>

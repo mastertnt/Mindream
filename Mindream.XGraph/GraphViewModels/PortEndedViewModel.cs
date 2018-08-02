@@ -18,6 +18,7 @@ namespace Mindream.XGraph.GraphViewModels
         {
             this.Direction = PortDirection.Output;
             this.DisplayString = pResult.Name;
+            this.Id = pResult.Name;
         }
 
         #endregion // Constructors.

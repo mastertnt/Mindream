@@ -9,6 +9,10 @@ namespace Mindream.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class FunctionComponentAttribute : AComponentAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="FunctionComponentAttribute"/> class.
+        /// </summary>
+        /// <param name="pCategory">The category.</param>
         public FunctionComponentAttribute(string pCategory)
             : base(pCategory)
         {

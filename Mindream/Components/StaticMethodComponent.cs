@@ -1,4 +1,5 @@
 ﻿using Mindream.Descriptors;
+using System.Linq;
 
 namespace Mindream.Components
 {
@@ -57,8 +58,8 @@ namespace Mindream.Components
         /// </summary>
         protected override void ComponentInitilialized()
         {
-            var lHasResult = 0; //this.Descriptor.Outputs.Count(pParameter => pParameter.Position == -1);
-            var lRefCount = 0; //this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef);
+            var lHasResult = this.Descriptor.Outputs.Count(pParameter => pParameter.Position == -1);
+            var lRefCount = 0;//this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef);
 
             // Create a parameter array for method invocation.
             this.mParameters = new object[this.Descriptor.Inputs.Count + this.Descriptor.Outputs.Count - lHasResult - lRefCount];
@@ -66,7 +67,7 @@ namespace Mindream.Components
             // Initialize the input parameters.
             foreach (var lInput in this.Descriptor.Inputs)
             {
-                this.Inputs.Add(lInput.Name, null);
+                this.Inputs.SetValue(lInput.Name, null);
             }
 
             // Initialize the output parameters.
@@ -74,19 +75,20 @@ namespace Mindream.Components
             {
                 if (lOutput.Position != -1)
                 {
-                    this.Outputs.Add(lOutput.Name, null);
+                    this.Outputs.SetValue(lOutput.Name, null);
                 }
                 else
                 {
-                    this.Outputs.Add("result", null);
+                    this.Outputs.SetValue(StaticMethodComponentDescriptor.RESULT_NAME, null);
                 }
             }
         }
 
         /// <summary>
-        ///     This method is called when the component is started.
+        /// This method is called when the component is started.
         /// </summary>
-        protected override void ComponentStarted()
+        /// <param name="pPortName">The name of the execution port to start</param>
+        protected override void ComponentStarted(string pPortName)
         {
             if (this.Descriptor != null)
             {
@@ -116,7 +118,7 @@ namespace Mindream.Components
                     }
                     else
                     {
-                        this.Outputs["result"] = this.mLastResult;
+                        this.Outputs[StaticMethodComponentDescriptor.RESULT_NAME] = this.mLastResult;
                     }
                 }
                 this.Stop();

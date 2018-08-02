@@ -9,6 +9,10 @@ namespace Mindream.Attributes
     [AttributeUsage(AttributeTargets.Method)]
     public class StaticMethodComponentAttribute : AComponentAttribute
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="StaticMethodComponentAttribute"/> class.
+        /// </summary>
+        /// <param name="pCategory"></param>
         public StaticMethodComponentAttribute(string pCategory)
             : base(pCategory)
         {

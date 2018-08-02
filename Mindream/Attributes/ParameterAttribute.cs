@@ -2,6 +2,9 @@
 
 namespace Mindream.Attributes
 {
+    /// <summary>
+    /// Parameter attribute class definition.
+    /// </summary>
     public class ParameterAttribute : Attribute
     {
         /// <summary>

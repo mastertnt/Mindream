@@ -16,6 +16,7 @@ namespace Mindream.XGraph.GraphViewModels
         /// <param name="pParameter">The p parameter.</param>
         public InputParameterViewModel(IComponentMemberInfo pParameter)
         {
+            this.Id = pParameter.Name;
             this.DisplayString = pParameter.Name;
             this.Direction = PortDirection.Input;
         }

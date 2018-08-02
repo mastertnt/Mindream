@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using Mindream.Attributes;
-using Mindream.Components;
 using Mindream.Reflection;
+using IComponent = Mindream.Components.IComponent;
 
 namespace Mindream.Descriptors
 {
@@ -22,7 +24,20 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The name.
         /// </value>
+        [Browsable(false)]
         string Id
+        {
+            get;
+        }
+
+        /// <summary>
+        ///     Gets the additional start ports.
+        /// </summary>
+        /// <value>
+        ///     The additional start port.
+        /// </value>
+        [Browsable(false)]
+        List<string> AdditionalStartPorts
         {
             get;
         }
@@ -33,6 +48,7 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The inputs.
         /// </value>
+        [Browsable(false)]
         List<IComponentMemberInfo> Inputs
         {
             get;
@@ -44,6 +60,7 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The outputs.
         /// </value>
+        [Browsable(false)]
         List<IComponentMemberInfo> Outputs
         {
             get;
@@ -55,6 +72,7 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The results (By default, the result is ended).
         /// </value>
+        [Browsable(false)]
         List<IComponentReturnInfo> Results
         {
             get;
@@ -64,13 +82,50 @@ namespace Mindream.Descriptors
         ///     Gets the component attribute.
         /// </summary>
         /// <value>
-        ///     The component attribute.
+        ///     The component attribute  (can be null)
         /// </value>
+        [Browsable(false)]
         AComponentAttribute ComponentAttribute
         {
             get;
         }
 
+        /// <summary>
+        ///     Gets or sets the component type.
+        /// </summary>
+        /// <value>
+        ///     The component type (can be null)
+        /// </value>
+        [Browsable(false)]
+        Type ComponentType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is an operator.
+        /// An operator has no start and end.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is an operator; otherwise, <c>false</c>.
+        /// </value>
+        bool IsOperator
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance needs to instanciate an internal object.
+        /// Useful for variable components.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance needs to create an internal object; otherwise, <c>false</c>.
+        /// </value>
+        [Browsable(false)]
+        bool NeedCreate
+        {
+            get;
+        }
 
         /// <summary>
         ///     Creates an instance.

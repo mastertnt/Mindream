@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -30,11 +31,6 @@ namespace DemoApplication
         private Point mStartPoint;
 
         /// <summary>
-        ///     This field stores the position where a drop is done.
-        /// </summary>
-        private Point mDropPoint;
-
-        /// <summary>
         ///     This field stores the call graph.
         /// </summary>
         private Task mCurrentTask;
@@ -48,6 +44,8 @@ namespace DemoApplication
         ///     This field stores the selected view model
         /// </summary>
         private CallNodeViewModel mSelectedViewModel;
+
+        private Timer mSimulationTimer;
 
 
         /// <summary>
@@ -77,6 +75,10 @@ namespace DemoApplication
             this.NewProject();
             Instance = this;
             Mindream.WPF.Components.Inputs.Keyboard.EventNotifier = this;
+
+            this.mSimulationTimer = new System.Timers.Timer(200);
+            this.mSimulationTimer.Elapsed += this.OnSimulationTimerElapsed;
+            this.mSimulationTimer.AutoReset = true;
         }
 
         #endregion // Constructors.
@@ -117,56 +119,17 @@ namespace DemoApplication
                 var lDescriptor = pEventArgs.Data.GetData("ComponentDescriptor") as IComponentDescriptor;
                 if (lDescriptor != null && pSender is IInputElement)
                 {
-                    this.mDropPoint = pEventArgs.GetPosition((IInputElement) pSender);
-                    this.mTaskViewModel.NodeAdded += this.OnNodeAdded;
-                    this.mCurrentTask.CallNodes.Add(new LocatableCallNode {Component = lDescriptor.Create()});
+                    Point lGraphPos;
+                    if (this.mGraph.MapToGraph(pEventArgs.GetPosition((IInputElement)pSender), out lGraphPos) == false)
+                    {
+                        // Drop point is not in the graph limits. Adding the node at (0,0).
+                        lGraphPos = new Point();
+                    }
+                    LocatableCallNode lNodeToAdd = new LocatableCallNode {Component = lDescriptor.Create()};
+                    lNodeToAdd.X = lGraphPos.X;
+                    lNodeToAdd.Y = lGraphPos.Y;
+                    this.mCurrentTask.CallNodes.Add(lNodeToAdd);
                 }
-            }
-        }
-
-        /// <summary>
-        ///     Called when [node added].
-        /// </summary>
-        /// <param name="pSender">The event sender.</param>
-        /// <param name="pEventArgs">The event arguments.</param>
-        private void OnNodeAdded(GraphViewModel pSender, NodeViewModel pEventArgs)
-        {
-            Point lGraphPos;
-            if (this.mGraph.MapToGraph(this.mDropPoint, out lGraphPos) == false)
-            {
-                // Drop point is not in the graph limits. Adding the node at (0,0).
-                lGraphPos = new Point();
-            }
-
-            pEventArgs.X = lGraphPos.X;
-            pEventArgs.Y = lGraphPos.Y;
-
-            this.mTaskViewModel.NodeAdded -= this.OnNodeAdded;
-        }
-
-        /// <summary>
-        ///     Called when [connection added].
-        /// </summary>
-        /// <param name="pSender">The p sender.</param>
-        /// <param name="pEventArgs">The p event arguments.</param>
-        /// <exception cref="System.NotImplementedException"></exception>
-        private void OnConnectionAdded(GraphViewModel pSender, ConnectionViewModel pEventArgs)
-        {
-            // Look for the input node.
-            var lInputViewModel = this.mTaskViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Input)) as CallNodeViewModel;
-
-            // Look for the ouput node.
-            var lOutputViewModel = this.mTaskViewModel.Nodes.FirstOrDefault(pNode => pNode.Ports.Contains(pEventArgs.Output)) as CallNodeViewModel;
-
-            // Create the connection in call graph.
-            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is PortStartViewModel && pEventArgs.Output is PortEndedViewModel)
-            {
-                this.mCurrentTask.ConnectCall(lOutputViewModel.Node, lInputViewModel.Node, pEventArgs.Output.DisplayString);
-            }
-
-            if (lInputViewModel != null && lOutputViewModel != null && pEventArgs.Input is InputParameterViewModel && pEventArgs.Output is OutputParameterViewModel)
-            {
-                this.mCurrentTask.ConnectParameter(lOutputViewModel.Node, pEventArgs.Output.DisplayString, lInputViewModel.Node, pEventArgs.Input.DisplayString);
             }
         }
 
@@ -234,12 +197,36 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void StartClicked(object pSender, RoutedEventArgs pEventArgs)
         {
-            if (this.mSelectedViewModel != null)
-            {
-                this.mSelectedViewModel.Node.Start();
-            }
+            TaskManager.Instance.StartAll();
+
+            // Create a timer with a two second interval.
+            
+            this.mSimulationTimer.Enabled = true;
         }
 
+        /// <summary>
+        /// Called when [simulation timer elapsed].
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The <see cref="ElapsedEventArgs"/> instance containing the event data.</param>
+        /// <exception cref="System.NotImplementedException"></exception>
+        private void OnSimulationTimerElapsed(object pSender, ElapsedEventArgs pEventArgs)
+        {
+            TimeSpan lTimeSpan = new TimeSpan(0, 0, 0, 200);
+            TaskManager.Instance.UpdateAll(lTimeSpan);
+        }
+
+        /// <summary>
+        ///     Handles the click event on "Stop".
+        /// </summary>
+        /// <param name="pSender">The event sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void StopClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
+            TaskManager.Instance.StopAll();
+            this.mSimulationTimer.Enabled = false;
+        }
+        
         /// <summary>
         ///     Handles the click event on "New project".
         /// </summary>
@@ -306,7 +293,6 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void CloseClicked(object pSender, RoutedEventArgs pEventArgs)
         {
-            this.mTaskViewModel.ConnectionAdded -= this.OnConnectionAdded;
             this.mTaskViewModel = null;
             this.mGraph.DataContext = null;
             this.mCurrentTask = null;
@@ -331,7 +317,7 @@ namespace DemoApplication
         private void NewProject()
         {
             TaskManager.Instance.ClearAll();
-            this.mCurrentTask = TaskManager.Instance.CreateTask();
+            this.mCurrentTask = TaskManager.Instance.CreateTask("0");
             this.mTaskViewModel = new TaskViewModel(this.mCurrentTask);
             this.mGraph.DataContext = this.mTaskViewModel;
         }

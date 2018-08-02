@@ -16,6 +16,7 @@ namespace Mindream.XGraph.GraphViewModels
         /// <param name="pParameter">The parameter.</param>
         public OutputParameterViewModel(IComponentMemberInfo pParameter)
         {
+            this.Id = string.IsNullOrWhiteSpace(pParameter.Name) ? "result" : pParameter.Name;
             this.DisplayString = string.IsNullOrWhiteSpace(pParameter.Name) ? "result" : pParameter.Name;
             this.Direction = PortDirection.Output;
         }

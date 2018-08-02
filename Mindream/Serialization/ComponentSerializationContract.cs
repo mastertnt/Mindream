@@ -9,9 +9,12 @@ namespace Mindream.Serialization
     /// <summary>
     ///     This class defines a serialization contract for TimeSpan.
     /// </summary>
-    public class TimeSpanSerializationContract : AObjectSerializationContract<IComponent>
+    public class ComponentSerializationContract : AObjectSerializationContract<IComponent>
     {
-        private ComponentDescriptorRegistry mRegistry;
+        /// <summary>
+        /// The component regisry to use for deserilization.
+        /// </summary>
+        public static ComponentDescriptorRegistry msRegistry;
 
         /// <summary>
         ///     Creates the specified element.
@@ -21,16 +24,16 @@ namespace Mindream.Serialization
         /// <returns></returns>
         public override object Create(XElement pElement, IXSerializationContext pSerializationContext)
         {
-            var lDescriptorAttribute = pElement.Attribute("Descriptor");
+            var lDescriptorAttribute = pElement.Attribute("descriptor");
             if (lDescriptorAttribute != null)
             {
-                if (this.mRegistry == null)
+                if (msRegistry == null)
                 {
-                    this.mRegistry = new ComponentDescriptorRegistry();
-                    this.mRegistry.FindAllDescriptors();
+                    msRegistry = new ComponentDescriptorRegistry();
+                    msRegistry.FindAllDescriptors();
                 }
 
-                var lDescriptor = this.mRegistry.Descriptors.FirstOrDefault(pDescriptor => pDescriptor.Id == lDescriptorAttribute.Value);
+                var lDescriptor = msRegistry.Descriptors.FirstOrDefault(pDescriptor => pDescriptor.Id == lDescriptorAttribute.Value);
                 return lDescriptor.Create();
             }
             return null;
@@ -45,8 +48,8 @@ namespace Mindream.Serialization
         /// <returns>The modified parent element</returns>
         public override XElement Write(object pObject, XElement pParentElement, IXSerializationContext pSerializationContext)
         {
-            var lComponent = pObject as AComponent;
-            pParentElement.SetAttributeValue("Descriptor", lComponent.Descriptor.Id);
+            var lComponent = pObject as ABaseComponent;
+            pParentElement.SetAttributeValue("descriptor", lComponent.Descriptor.Id);
             return base.Write(pObject, pParentElement, pSerializationContext);
         }
     }

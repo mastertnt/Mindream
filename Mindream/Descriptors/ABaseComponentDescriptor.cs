@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Text;
 using Mindream.Attributes;
-using Mindream.Components;
 using Mindream.Reflection;
+using IComponent = Mindream.Components.IComponent;
 
 namespace Mindream.Descriptors
 {
@@ -19,6 +21,7 @@ namespace Mindream.Descriptors
         protected ABaseComponentDescriptor()
         {
             // ReSharper disable once VirtualMemberCallInContructor
+            this.AdditionalStartPorts = new List<string>();
             this.Results = new List<IComponentReturnInfo>();
         }
 
@@ -32,7 +35,21 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The name.
         /// </value>
+        [Browsable(false)]
         public virtual string Id
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        ///     Gets the additional start ports.
+        /// </summary>
+        /// <value>
+        ///     The additional start port.
+        /// </value>
+        [Browsable(false)]
+        public List<string> AdditionalStartPorts
         {
             get;
             set;
@@ -44,6 +61,7 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The inputs.
         /// </value>
+        [Browsable(false)]
         public virtual List<IComponentMemberInfo> Inputs
         {
             get;
@@ -56,6 +74,7 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The outputs.
         /// </value>
+        [Browsable(false)]
         public virtual List<IComponentMemberInfo> Outputs
         {
             get;
@@ -68,6 +87,7 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The outputs.
         /// </value>
+        [Browsable(false)]
         public virtual List<IComponentReturnInfo> Results
         {
             get;
@@ -80,9 +100,54 @@ namespace Mindream.Descriptors
         /// <value>
         ///     The component attribute.
         /// </value>
+        [Browsable(false)]
         public abstract AComponentAttribute ComponentAttribute
         {
             get;
+        }
+
+        /// <summary>
+        ///     Gets or sets the component type.
+        /// </summary>
+        /// <value>
+        ///     The component type (can be null)
+        /// </value>
+        [Browsable(false)]
+        public abstract Type ComponentType
+        {
+            get;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is an operator.
+        /// An operator has no start and end.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is an operator; otherwise, <c>false</c>.
+        /// </value>
+        [Browsable(false)]
+        public virtual bool IsOperator
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance needs to instanciate an internal object.
+        /// Useful for variable components.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance needs to create an internal object; otherwise, <c>false</c>.
+        /// </value>
+        [Browsable(false)]
+        public virtual bool NeedCreate
+        {
+            get
+            {
+                return false;
+            }
         }
 
         #endregion // Events.
