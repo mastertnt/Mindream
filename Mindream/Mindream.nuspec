@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Mindream</id>
+    <version>1.0.0</version>
+    <authors>mrHide</authors>
+    <owners>mrHide</owners>
+    <licenseUrl>https://github.com/mastertnt/Mindream/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/mastertnt/Mindream</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>a visual scripting language aka Blueprint for C#.</description>
+    <releaseNotes>Initial release.</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>visual scripting for C#</tags>
+  </metadata>
+  	<files>
+	<file src="..\Build\Release_x86\Mindream.dll" target="lib\net45" />
+	<file src="..\Build\Release_x86\Mindream.XGraph.dll" target="lib\net45" />
+  </files>
+</package>
