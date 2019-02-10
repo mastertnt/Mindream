@@ -1,9 +1,7 @@
 ﻿using Mindream.CallGraph;
 using Mindream.Components;
 using Mindream.XGraph.Model;
-using System.Windows.Media;
 using XGraph.ViewModels;
-using System.Linq;
 
 namespace Mindream.XGraph.GraphViewModels
 {

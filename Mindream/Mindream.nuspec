@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>Mindream</id>
-    <version>1.0.0</version>
+    <version>$version$</version>
     <authors>mrHide</authors>
     <owners>mrHide</owners>
     <licenseUrl>https://github.com/mastertnt/Mindream/blob/master/LICENSE</licenseUrl>
@@ -14,7 +14,7 @@
     <tags>visual scripting for C#</tags>
   </metadata>
   	<files>
-	<file src="..\Build\Release_x86\Mindream.dll" target="lib\net45" />
-	<file src="..\Build\Release_x86\Mindream.XGraph.dll" target="lib\net45" />
+	<file src="..\Build\Release_x86\Mindream.dll" target="lib\net47" />
+	<file src="..\Build\Release_x86\Mindream.XGraph.dll" target="lib\net47" />
   </files>
 </package>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Threading;
-using Mindream;
 using Mindream.Attributes;
 using Mindream.Components;
 using Mindream.Descriptors;

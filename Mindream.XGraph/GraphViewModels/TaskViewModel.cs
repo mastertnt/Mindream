@@ -3,7 +3,6 @@ using System.Linq;
 using Mindream.CallGraph;
 using Mindream.XGraph.Model;
 using XGraph.ViewModels;
-using System.Windows.Media;
 
 namespace Mindream.XGraph.GraphViewModels
 {

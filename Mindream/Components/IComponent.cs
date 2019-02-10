@@ -1,6 +1,5 @@
 ﻿using System;
 using Mindream.Descriptors;
-using XSerialization.Attributes;
 using System.ComponentModel;
 
 namespace Mindream.Components

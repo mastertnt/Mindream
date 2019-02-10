@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using Mindream.Attributes;
 
 namespace Mindream.Components.Variables

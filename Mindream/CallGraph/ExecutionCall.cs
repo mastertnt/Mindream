@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Mindream.CallGraph
+﻿namespace Mindream.CallGraph
 {
     /// <summary>
     /// This class represents an execution connection.

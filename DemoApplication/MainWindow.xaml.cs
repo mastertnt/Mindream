@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +11,6 @@ using Mindream.Descriptors;
 using Mindream.XGraph.GraphViewModels;
 using Mindream.XGraph.Model;
 using Mindream.XTreeListView.LibraryViewModels;
-using XGraph.ViewModels;
 using XSerialization;
 using XTreeListView.Gui;
 

@@ -21,10 +21,10 @@ namespace Mindream.XTreeListView.LibraryViewModels
                 {
                     return this.OwnedObject;
                 }
-                set
-                {
-                    // Nothing to do.
-                }
+                //set
+                //{
+                //    // Nothing to do.
+                //}
             }
 
             /// <summary>
