@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mindream", "Mindream\Mindream.csproj", "{E7A6AC89-C829-43CF-A20C-B9715C9AAF0C}"
 EndProject
@@ -22,44 +22,35 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BD19CA
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{E7A6AC89-C829-43CF-A20C-B9715C9AAF0C}.Debug|x64.ActiveCfg = Debug|x64
 		{E7A6AC89-C829-43CF-A20C-B9715C9AAF0C}.Debug|x86.ActiveCfg = Debug|x86
 		{E7A6AC89-C829-43CF-A20C-B9715C9AAF0C}.Debug|x86.Build.0 = Debug|x86
-		{E7A6AC89-C829-43CF-A20C-B9715C9AAF0C}.Release|x64.ActiveCfg = Release|x64
 		{E7A6AC89-C829-43CF-A20C-B9715C9AAF0C}.Release|x86.ActiveCfg = Release|x86
 		{E7A6AC89-C829-43CF-A20C-B9715C9AAF0C}.Release|x86.Build.0 = Release|x86
-		{3695FBA3-5023-491B-BE8D-E0116E5F586C}.Debug|x64.ActiveCfg = Debug|x64
 		{3695FBA3-5023-491B-BE8D-E0116E5F586C}.Debug|x86.ActiveCfg = Debug|x86
 		{3695FBA3-5023-491B-BE8D-E0116E5F586C}.Debug|x86.Build.0 = Debug|x86
-		{3695FBA3-5023-491B-BE8D-E0116E5F586C}.Release|x64.ActiveCfg = Release|x64
 		{3695FBA3-5023-491B-BE8D-E0116E5F586C}.Release|x86.ActiveCfg = Release|x86
 		{3695FBA3-5023-491B-BE8D-E0116E5F586C}.Release|x86.Build.0 = Release|x86
-		{EFA03A7C-4F65-48B1-BA76-53E7AB162E43}.Debug|x64.ActiveCfg = Debug|x64
 		{EFA03A7C-4F65-48B1-BA76-53E7AB162E43}.Debug|x86.ActiveCfg = Debug|x86
 		{EFA03A7C-4F65-48B1-BA76-53E7AB162E43}.Debug|x86.Build.0 = Debug|x86
-		{EFA03A7C-4F65-48B1-BA76-53E7AB162E43}.Release|x64.ActiveCfg = Release|x64
 		{EFA03A7C-4F65-48B1-BA76-53E7AB162E43}.Release|x86.ActiveCfg = Release|x86
 		{EFA03A7C-4F65-48B1-BA76-53E7AB162E43}.Release|x86.Build.0 = Release|x86
-		{FC40C7C7-5C52-4ABC-9742-1D3C64591E04}.Debug|x64.ActiveCfg = Debug|x64
 		{FC40C7C7-5C52-4ABC-9742-1D3C64591E04}.Debug|x86.ActiveCfg = Debug|x86
 		{FC40C7C7-5C52-4ABC-9742-1D3C64591E04}.Debug|x86.Build.0 = Debug|x86
-		{FC40C7C7-5C52-4ABC-9742-1D3C64591E04}.Release|x64.ActiveCfg = Release|x64
 		{FC40C7C7-5C52-4ABC-9742-1D3C64591E04}.Release|x86.ActiveCfg = Release|x86
 		{FC40C7C7-5C52-4ABC-9742-1D3C64591E04}.Release|x86.Build.0 = Release|x86
-		{AE96E207-1C95-4C0C-BC09-A454BF118EC3}.Debug|x64.ActiveCfg = Debug|x64
 		{AE96E207-1C95-4C0C-BC09-A454BF118EC3}.Debug|x86.ActiveCfg = Debug|x86
 		{AE96E207-1C95-4C0C-BC09-A454BF118EC3}.Debug|x86.Build.0 = Debug|x86
-		{AE96E207-1C95-4C0C-BC09-A454BF118EC3}.Release|x64.ActiveCfg = Release|x64
 		{AE96E207-1C95-4C0C-BC09-A454BF118EC3}.Release|x86.ActiveCfg = Release|x86
 		{AE96E207-1C95-4C0C-BC09-A454BF118EC3}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AB545A08-5262-452F-BDCF-064F199844F8}
 	EndGlobalSection
 EndGlobal
