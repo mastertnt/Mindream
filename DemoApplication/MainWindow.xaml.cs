@@ -246,6 +246,16 @@ namespace DemoApplication
         }
 
         /// <summary>
+        ///     Checks if we can group.
+        /// </summary>
+        /// <param name="pSender">The p sender.</param>
+        /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
+        private void GroupClicked(object pSender, RoutedEventArgs pEventArgs)
+        {
+
+        }
+
+        /// <summary>
         ///     Loads the clicked.
         /// </summary>
         /// <param name="pSender">The p sender.</param>

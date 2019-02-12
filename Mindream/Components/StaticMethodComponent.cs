@@ -56,7 +56,7 @@ namespace Mindream.Components
         /// <summary>
         ///     This method is called when the component is initialized.
         /// </summary>
-        protected override void ComponentInitilialized()
+        protected override void ComponentInitialized()
         {
             var lHasResult = this.Descriptor.Outputs.Count(pParameter => pParameter.Position == -1);
             var lRefCount = 0;//this.Descriptor.Outputs.Count(pParameter => pParameter.IsOut == false && pParameter.ParameterType.IsByRef);

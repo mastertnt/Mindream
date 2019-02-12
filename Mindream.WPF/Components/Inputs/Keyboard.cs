@@ -98,9 +98,9 @@ namespace Mindream.WPF.Components.Inputs
         /// <summary>
         /// This method is called when the component is initialized.
         /// </summary>
-        protected override void ComponentInitilialized()
+        protected override void ComponentInitialized()
         {
-            base.ComponentInitilialized();
+            base.ComponentInitialized();
             this.KeyPressedBuffer = new List<Key>();
             this.KeyReleasedBuffer = new List<Key>();
         }

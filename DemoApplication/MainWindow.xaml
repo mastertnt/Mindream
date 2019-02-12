@@ -38,8 +38,9 @@
             <Button Grid.Row="4" Click="StartClicked">Start</Button>
             <Button Grid.Row="5" Click="StopClicked">Start</Button>
             <Button Grid.Row="6" Click="RemoveClicked">Remove</Button>
-            <Button Grid.Row="7" Click="CloseClicked">Close</Button>
-            <Button Grid.Row="8" Click="CollectClicked">GC.Collect</Button>
+            <Button Grid.Row="7" Click="GroupClicked">Group</Button>
+            <Button Grid.Row="8" Click="CloseClicked">Close</Button>
+            <Button Grid.Row="9" Click="CollectClicked">GC.Collect</Button>
         </Grid>
 
         <controls:GraphView x:Name="mGraph" Drop="OnDrop" AllowDrop="True" Grid.Row="0" Grid.Column="1" />

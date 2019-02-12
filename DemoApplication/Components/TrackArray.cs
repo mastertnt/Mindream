@@ -90,10 +90,10 @@ namespace DemoApplication.Components
         /// <summary>
         /// This method is called when the component is initialized.
         /// </summary>
-        protected override void ComponentInitilialized()
+        protected override void ComponentInitialized()
         {
             this.mIndex = 0;
-            base.ComponentInitilialized();
+            base.ComponentInitialized();
         }
 
         /// <summary>

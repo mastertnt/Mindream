@@ -252,7 +252,7 @@ namespace Mindream.Components
             {
                 this.Initialized(this);
             }
-            this.ComponentInitilialized();
+            this.ComponentInitialized();
         }
 
         /// <summary>
@@ -355,7 +355,7 @@ namespace Mindream.Components
         /// <summary>
         /// This method is called when the component is initialized.
         /// </summary>
-        protected virtual void ComponentInitilialized()
+        protected virtual void ComponentInitialized()
         {
             // Nothing to do.
         }
