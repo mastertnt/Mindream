@@ -19,9 +19,19 @@ namespace Mindream.CallGraph
         Started,
 
         /// <summary>
+        /// The call node is broken when it starts.
+        /// </summary>
+        BreakStart,
+
+        /// <summary>
         /// The pending start
         /// </summary>
         WaitingForStart,
+
+        /// <summary>
+        /// The call node is broken when it ends.
+        /// </summary>
+        BreakEnd,
 
         /// <summary>
         /// The undefined state
@@ -130,6 +140,24 @@ namespace Mindream.CallGraph
         }
 
         /// <summary>
+        /// Wait the start of the call node.
+        /// </summary>
+        public bool IsBreakInput
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Wait the end of the call node.
+        /// </summary>
+        public bool IsBreakOutput
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// Called on an property change in the component of this CallNode.
         /// </summary>
         /// <param name="sender">The component owned by this CallNode.</param>
@@ -142,23 +170,21 @@ namespace Mindream.CallGraph
         /// <summary>
         /// Called on a property change of the component owned by this CallNode, notify if this implies a change in another node by connexion with an input.
         /// </summary>
-        /// <param name="propertyName">The name of the property that changed.</param>
-        private void NotifyOutputChanged(string propertyName)
+        /// <param name="pPropertyName">The name of the property that changed.</param>
+        private void NotifyOutputChanged(string pPropertyName)
         {
             if (this.OutputChanged != null 
-                && String.IsNullOrEmpty(propertyName) == false)
+                && String.IsNullOrEmpty(pPropertyName) == false)
             {
                 // If the modified property is "Set" then we search all connexions between Set and the imputs of the others connected CallNode, and, for each of them, we send an event OutputChanged. 
-                IEnumerable<CallNode> lOutputNodes = this.NodeParameters.Where(pElem => pElem.Value.Keys.Contains(propertyName)).Select(pElem => pElem.Key);
-
-
-                if (lOutputNodes != null && lOutputNodes.Count() > 0)
+                IEnumerable<CallNode> lOutputNodes = this.NodeParameters.Where(pElem => pElem.Value.Keys.Contains(pPropertyName)).Select(pElem => pElem.Key);
+                if (lOutputNodes != null && lOutputNodes.Any())
                 {
                     foreach (CallNode lOutputNode in lOutputNodes)
                     {
-                        foreach (string targetParam in this.NodeParameters[lOutputNode][propertyName])
+                        foreach (string targetParam in this.NodeParameters[lOutputNode][pPropertyName])
                         {
-                            this.OutputChanged(this, propertyName, lOutputNode, targetParam);
+                            this.OutputChanged(this, pPropertyName, lOutputNode, targetParam);
                         }
                     }
                 }
@@ -253,43 +279,50 @@ namespace Mindream.CallGraph
         /// <param name="pSimulationStep">The simulation step.</param>
         public void Start(string pPortName, int pSimulationStep)
         {
-            if (this.State == CallNodeState.Undefined && this.mLastStartStep != pSimulationStep)
+            if (this.IsBreakInput == false)
             {
-                this.mSimulationStep = pSimulationStep;
-
-                // Pull data from operator components (no end raised).
-                foreach (var lPreviousNode in this.PreviousParameterNodes.Keys)
+                if (this.State == CallNodeState.Undefined && this.mLastStartStep != pSimulationStep)
                 {
-                    if (lPreviousNode.Component.Descriptor.IsOperator)
+                    this.mSimulationStep = pSimulationStep;
+
+                    // Pull data from operator components (no end raised).
+                    foreach (var lPreviousNode in this.PreviousParameterNodes.Keys)
                     {
-                        lPreviousNode.Start(String.Empty, pSimulationStep);
+                        if (lPreviousNode.Component.Descriptor.IsOperator)
+                        {
+                            lPreviousNode.Start(String.Empty, pSimulationStep);
+                        }
+                        lPreviousNode.TransferParameters(this);
                     }
-                    lPreviousNode.TransferParameters(this);
-                }
 
-                this.mLastStartStep = pSimulationStep;
-                if (this.Component.Descriptor.IsOperator == false)
-                {
-                    this.State = CallNodeState.Started;
-                    this.Component.Started += this.OnComponentStarted;
-                    this.Component.Start(pPortName);
+                    this.mLastStartStep = pSimulationStep;
+                    if (this.Component.Descriptor.IsOperator == false)
+                    {
+                        this.State = CallNodeState.Started;
+                        this.Component.Started += this.OnComponentStarted;
+                        this.Component.Start(pPortName);
+                    }
+                    else
+                    {
+                        this.Component.Start();
+                    }
+                    if (this.mPendingStartPorts.Count != 0)
+                    {
+                        this.State = CallNodeState.WaitingForStart;
+                    }
                 }
                 else
                 {
-                    this.Component.Start();
-                }
-                if (this.mPendingStartPorts.Count != 0)
-                {
                     this.State = CallNodeState.WaitingForStart;
+                    if (this.mPendingStartPorts.Contains(pPortName) == false)
+                    {
+                        this.mPendingStartPorts.Add(pPortName);
+                    }
                 }
             }
             else
             {
-                this.State = CallNodeState.WaitingForStart;
-                if (this.mPendingStartPorts.Contains(pPortName) == false)
-                {
-                    this.mPendingStartPorts.Add(pPortName);                    
-                }
+                this.State = CallNodeState.BreakStart;
             }
         }
 
@@ -378,7 +411,6 @@ namespace Mindream.CallGraph
                     }
                 }
             }
-
             return false;
         }
 
@@ -544,12 +576,12 @@ namespace Mindream.CallGraph
         /// <summary>
         /// Transfers the parameter.
         /// </summary>
-        /// <param name="pSourceParamterName">Name of the source paramter.</param>
+        /// <param name="pSourceParameterName">Name of the source paramter.</param>
         /// <param name="pNodeToCall">The node to call.</param>
         /// <param name="pTargetParameterName">Name of the target parameter.</param>
-        public void TransferParameter(string pSourceParamterName, CallNode pNodeToCall, string pTargetParameterName)
+        public void TransferParameter(string pSourceParameterName, CallNode pNodeToCall, string pTargetParameterName)
         {
-            var lSourceInfo = this.Component.Descriptor.Outputs.First(pMember => pMember.Name == pSourceParamterName);
+            var lSourceInfo = this.Component.Descriptor.Outputs.First(pMember => pMember.Name == pSourceParameterName);
             this.TransferParameter(lSourceInfo, pNodeToCall, pTargetParameterName);
         }
 

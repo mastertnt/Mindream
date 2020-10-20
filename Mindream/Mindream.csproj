@@ -86,6 +86,7 @@
     </Compile>
     <Compile Include="Descriptors\VariableComponentDescriptor.cs" />
     <Compile Include="Reflection\SubPropertyMemberInfo.cs" />
+    <Compile Include="Serialization\TaskSerializationContract.cs" />
     <Compile Include="TaskManager.cs" />
     <Compile Include="Components\AMethodComponent.cs" />
     <Compile Include="Components\FlowControls\Branch.cs" />
