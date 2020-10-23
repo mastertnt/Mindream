@@ -118,7 +118,37 @@ namespace Mindream.XGraph.GraphViewModels
             {
                 // Cannot be modified.
             }
-        }       
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has an input breakpoint.
+        /// </summary>
+        public override bool HasInputBreakpoint
+        {
+            get
+            {
+                return this.Node.HasInputBreakpoint;
+            }
+            set
+            {
+                this.Node.HasInputBreakpoint = value;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance has an output breakpoint.
+        /// </summary>
+        public override bool HasOuputBreakpoint
+        {
+            get
+            {
+                return this.Node.HasOutputBreakpoint;
+            }
+            set
+            {
+                this.Node.HasOutputBreakpoint = value;
+            }
+        }
 
         #endregion // Properties
 

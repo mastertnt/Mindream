@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Mindream.Reflection;
+using Xceed.Wpf.Toolkit.PropertyGrid.Attributes;
 using XSystem;
 using IComponent = Mindream.Components.IComponent;
 
@@ -11,7 +12,7 @@ namespace Mindream.CallGraph
     /// <summary>
     /// This state stores the running state of a call node.
     /// </summary>
-    enum CallNodeState
+    public enum CallNodeState
     {
         /// <summary>
         /// The started
@@ -32,6 +33,11 @@ namespace Mindream.CallGraph
         /// The call node is broken when it ends.
         /// </summary>
         BreakEnd,
+
+        /// <summary>
+        /// The call node is frozen by a break.
+        /// </summary>
+        FreezeByBreak,
 
         /// <summary>
         /// The undefined state
@@ -79,7 +85,7 @@ namespace Mindream.CallGraph
         /// <summary>
         /// This field stores the port start
         /// </summary>
-        private List<string> mPendingStartPorts;
+        private readonly List<string> mPendingStartPorts;
 
         /// <summary>
         /// The component owned by this CallNode.
@@ -116,6 +122,7 @@ namespace Mindream.CallGraph
         /// <value>
         /// The component.
         /// </value>
+        [ExpandableObject]
         public IComponent Component
         {
             get
@@ -142,7 +149,7 @@ namespace Mindream.CallGraph
         /// <summary>
         /// Wait the start of the call node.
         /// </summary>
-        public bool IsBreakInput
+        public bool HasInputBreakpoint
         {
             get;
             set;
@@ -151,7 +158,34 @@ namespace Mindream.CallGraph
         /// <summary>
         /// Wait the end of the call node.
         /// </summary>
-        public bool IsBreakOutput
+        public bool HasOutputBreakpoint
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Check if a node has been broken externally.
+        /// </summary>
+        public bool IsBroken
+        {
+            get;
+            set;
+        }
+
+        /**
+         * Stores the break info.
+         */
+        public string BreakInfo
+        {
+            get;
+            set;
+        }
+
+        /**
+         * Flag to force to continue (only used by task manager).
+         */
+        internal bool Continue
         {
             get;
             set;
@@ -242,10 +276,10 @@ namespace Mindream.CallGraph
         /// <summary>
         /// This field stores the state of the call node.
         /// </summary>
-        internal CallNodeState State
+        public CallNodeState State
         {
             get;
-            private set;
+            set;
         }
 
         #endregion // Properties.
@@ -279,7 +313,7 @@ namespace Mindream.CallGraph
         /// <param name="pSimulationStep">The simulation step.</param>
         public void Start(string pPortName, int pSimulationStep)
         {
-            if (this.IsBreakInput == false)
+            if ((this.HasInputBreakpoint == false && this.IsBroken == false) || this.Continue)
             {
                 if (this.State == CallNodeState.Undefined && this.mLastStartStep != pSimulationStep)
                 {
@@ -322,7 +356,17 @@ namespace Mindream.CallGraph
             }
             else
             {
-                this.State = CallNodeState.BreakStart;
+                if (this.IsBroken == false)
+                {
+                    this.State = CallNodeState.BreakStart;
+                    TaskManager.Instance.Break(this);
+                    this.BreakInfo = pPortName;
+                }
+                else
+                {
+                    this.State = CallNodeState.FreezeByBreak;
+                    this.BreakInfo = pPortName;
+                }                
             }
         }
 
@@ -508,53 +552,63 @@ namespace Mindream.CallGraph
         /// </summary>
         /// <param name="pComponent">The component succeed.</param>
         /// <param name="pResultName">Id of the result.</param>
-        private void OnComponentReturned(IComponent pComponent, string pResultName)
+        internal void OnComponentReturned(IComponent pComponent, string pResultName)
         {
-            this.Component.Returned -= this.OnComponentReturned;
-            if (this.NodeToCall.ContainsKey(pResultName))
+            // If a node has a break on output.
+            if (this.HasOutputBreakpoint == false || this.Continue)
             {
-                foreach (var lExecutionCall in this.NodeToCall[pResultName])
+                this.Component.Returned -= this.OnComponentReturned;
+                if (this.NodeToCall.ContainsKey(pResultName))
                 {
-                    if (this.NodeParameters.ContainsKey(lExecutionCall.NextNode))
+                    foreach (var lExecutionCall in this.NodeToCall[pResultName])
                     {
-                        this.TransferParameters(lExecutionCall.NextNode);
-                    }
-
-                    // Pull data from data only components.
-                    foreach (var lPreviousNode in lExecutionCall.NextNode.PreviousParameterNodes.Keys)
-                    {
-                        if (lPreviousNode.Component.Descriptor.IsOperator)
+                        if (this.NodeParameters.ContainsKey(lExecutionCall.NextNode))
                         {
-                            lPreviousNode.Start(String.Empty, this.mSimulationStep);
+                            this.TransferParameters(lExecutionCall.NextNode);
                         }
-                        lPreviousNode.TransferParameters(lExecutionCall.NextNode);
+
+                        // Pull data from data only components.
+                        foreach (var lPreviousNode in lExecutionCall.NextNode.PreviousParameterNodes.Keys)
+                        {
+                            if (lPreviousNode.Component.Descriptor.IsOperator)
+                            {
+                                lPreviousNode.Start(String.Empty, this.mSimulationStep);
+                            }
+                            lPreviousNode.TransferParameters(lExecutionCall.NextNode);
+                        }
+
+                        lExecutionCall.NextNode.Start(lExecutionCall.StartPort, this.mSimulationStep);
                     }
-
-                    lExecutionCall.NextNode.Start(lExecutionCall.StartPort, this.mSimulationStep);
                 }
-            }
 
-            if (this.Component.IsUpdatable)
-            {
-                // Pull data from data only components.
-                foreach (var lPreviousNode in this.PreviousParameterNodes.Keys)
+                if (this.Component.IsUpdatable)
                 {
-                    lPreviousNode.TransferParameters(this);
+                    // Pull data from data only components.
+                    foreach (var lPreviousNode in this.PreviousParameterNodes.Keys)
+                    {
+                        lPreviousNode.TransferParameters(this);
+                    }
+                }
+                else
+                {
+                    // Restore all datas stored at the start.
+                    foreach (var lInput in this.mInitialValues)
+                    {
+                        lInput.Key.SetValue(this.Component, lInput.Value);
+                    }
+                }
+
+                if (this.State != CallNodeState.WaitingForStart)
+                {
+                    this.State = CallNodeState.Undefined;
                 }
             }
             else
             {
-                // Restore all datas stored at the start.
-                foreach (var lInput in this.mInitialValues)
-                {
-                    lInput.Key.SetValue(this.Component, lInput.Value);
-                }
-            }
-
-            if (this.State != CallNodeState.WaitingForStart)
-            {
-                this.State = CallNodeState.Undefined;
-            }
+                this.State = CallNodeState.BreakEnd;
+                this.BreakInfo = pResultName;
+                TaskManager.Instance.Break(this);
+            } 
         }
 
         /// <summary>

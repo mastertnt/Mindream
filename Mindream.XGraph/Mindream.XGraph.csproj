@@ -48,8 +48,11 @@
       <HintPath>..\NuGet\InstalledPackages\System.Security.Cryptography.X509Certificates.4.3.2\lib\net461\System.Security.Cryptography.X509Certificates.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="XGraph, Version=2.1.5.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\NuGet\InstalledPackages\XGraph.2.1.5\lib\net47\XGraph.dll</HintPath>
+    <Reference Include="XGraph, Version=2.2.1.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\NuGet\InstalledPackages\XGraph.2.2.1\lib\net47\XGraph.dll</HintPath>
+    </Reference>
+    <Reference Include="XGraph.Themes.ExpressionDark, Version=2.2.1.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\NuGet\InstalledPackages\XGraph.2.2.1\lib\net47\XGraph.Themes.ExpressionDark.dll</HintPath>
     </Reference>
     <Reference Include="XZoomAndPan, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\NuGet\InstalledPackages\XZoomAndPan.2.1.2\lib\net47\XZoomAndPan.dll</HintPath>

@@ -43,7 +43,10 @@ namespace DemoApplication
         /// </summary>
         private CallNodeViewModel mSelectedViewModel;
 
-        private Timer mSimulationTimer;
+        /// <summary>
+        /// This field stores a timer.
+        /// </summary>
+        private readonly Timer mSimulationTimer;
 
 
         /// <summary>
@@ -252,13 +255,13 @@ namespace DemoApplication
         }
 
         /// <summary>
-        ///     Checks if we can group.
+        ///     Checks if we can continue.
         /// </summary>
         /// <param name="pSender">The p sender.</param>
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        private void GroupClicked(object pSender, RoutedEventArgs pEventArgs)
+        private void ContinueClicked(object pSender, RoutedEventArgs pEventArgs)
         {
-
+            TaskManager.Instance.Continue(this.mCurrentTask);
         }
 
         /// <summary>
