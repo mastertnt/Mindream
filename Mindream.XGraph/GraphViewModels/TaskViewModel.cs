@@ -125,7 +125,7 @@ namespace Mindream.XGraph.GraphViewModels
                                     if (lSourcePortViewModel != null)
                                     {
                                         ConnectionLinkViewModel lConnection = new ConnectionLinkViewModel { Output = lSourcePortViewModel, Input = lTargetPortViewModel };
-                                        lTargetViewModel.OnPropertyChanged("IsActive");
+                                        //lTargetViewModel.OnPropertyChanged("IsActive");
                                         this.AddConnection(lConnection);
                                     }
                                 }
@@ -169,7 +169,7 @@ namespace Mindream.XGraph.GraphViewModels
                                         if (lTargetPortViewModel != null)
                                         {
                                             ConnectionLinkViewModel lConnection = new ConnectionLinkViewModel { Output = lSourcePortViewModel, Input = lTargetPortViewModel };
-                                            lTargetViewModel.OnPropertyChanged("IsActive");
+                                            //lTargetViewModel.OnPropertyChanged("IsActive");
                                             this.AddConnection(lConnection);
                                         }
                                     }
@@ -247,7 +247,7 @@ namespace Mindream.XGraph.GraphViewModels
             ConnectionViewModel lConnection = this.Connections.FirstOrDefault(pConnection => pConnection.Input == lInputPort && pConnection.Output == lOuputPort);
             this.RemoveConnection(lConnection);
 
-            lTargetNode.OnPropertyChanged("IsActive");
+            //lTargetNode.OnPropertyChanged("IsActive");
             lTargetNode.Validate();
         }
 
@@ -280,7 +280,7 @@ namespace Mindream.XGraph.GraphViewModels
             };
 
             this.AddConnection(lViewModel);
-            lTargetNode.OnPropertyChanged("IsActive");
+            //lTargetNode.OnPropertyChanged("IsActive");
             lTargetNode.Validate();
         }
 
@@ -301,7 +301,7 @@ namespace Mindream.XGraph.GraphViewModels
 
             ConnectionViewModel lConnection = this.Connections.FirstOrDefault(pConnection => pConnection.Input == lInputPort && pConnection.Output == lOuputPort);
             this.RemoveConnection(lConnection);
-            lTargetNode.OnPropertyChanged("IsActive");
+            //lTargetNode.OnPropertyChanged("IsActive");
             lTargetNode.Validate();
         }
 
@@ -327,7 +327,7 @@ namespace Mindream.XGraph.GraphViewModels
             };
             
             this.AddConnection(lViewModel);
-            lTargetNode.OnPropertyChanged("IsActive");
+            //lTargetNode.OnPropertyChanged("IsActive");
             lTargetNode.Validate();
         }
 

@@ -92,6 +92,11 @@ namespace Mindream.CallGraph
         /// </summary>
         private IComponent mComponent;
 
+        /**
+         * This field stores the state of the component.
+         */
+        private CallNodeState mState;
+
         #endregion // Fields.
 
         #region Events
@@ -207,7 +212,7 @@ namespace Mindream.CallGraph
         /// <param name="pPropertyName">The name of the property that changed.</param>
         private void NotifyOutputChanged(string pPropertyName)
         {
-            if (this.OutputChanged != null 
+            if (this.OutputChanged != null
                 && String.IsNullOrEmpty(pPropertyName) == false)
             {
                 // If the modified property is "Set" then we search all connexions between Set and the imputs of the others connected CallNode, and, for each of them, we send an event OutputChanged. 
@@ -278,8 +283,18 @@ namespace Mindream.CallGraph
         /// </summary>
         public CallNodeState State
         {
-            get;
-            set;
+            get
+            {
+                return this.mState;
+            }
+            set
+            {
+                this.mState = value;
+                if (this.StateChanged != null)
+                {
+                    this.StateChanged(value);
+                }
+            }
         }
 
         #endregion // Properties.
@@ -303,6 +318,15 @@ namespace Mindream.CallGraph
         }
 
         #endregion // Constructors.
+
+        #region Events
+
+        /**
+         * Event raised when the state is changed.
+         */
+        public event Action<CallNodeState> StateChanged;
+
+        #endregion // Events.
 
         #region Methods
 
@@ -361,12 +385,13 @@ namespace Mindream.CallGraph
                     this.State = CallNodeState.BreakStart;
                     TaskManager.Instance.Break(this);
                     this.BreakInfo = pPortName;
+
                 }
                 else
                 {
                     this.State = CallNodeState.FreezeByBreak;
                     this.BreakInfo = pPortName;
-                }                
+                }
             }
         }
 
@@ -608,7 +633,7 @@ namespace Mindream.CallGraph
                 this.State = CallNodeState.BreakEnd;
                 this.BreakInfo = pResultName;
                 TaskManager.Instance.Break(this);
-            } 
+            }
         }
 
         /// <summary>
@@ -751,7 +776,7 @@ namespace Mindream.CallGraph
                     else if (this.mDefaultValues.ContainsKey(lInput))
                     {
                         lInput.SetValue(this.Component, this.mDefaultValues[lInput]);
-                    }                    
+                    }
                     else
                     {
                         this.Component[pTargetParameterName] = lInput.Type.DefaultValue();

@@ -12,6 +12,18 @@ namespace Mindream.XGraph.GraphViewModels
     {
         #region Properties
 
+        public override bool IsActive
+        {
+            get
+            {
+                return base.IsActive;
+            }
+            set
+            {
+                base.IsActive = value;
+            }
+        }
+
         /// <summary>
         /// Gets the node.
         /// </summary>
@@ -160,9 +172,7 @@ namespace Mindream.XGraph.GraphViewModels
         public CallNodeViewModel(CallNode pNode)
         {
             this.Node = pNode;
-            this.Node.Component.Started += this.OnComponentStarted;
-            this.Node.Component.Stopped += this.OnComponentStopped;
-            this.Node.Component.Aborted += this.OnComponentStopped;
+            this.Node.StateChanged += this.OnStateChanged;
             this.InitializePorts();
         }
 
@@ -209,24 +219,29 @@ namespace Mindream.XGraph.GraphViewModels
         }
 
         /// <summary>
-        /// Called when [component started].
+        /// Delegate called when the state of the node is modified.
         /// </summary>
-        /// <param name="pComponent">The component.</param>
-        /// <param name="pPortName">The name of the execution port to start</param>
-        private void OnComponentStarted(IComponent pComponent, string pPortName)
+        /// <param name="pNewState">The state of the node.</param>
+        private void OnStateChanged(CallNodeState pNewState)
         {
-            this.IsActive = true;
-            this.OnPropertyChanged("IsActive");
-        }
+            switch (pNewState)
+            {
+                case CallNodeState.Started:
+                case CallNodeState.BreakStart:
+                case CallNodeState.BreakEnd:
+                case CallNodeState.FreezeByBreak:
+                    {
+                        this.IsActive = true;
+                    }
+                    break;
 
-        /// <summary>
-        /// Called when [component stopped].
-        /// </summary>
-        /// <param name="pComponent">The component.</param>
-        private void OnComponentStopped(IComponent pComponent)
-        {
-            this.IsActive = false;
-            this.OnPropertyChanged("IsActive");
+
+                default:
+                    {
+                        this.IsActive = false;
+                    }
+                    break;
+            }
         }
 
         /// <summary>

@@ -7,54 +7,54 @@ namespace Mindream.XTreeListView.LibraryViewModels
     /// </summary>
     public class ComponentCategoryViewModel : AHierarchicalItemViewModel<string>
     {
-            #region Properties
+        #region Properties
 
-            /// <summary>
-            /// Gets or sets the display string.
-            /// </summary>
-            /// <value>
-            /// The display string.
-            /// </value>
-            public override string DisplayString
+        /// <summary>
+        /// Gets or sets the display string.
+        /// </summary>
+        /// <value>
+        /// The display string.
+        /// </value>
+        public override string DisplayString
+        {
+            get
             {
-                get
-                {
-                    return this.OwnedObject;
-                }
-                //set
-                //{
-                //    // Nothing to do.
-                //}
+                return this.OwnedObject;
             }
+            //set
+            //{
+            //    // Nothing to do.
+            //}
+        }
 
-            /// <summary>
-            /// Gets the icon source.
-            /// </summary>
-            /// <value>
-            /// The icon source.
-            /// </value>
-            public override System.Windows.Media.ImageSource IconSource
+        /// <summary>
+        /// Gets the icon source.
+        /// </summary>
+        /// <value>
+        /// The icon source.
+        /// </value>
+        public override System.Windows.Media.ImageSource IconSource
+        {
+            get
             {
-                get
-                {
-                    return null;
-                }
+                return null;
             }
+        }
 
-            #endregion // Properties.
+        #endregion // Properties.
 
-            #region Constructors
+        #region Constructors
 
-            /// <summary>
-            /// Initializes a new instance of the <see cref="ComponentCategoryViewModel"/> class.
-            /// </summary>
-            /// <param name="pComponentCategory">The component category.</param>
-            public ComponentCategoryViewModel(string pComponentCategory)
-                : base(pComponentCategory)
-            {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ComponentCategoryViewModel"/> class.
+        /// </summary>
+        /// <param name="pComponentCategory">The component category.</param>
+        public ComponentCategoryViewModel(string pComponentCategory)
+            : base(pComponentCategory)
+        {
 
-            }
+        }
 
-            #endregion // Constructors.
+        #endregion // Constructors.
     }
 }
