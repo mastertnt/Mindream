@@ -43,7 +43,10 @@ namespace DemoApplication
         /// </summary>
         private CallNodeViewModel mSelectedViewModel;
 
-        private Timer mSimulationTimer;
+        /// <summary>
+        /// This field stores a timer.
+        /// </summary>
+        private readonly Timer mSimulationTimer;
 
 
         /// <summary>
@@ -95,7 +98,7 @@ namespace DemoApplication
                 if (pEventArgs.AddedItems[0] is CallNodeViewModel)
                 {
                     this.mSelectedViewModel = (CallNodeViewModel) pEventArgs.AddedItems[0];
-                    this.mPropertyEditor.SelectedObject = this.mSelectedViewModel.Node.Component;
+                    this.mPropertyEditor.SelectedObject = this.mSelectedViewModel.Node;
                 }
             }
             else
@@ -195,10 +198,8 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void StartClicked(object pSender, RoutedEventArgs pEventArgs)
         {
+            this.StopClicked(null, null);
             TaskManager.Instance.StartAll();
-
-            // Create a timer with a two second interval.
-            
             this.mSimulationTimer.Enabled = true;
         }
 
@@ -223,6 +224,7 @@ namespace DemoApplication
         {
             TaskManager.Instance.StopAll();
             this.mSimulationTimer.Enabled = false;
+            this.mOutput.Text = "";
         }
         
         /// <summary>
@@ -242,17 +244,24 @@ namespace DemoApplication
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
         private void RemoveClicked(object pSender, RoutedEventArgs pEventArgs)
         {
+            if (this.mSelectedViewModel != null)
+            {
+                if (this.mSelectedViewModel.Node != null)
+                {
+                    this.mCurrentTask.CallNodes.Remove(this.mSelectedViewModel.Node);
+                }
 
+            }
         }
 
         /// <summary>
-        ///     Checks if we can group.
+        ///     Checks if we can continue.
         /// </summary>
         /// <param name="pSender">The p sender.</param>
         /// <param name="pEventArgs">The <see cref="RoutedEventArgs" /> instance containing the event data.</param>
-        private void GroupClicked(object pSender, RoutedEventArgs pEventArgs)
+        private void ContinueClicked(object pSender, RoutedEventArgs pEventArgs)
         {
-
+            TaskManager.Instance.Continue(this.mCurrentTask);
         }
 
         /// <summary>
@@ -270,8 +279,10 @@ namespace DemoApplication
             if (lDialog.ShowDialog() == true)
             {
                 var lSerializer = new XSerializer();
-                var lCallGraph = lSerializer.Deserialize(lDialog.FileName) as Task;
-                this.NewProject();
+                TaskManager.Instance.ClearAll();
+                this.mCurrentTask = lSerializer.Deserialize(lDialog.FileName) as Task;
+                this.mTaskViewModel = new TaskViewModel(this.mCurrentTask);
+                this.mGraph.DataContext = this.mTaskViewModel;
             }
         }
 

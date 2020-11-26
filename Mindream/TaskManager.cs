@@ -211,7 +211,7 @@ namespace Mindream
                 return null;
             }
 
-            ManagedTask lToReturn = null;
+            ManagedTask lToReturn;
             if ( this.mTasks.TryGetValue( pId, out lToReturn ) )
             {
                 return lToReturn;
@@ -226,7 +226,7 @@ namespace Mindream
         /// <returns>The new created task</returns>
         public Task CreateTask(string pId)
         {
-            ManagedTask lTask = null;
+            ManagedTask lTask;
             if ( this.mTasks.TryGetValue( pId, out lTask ) )
             {
                 // Already exist, Edit it?? Implicit get.
@@ -448,6 +448,62 @@ namespace Mindream
                 return true;
             }
             return false;
+        }
+
+        /**
+         * This method is called when a node is frozen by a breakpoint.
+         */
+        internal void Break(CallNode pBreakNode)
+        {
+            Task lBrokenTask = this.Tasks.FirstOrDefault(pTask => pTask.CallNodes.Contains(pBreakNode));
+            if (lBrokenTask != null)
+            {
+                foreach (var lCallNode in lBrokenTask.CallNodes)
+                {
+                    lCallNode.IsBroken = true;
+                }
+            }
+        }
+
+        /**
+        * This method is called when a task must continue after a break.
+        */
+        public void Continue(Task pTask)
+        {
+            foreach (var lCallNode in pTask.CallNodes)
+            {
+                lCallNode.IsBroken = false;
+            }
+
+            // Restart all nodes with the state "BreakEnd"
+            foreach (var lCallNode in pTask.CallNodes)
+            {
+                if (lCallNode.State == CallNodeState.BreakEnd)
+                {
+                    lCallNode.Continue = true;
+                    lCallNode.State = CallNodeState.Undefined;
+                    lCallNode.OnComponentReturned(null, lCallNode.BreakInfo);
+                    lCallNode.Continue = false;
+                }
+            }
+
+            // Restart all nodes with the state "FreezeByBreak" and "BreakStart"
+            foreach (var lCallNode in pTask.CallNodes)
+            {
+                if (lCallNode.State == CallNodeState.BreakStart)
+                {
+                    lCallNode.Continue = true;
+                    lCallNode.State = CallNodeState.Undefined;
+                    lCallNode.Start(lCallNode.BreakInfo, this.mSimulationStep);
+                    lCallNode.Continue = false;
+                }
+
+                if (lCallNode.State == CallNodeState.FreezeByBreak)
+                {
+                    lCallNode.State = CallNodeState.Undefined;
+                    lCallNode.Start(lCallNode.BreakInfo, this.mSimulationStep);
+                }
+            }
         }
 
         #endregion // Methods.
