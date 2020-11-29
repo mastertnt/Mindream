@@ -125,7 +125,6 @@ namespace Mindream.XGraph.GraphViewModels
                                     if (lSourcePortViewModel != null)
                                     {
                                         ConnectionLinkViewModel lConnection = new ConnectionLinkViewModel { Output = lSourcePortViewModel, Input = lTargetPortViewModel };
-                                        //lTargetViewModel.OnPropertyChanged("IsActive");
                                         this.AddConnection(lConnection);
                                     }
                                 }
@@ -169,7 +168,6 @@ namespace Mindream.XGraph.GraphViewModels
                                         if (lTargetPortViewModel != null)
                                         {
                                             ConnectionLinkViewModel lConnection = new ConnectionLinkViewModel { Output = lSourcePortViewModel, Input = lTargetPortViewModel };
-                                            //lTargetViewModel.OnPropertyChanged("IsActive");
                                             this.AddConnection(lConnection);
                                         }
                                     }
