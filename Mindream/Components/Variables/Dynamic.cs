@@ -8,7 +8,7 @@ namespace Mindream.Components.Variables
     /// <summary>
     /// A dynamic variable component.
     /// </summary>
-    //[VariableComponent("Types")]
+    [VariableComponent("Types")]
     public class Dynamic : AMethodComponent
     {
         #region Fields

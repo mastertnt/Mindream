@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Mindream.Attributes;
 using Mindream.Components;
 using Mindream.Components.Variables;
 using Mindream.Reflection;
 using XSystem;
+using IComponent = Mindream.Components.IComponent;
 
 namespace Mindream.Descriptors
 {
@@ -43,15 +45,6 @@ namespace Mindream.Descriptors
                     {
                         this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
                     }
-                }
-            }
-
-            // Look for events in dynamic.
-            foreach (var lEventInfo in lType.GetEvents())
-            {
-                if (lEventInfo.EventHandlerType == typeof (ComponentReturnDelegate))
-                {
-                    this.Results.Add(new EventReturnInfo(lEventInfo));
                 }
             }
 
@@ -187,6 +180,22 @@ namespace Mindream.Descriptors
             get
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is an operator.
+        /// An operator has no start and end.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is an operator; otherwise, <c>false</c>.
+        /// </value>
+        [Browsable(false)]
+        public override bool IsOperator
+        {
+            get
+            {
+                return true;
             }
         }
 

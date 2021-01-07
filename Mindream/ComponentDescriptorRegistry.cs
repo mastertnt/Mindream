@@ -50,6 +50,15 @@ namespace Mindream
             set;
         }
 
+        /// <summary>
+        /// Flag to know if the dynamic discovering is enabled or not.
+        /// </summary>
+        public bool ExposeDynamic
+        {
+            get;
+            private set;
+        }
+
         #endregion // Properties.
 
         #region Methods
@@ -57,8 +66,9 @@ namespace Mindream
         /// <summary>
         /// Find all IComponent based types to get their corresponding component descriptors in cache.
         /// </summary>
-        public void FindAllDescriptors()
+        public void FindAllDescriptors(bool pExposeDynamic = false)
         {
+            this.ExposeDynamic = pExposeDynamic;
             IEnumerable<Type> lDescriptorTypes = typeof(IComponent).GetInheritedTypes();
             foreach ( Type lDescriptorType in lDescriptorTypes )
             {
@@ -108,12 +118,14 @@ namespace Mindream
         /// </summary>
         public void ExposeDynamicType(Type pType)
         {
-            this.mInProgress.Add(pType);
-            if (this.Descriptors.FirstOrDefault(pDesc => pDesc.Id == pType.Name) == null && this.mInProgress.Contains(pType) == false)
+            if (this.ExposeDynamic)
             {
-                this.Descriptors.Add(new DynamicComponentDescriptor(pType, this));
+                if (this.Descriptors.FirstOrDefault(pDesc => pDesc.Id == pType.Name) == null)
+                {
+                    this.mInProgress.Add(pType);
+                    this.Descriptors.Add(new DynamicComponentDescriptor(pType, this));
+                }
             }
-            this.mInProgress.Remove(pType);
         }
 
         #endregion // Methods.
