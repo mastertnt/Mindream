@@ -28,7 +28,8 @@ namespace Mindream.Descriptors
         public DynamicComponentDescriptor(Type pType, ComponentDescriptorRegistry pRegistry)
         {
             this.mComponentType = pType;
-            var lType = typeof (Dynamic);
+            Type lDynamicType = typeof(Dynamic<>);
+            Type lType = lDynamicType.MakeGenericType(this.mComponentType);
 
             // Look for inputs in dynamic.
             foreach (var lPropertyInfo in lType.GetProperties())
@@ -85,7 +86,9 @@ namespace Mindream.Descriptors
         /// </returns>
         public override IComponent Create()
         {
-            AComponent lComponent = new Dynamic();
+            Type lDynamicType = typeof(Dynamic<>);
+            Type lSpecific = lDynamicType.MakeGenericType(this.mComponentType);
+            AComponent lComponent = Activator.CreateInstance(lSpecific) as AComponent;
             lComponent.Initialize(this);
             return lComponent;
         }

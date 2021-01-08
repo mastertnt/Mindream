@@ -98,6 +98,8 @@
     <Compile Include="CallGraph\ExecutionCall.cs" />
     <Compile Include="Components\ABaseComponent.cs" />
     <Compile Include="Components\AUpdatableComponent.cs" />
+    <Compile Include="Components\EmitableComponent.cs" />
+    <Compile Include="Components\EmitComponent.cs" />
     <Compile Include="Components\Variables\Dynamic.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -107,6 +109,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Descriptors\VariableComponentDescriptor.cs" />
+    <Compile Include="EmitHelper.cs" />
     <Compile Include="Reflection\SubPropertyMemberInfo.cs" />
     <Compile Include="Serialization\TaskSerializationContract.cs" />
     <Compile Include="TaskManager.cs" />

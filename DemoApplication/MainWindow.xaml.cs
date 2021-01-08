@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection.Emit;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,6 +8,7 @@ using System.Windows.Media;
 using Microsoft.Win32;
 using Mindream;
 using Mindream.CallGraph;
+using Mindream.Components;
 using Mindream.Descriptors;
 using Mindream.XGraph.GraphViewModels;
 using Mindream.XGraph.Model;
@@ -71,7 +73,7 @@ namespace DemoApplication
 
             var lComponentDescriptorRegistry = new ComponentDescriptorRegistry();
             lComponentDescriptorRegistry.FindAllDescriptors();
-            this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
+            
             this.mGraph.SelectionChanged += this.OnSelectionChanged;
             this.NewProject();
             Instance = this;
@@ -80,6 +82,16 @@ namespace DemoApplication
             this.mSimulationTimer = new System.Timers.Timer(200);
             this.mSimulationTimer.Elapsed += this.OnSimulationTimerElapsed;
             this.mSimulationTimer.AutoReset = true;
+
+            ModuleBuilder lModule = EmitHelper.CreateModule("Scripts");
+            EmitableComponent lComponent = new EmitableComponent();
+            lComponent.Name = "WriteLine";
+            lComponent.Inputs.Add("input", "System.String");
+            lComponent.Category = "Emited";
+            Type lScriptType = lComponent.BuildType(lModule);
+            lComponentDescriptorRegistry.Descriptors.Add(new ComponentDescriptor(lScriptType, lComponentDescriptorRegistry));
+
+            this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
         }
 
         #endregion // Constructors.
@@ -126,9 +138,11 @@ namespace DemoApplication
                         // Drop point is not in the graph limits. Adding the node at (0,0).
                         lGraphPos = new Point();
                     }
-                    LocatableCallNode lNodeToAdd = new LocatableCallNode {Component = lDescriptor.Create()};
-                    lNodeToAdd.X = lGraphPos.X;
-                    lNodeToAdd.Y = lGraphPos.Y;
+
+                    LocatableCallNode lNodeToAdd = new LocatableCallNode
+                    {
+                        Component = lDescriptor.Create(), X = lGraphPos.X, Y = lGraphPos.Y
+                    };
                     this.mCurrentTask.CallNodes.Add(lNodeToAdd);
                 }
             }

@@ -9,11 +9,11 @@ namespace Mindream.Components.Variables
     /// A dynamic variable component.
     /// </summary>
     [VariableComponent("Types")]
-    public class Dynamic : AMethodComponent
+    public class Dynamic<TType> : AMethodComponent where TType : class
     {
         #region Fields
 
-        private object mValue;
+        private TType mValue;
 
         #endregion // Fields.
 
@@ -27,7 +27,7 @@ namespace Mindream.Components.Variables
         /// </value>
         [Out]
         [Browsable(false)]
-        public object Get
+        public TType Get
         {
             get
             {
@@ -42,7 +42,7 @@ namespace Mindream.Components.Variables
         ///     The value.
         /// </value>
         [In]
-        public object Set
+        public TType Set
         {
             get
             {
@@ -81,7 +81,7 @@ namespace Mindream.Components.Variables
             {
                 if (pParameterName == "Value")
                 {
-                    this.Set = value;
+                    this.Set = (TType) value;
                     return;
                 }
                 var lComponentMemberInfo = this.Descriptor.Inputs.FirstOrDefault(pParameter => pParameter.Name == pParameterName);
