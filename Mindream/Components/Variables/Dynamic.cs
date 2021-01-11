@@ -79,7 +79,7 @@ namespace Mindream.Components.Variables
         {
             set
             {
-                if (pParameterName == "Value")
+                if (pParameterName == "Value" || pParameterName == "Get" || pParameterName == "Set")
                 {
                     this.Set = (TType) value;
                     return;
@@ -92,7 +92,7 @@ namespace Mindream.Components.Variables
             }
             get
             {
-                if (pParameterName == "Value")
+                if (pParameterName == "Value" || pParameterName == "Get" || pParameterName == "Set")
                 {
                     return this.Get;
                 }
