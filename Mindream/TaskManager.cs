@@ -308,8 +308,8 @@ namespace Mindream
             if (pOnlyNotRunningTask == false && this.IsRunning == false)
             {
                 this.mSimulationStep = 0;
-                this.IsRunning = true;
             }
+            this.IsRunning = true;
             var lNotRunningTasks = this.mTasks.Values.Where(pTask => pTask.State != TaskState.Running).ToList();
             foreach (var lTask in lNotRunningTasks)
             {
