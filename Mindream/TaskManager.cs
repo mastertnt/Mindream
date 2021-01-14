@@ -302,10 +302,14 @@ namespace Mindream
         /// <summary>
         ///     Starts all tasks.
         /// </summary>
-        public void StartAll()
+        /// <param name="pOnlyNotRunningTask"></param>
+        public void StartAll(bool pOnlyNotRunningTask = false)
         {
-            this.mSimulationStep = 0;
-            this.IsRunning = true;
+            if (pOnlyNotRunningTask == false && this.IsRunning == false)
+            {
+                this.mSimulationStep = 0;
+                this.IsRunning = true;
+            }
             var lNotRunningTasks = this.mTasks.Values.Where(pTask => pTask.State != TaskState.Running).ToList();
             foreach (var lTask in lNotRunningTasks)
             {
