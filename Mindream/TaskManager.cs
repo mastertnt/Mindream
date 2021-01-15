@@ -176,6 +176,11 @@ namespace Mindream
         public event Action<TaskManager, Task> TaskCreated;
 
         /// <summary>
+        ///     Occurs when a new task is renamed.
+        /// </summary>
+        public event Action<TaskManager, Task> TaskRenamed;
+
+        /// <summary>
         ///     Occurs when a task is started.
         /// </summary>
         public event Action<TaskManager, Task, bool> TaskStarted;
@@ -363,6 +368,33 @@ namespace Mindream
                     lCallNode.StoreValues();
                 }
             }
+        }
+
+        /// <summary>
+        /// Renames a task if the id is not used.
+        /// </summary>
+        /// <param name="pTask">The task to rename.</param>
+        /// <param name="pNewId">The new identifier.</param>
+        /// <returns>True if the renaming succeed, false otherwise.</returns>
+        public bool RenameTask(Task pTask, string pNewId)
+        {
+            ManagedTask lTask;
+            if (this.mTasks.TryGetValue(pNewId, out lTask))
+            {
+                return false;
+            }
+
+            if (this.mTasks.TryGetValue(pTask.Id, out lTask))
+            {
+                this.mTasks.Remove(pTask.Id);
+                this.mTasks.Add(pNewId, lTask);
+                if (this.TaskRenamed != null)
+                {
+                    this.TaskRenamed(this, lTask);
+                }
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
