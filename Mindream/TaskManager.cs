@@ -387,6 +387,7 @@ namespace Mindream
             if (this.mTasks.TryGetValue(pTask.Id, out lTask))
             {
                 this.mTasks.Remove(pTask.Id);
+                pTask.Id = pNewId;
                 this.mTasks.Add(pNewId, lTask);
                 if (this.TaskRenamed != null)
                 {
