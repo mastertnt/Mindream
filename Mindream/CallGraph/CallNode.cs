@@ -187,6 +187,15 @@ namespace Mindream.CallGraph
             set;
         }
 
+        /// <summary>
+        /// Allow the user to give a name to the node.
+        /// </summary>
+        public string CustomName
+        {
+            get;
+            set;
+        }
+
         /**
          * Flag to force to continue (only used by task manager).
          */
