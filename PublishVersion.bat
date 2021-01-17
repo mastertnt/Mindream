@@ -1,2 +1,2 @@
-VersionPublisher . 3.0.4
+VersionPublisher . 3.0.5
 pause

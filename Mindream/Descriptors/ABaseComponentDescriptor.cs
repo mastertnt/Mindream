@@ -135,7 +135,7 @@ namespace Mindream.Descriptors
         }
 
         /// <summary>
-        /// Gets a value indicating whether this instance needs to instanciate an internal object.
+        /// Gets a value indicating whether this instance needs to instantiate an internal object.
         /// Useful for variable components.
         /// </summary>
         /// <value>

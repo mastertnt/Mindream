@@ -52,25 +52,36 @@ namespace Mindream.Descriptors
             // Look for inputs.
             foreach (var lPropertyInfo in this.ComponentType.GetProperties())
             {
-                if (lPropertyInfo.CanRead)
+                bool lIsBrowsable = true;
+                BrowsableAttribute lBrowsableAttribute = lPropertyInfo.GetFirstAttributeOfType<BrowsableAttribute>();
+                if (lBrowsableAttribute != null)
                 {
-                    this.Outputs.Add(new PropertyMemberInfo(lPropertyInfo));
-
-                    if (lPropertyInfo.PropertyType.IsSimple() == false && typeof (ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
-                    {
-                        pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);
-                    }
+                    lIsBrowsable = lBrowsableAttribute.Browsable;
                 }
 
-                if (lPropertyInfo.GetSetMethod() != null)
+                if (lIsBrowsable)
                 {
-                    this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
-
-                    if (lPropertyInfo.PropertyType.IsSimple() == false && typeof (ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
+                    if (lPropertyInfo.CanRead)
                     {
-                        pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);
+                        this.Outputs.Add(new PropertyMemberInfo(lPropertyInfo));
+
+                        if (lPropertyInfo.PropertyType.IsSimple() == false && typeof(ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
+                        {
+                            pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);
+                        }
+                    }
+
+                    if (lPropertyInfo.GetSetMethod() != null)
+                    {
+                        this.Inputs.Add(new PropertyMemberInfo(lPropertyInfo));
+
+                        if (lPropertyInfo.PropertyType.IsSimple() == false && typeof(ICollection).IsAssignableFrom(lPropertyInfo.PropertyType) == false)
+                        {
+                            pRegistry.ExposeDynamicType(lPropertyInfo.PropertyType);
+                        }
                     }
                 }
+                
             }
         }
 
@@ -89,6 +100,10 @@ namespace Mindream.Descriptors
             Type lDynamicType = typeof(Dynamic<>);
             Type lSpecific = lDynamicType.MakeGenericType(this.mComponentType);
             AComponent lComponent = Activator.CreateInstance(lSpecific) as AComponent;
+            if (this.NeedCreate)
+            {
+                lComponent["Set"] = Activator.CreateInstance(this.ComponentType);
+            }
             lComponent.Initialize(this);
             return lComponent;
         }
@@ -195,6 +210,22 @@ namespace Mindream.Descriptors
         /// </value>
         [Browsable(false)]
         public override bool IsOperator
+        {
+            get
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this instance is an operator.
+        /// An operator has no start and end.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is an operator; otherwise, <c>false</c>.
+        /// </value>
+        [Browsable(false)]
+        public override bool NeedCreate
         {
             get
             {

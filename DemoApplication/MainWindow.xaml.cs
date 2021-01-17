@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using DemoApplication.Models;
 using Microsoft.Win32;
 using Mindream;
 using Mindream.CallGraph;
@@ -90,6 +91,7 @@ namespace DemoApplication
             lComponent.Category = "Emited";
             Type lScriptType = lComponent.BuildType(lModule);
             lComponentDescriptorRegistry.Descriptors.Add(new ComponentDescriptor(lScriptType, lComponentDescriptorRegistry));
+            lComponentDescriptorRegistry.Descriptors.Add(new DynamicComponentDescriptor(typeof(GeoPosition), lComponentDescriptorRegistry));
 
             this.mComponentDescriptorLibrary.ViewModel = new ComponentDescriptorRegistryViewModel(lComponentDescriptorRegistry);
         }
