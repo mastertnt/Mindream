@@ -92,11 +92,16 @@ namespace Mindream.CallGraph
         /// </summary>
         private IComponent mComponent;
 
-        /**
-         * This field stores the state of the component.
-         */
+        /// <summary>
+        /// This field stores the state of the component.
+        /// </summary>
         private CallNodeState mState;
 
+        /// <summary>
+        /// This field stores the custom name.
+        /// </summary>
+        private string mCustomName;
+        
         #endregion // Fields.
 
         #region Events
@@ -192,8 +197,18 @@ namespace Mindream.CallGraph
         /// </summary>
         public string CustomName
         {
-            get;
-            set;
+            get
+            {
+                return this.mCustomName;
+            }
+            set
+            {
+                this.mCustomName = value;
+                if (this.CustomNameChanged != null)
+                {
+                    this.CustomNameChanged(value);
+                }
+            }
         }
 
         /**
@@ -334,6 +349,11 @@ namespace Mindream.CallGraph
          * Event raised when the state is changed.
          */
         public event Action<CallNodeState> StateChanged;
+
+        /**
+         * Event raised when the name is changed.
+         */
+        public event Action<string> CustomNameChanged;
 
         #endregion // Events.
 
