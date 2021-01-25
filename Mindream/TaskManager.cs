@@ -173,6 +173,11 @@ namespace Mindream
         /// <summary>
         ///     Occurs when a new task is created.
         /// </summary>
+        public event Action<TaskManager, string> SignalOccured;
+
+        /// <summary>
+        ///     Occurs when a new task is created.
+        /// </summary>
         public event Action<TaskManager, Task> TaskCreated;
 
         /// <summary>
@@ -541,6 +546,15 @@ namespace Mindream
                     lCallNode.Start(lCallNode.BreakInfo, this.mSimulationStep);
                 }
             }
+        }
+
+        /// <summary>
+        /// Emit a signal.
+        /// </summary>
+        /// <param name="pSignalName">The signal name to emit.</param>
+        internal void EmitSignal(string pSignalName)
+        {
+            this.SignalOccured?.Invoke(this, pSignalName);
         }
 
         #endregion // Methods.

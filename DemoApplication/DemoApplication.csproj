@@ -80,19 +80,19 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="Xceed.Wpf.AvalonDock, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
     </Reference>
     <Reference Include="Xceed.Wpf.Toolkit, Version=4.0.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.1\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+      <HintPath>..\NuGet\InstalledPackages\Extended.Wpf.Toolkit.4.0.2\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
     <Reference Include="XGraph, Version=2.4.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\NuGet\InstalledPackages\XGraph.2.4.0\lib\net47\XGraph.dll</HintPath>
@@ -106,8 +106,8 @@
     <Reference Include="XSystem, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\NuGet\InstalledPackages\XSystem.2.1.2\lib\net47\XSystem.dll</HintPath>
     </Reference>
-    <Reference Include="XTreeListView, Version=2.1.4.0, Culture=neutral, processorArchitecture=x86">
-      <HintPath>..\NuGet\InstalledPackages\XTreeListView.2.1.4\lib\net47\XTreeListView.dll</HintPath>
+    <Reference Include="XTreeListView, Version=2.2.0.0, Culture=neutral, processorArchitecture=x86">
+      <HintPath>..\NuGet\InstalledPackages\XTreeListView.2.2.0\lib\net47\XTreeListView.dll</HintPath>
     </Reference>
     <Reference Include="XZoomAndPan, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
       <HintPath>..\NuGet\InstalledPackages\XZoomAndPan.2.1.2\lib\net47\XZoomAndPan.dll</HintPath>
