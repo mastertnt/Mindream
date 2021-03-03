@@ -611,7 +611,7 @@ namespace Mindream.CallGraph
             // If a node has a break on output.
             if (this.HasOutputBreakpoint == false || this.Continue)
             {
-                this.Component.Returned -= this.OnComponentReturned;
+                //this.Component.Returned -= this.OnComponentReturned;
                 if (this.NodeToCall.ContainsKey(pResultName))
                 {
                     foreach (var lExecutionCall in this.NodeToCall[pResultName])

@@ -86,21 +86,18 @@ namespace Mindream.Components.FlowControls
         /// </summary>
         private void TryDoLoop()
         {
-            if (this.State != TaskState.Stopped)
+            this.LoopIndex++;
+            if (this.LoopIndex < this.Count)
             {
-                this.LoopIndex++;
-                if (this.LoopIndex < this.Count)
+                if (this.DoLoop != null)
                 {
-                    if (this.DoLoop != null)
-                    {
-                        this.DoLoop();
-                    }
+                    this.DoLoop();
                 }
-                else
-                {
-                    this.Stop();
-                    this.LoopIndex = -1;
-                }
+            }
+            else
+            {
+                this.Stop();
+                this.LoopIndex = -1;
             }
         }
 

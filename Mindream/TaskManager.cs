@@ -1,6 +1,7 @@
 ﻿using Mindream.CallGraph;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
 using XSerialization.Attributes;
 
@@ -88,6 +89,11 @@ namespace Mindream
         /// This field stores the current simulation step.
         /// </summary>
         private int mSimulationStep;
+
+        /// <summary>
+        /// Flag to avoid reentrance in UpdateAll.
+        /// </summary>
+        private bool mIsUpdating = false;
 
         #endregion // Fields.
 
@@ -332,12 +338,17 @@ namespace Mindream
         /// </summary>
         public void UpdateAll(TimeSpan pDeltaTime)
         {
-            var lRunningTasks = this.mTasks.Values.Where(pTask => pTask.State == TaskState.Running).ToList();
-            foreach (var lTask in lRunningTasks)
+            if (this.mIsUpdating == false)
             {
-                lTask.Update(pDeltaTime, this.mSimulationStep);
+                this.mIsUpdating = true;
+                var lRunningTasks = this.mTasks.Values.Where(pTask => pTask.State == TaskState.Running).ToList();
+                foreach (var lTask in lRunningTasks)
+                {
+                    lTask.Update(pDeltaTime, this.mSimulationStep);
+                }
+                this.mSimulationStep++;
             }
-            this.mSimulationStep++;
+            this.mIsUpdating = false;
         }
 
         /// <summary>
@@ -358,6 +369,7 @@ namespace Mindream
 
             this.IsRunning = false;
             this.mSimulationStep = 0;
+            this.mIsUpdating = false;
         }
 
         /// <summary>

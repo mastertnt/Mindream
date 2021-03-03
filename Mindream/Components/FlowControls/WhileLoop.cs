@@ -99,25 +99,22 @@ namespace Mindream.Components.FlowControls
         /// <param name="pStarting">Flag indicating if the component is starting or not.</param>
         private void TryDoLoop(bool pStarting)
         {
-            if (this.State != TaskState.Stopped)
+            if (this.Condition)
             {
-                if (this.Condition)
+                if (pStarting == false)
                 {
-                    if (pStarting == false)
-                    {
-                        this.LoopIndex++;
-                    }
-                    
-                    if (this.DoLoop != null)
-                    {
-                        this.DoLoop();
-                    }
+                    this.LoopIndex++;
                 }
-                else
+
+                if (this.DoLoop != null)
                 {
-                    this.Stop();
-                    this.LoopIndex = 0;
+                    this.DoLoop();
                 }
+            }
+            else
+            {
+                this.Stop();
+                this.LoopIndex = 0;
             }
         }
 
