@@ -14,7 +14,8 @@ namespace Mindream.Components.FlowControls
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        public string Name
+        [InOut]
+        public string SignalName
         {
             get;
             set;
@@ -57,7 +58,7 @@ namespace Mindream.Components.FlowControls
         /// <param name="pSignalName">The name of signal raised.</param>
         private void OnSignalRaised(TaskManager pManager, string pSignalName)
         {
-            if (pSignalName == this.Name)
+            if (pSignalName == this.SignalName)
             {
                 TaskManager.Instance.SignalOccured -= this.OnSignalRaised;
                 this.Stop();

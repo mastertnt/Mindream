@@ -14,7 +14,7 @@ namespace Mindream.Components.FlowControls
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
-        public string Name
+        public string SignalName
         {
             get;
             set;
@@ -39,7 +39,7 @@ namespace Mindream.Components.FlowControls
         /// <param name="pPortName">The name of the execution port to start</param>
         protected override void ComponentStarted(string pPortName)
         {
-            TaskManager.Instance.EmitSignal(this.Name);
+            TaskManager.Instance.EmitSignal(this.SignalName);
             this.Stop();
         }
 
