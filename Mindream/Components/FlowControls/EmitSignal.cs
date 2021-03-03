@@ -14,6 +14,7 @@ namespace Mindream.Components.FlowControls
         /// <summary>
         /// Gets or sets the name.
         /// </summary>
+        [InOut]
         public string SignalName
         {
             get;
