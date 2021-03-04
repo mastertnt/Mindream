@@ -117,10 +117,7 @@
     <Compile Include="TaskManager.cs" />
     <Compile Include="Components\AMethodComponent.cs" />
     <Compile Include="Components\FlowControls\Branch.cs" />
-    <Compile Include="Components\FlowControls\DoN.cs" />
     <Compile Include="Components\FlowControls\FlipFlop.cs" />
-    <Compile Include="Components\FlowControls\ForEach.cs" />
-    <Compile Include="Components\FlowControls\WhileLoop.cs" />
     <Compile Include="Components\ASingletonFunctionComponent.cs" />
     <Compile Include="Components\Variables\AVariableComponent.cs" />
     <Compile Include="Components\Variables\Boolean.cs" />
